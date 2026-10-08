@@ -1,5 +1,7 @@
 # led-tetragon-stand
 
+![The panel on its stand at 75 degrees](stand_preview.png)
+
 A 3D-printed stand for the LED tetragon: one 64 x 64 P3 LED panel on its
 factory frame, with the Raspberry Pi on the back. The panel leans back at an
 angle that is set by hand (75 degrees to the table by default) and held by two

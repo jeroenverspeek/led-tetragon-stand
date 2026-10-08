@@ -5,6 +5,8 @@
 # not aimed at the model. This opens them with the FreeCAD window (which can
 # be off-screen), sets what is visible, aims the camera and saves again.
 #
+# Also renders the preview as a PNG for the README.
+#
 # Run:  QT_QPA_PLATFORM=offscreen freecad set_view.py
 ###########################
 
@@ -12,6 +14,7 @@ import os
 
 import FreeCAD as App
 import FreeCADGui as Gui
+from PIL import Image, ImageChops
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 V = App.Vector
@@ -59,6 +62,15 @@ def save(doc, shown, turn=FRONT):
     doc.save()
 
 
+def screenshot(doc, path, size=1200, margin=20):
+    """Save the view of a document as a PNG, cropped to the model with a small white margin."""
+    Gui.getDocument(doc.Name).ActiveView.saveImage(path, size, size, "White")
+    image = Image.open(path).convert("RGB")
+    left, top, right, bottom = ImageChops.difference(image, Image.new("RGB", image.size, "white")).getbbox()
+    image.crop((max(left - margin, 0), max(top - margin, 0), min(right + margin, size),
+                min(bottom + margin, size))).save(path)
+
+
 # stand.FCStd: show the base; the cradle and the knob are modelled in their own places and stay hidden
 doc = App.openDocument(os.path.join(HERE, "stand.FCStd"))
 for obj in doc.Objects:
@@ -77,5 +89,6 @@ for obj in doc.Objects:
     obj.ViewObject.Visibility = True
     obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.96, 0.52, 0.09))  # knobs orange
 save(doc, doc.Objects)
+screenshot(doc, os.path.join(HERE, "stand_preview.png"))
 
 os._exit(0)
