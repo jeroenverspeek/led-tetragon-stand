@@ -27,22 +27,30 @@ PREVIEW_ANGLE = 75
 PANEL_MASS = 400  # g, panel with its factory frame
 PI_MASS = 120  # g, Pi with hat, distance holders and cables
 # The Pi with its hat on the back of the frame, in portrait, on the vertical middle bar, its USB
-# ports at the top. Seen from the back it reaches from 90 mm off the left edge to 40 mm off the
-# right edge (measured); seen from the front that is from 6 mm right of the middle to 40 mm off
-# the left edge. Up the panel the Pi reaches to 40 mm under the top and the hat sticks out below
-# it to 39 mm above the bottom (measured). The Pi is 85 mm long. Behind the LED board the Pi's
-# board lies 22 mm and the hat's 33 mm (measured); about 3 mm of solder stands under the Pi and
-# about 9 mm of parts on the hat (guess). The frame behind the LED board is 12 mm.
-PI_ACROSS = (-96 + 40, 96 - 90)  # z, from the middle; the panel is 192 mm
-PI_TOP = 192 - 40
-PI_BOTTOM = PI_TOP - 85
-HAT_BOTTOM = 39
-PI_BACK = 33 + 9  # behind the LED board
-PI_FRONT = 22 - 3
-HAT_FRONT = 33 - 1.6
-# The panel's power connector, seen from the back 39 mm off the left edge and 80 mm under the top
-# (measured); it sticks out, so the holder must stay well above it
-POWER_AT = (96 - 39, 192 - 80)  # z, y
+# ports at the top: where it is, is in the Params (see PANEL.md). The Pi is 85 mm long; behind
+# the LED board its board lies 22 mm and the hat's 33 mm (measured); about 3 mm of solder
+# stands under the Pi and about 9 mm of parts on the hat (guess).
+PI_LENGTH = 85
+HAT_FRONT = 33 - 1.6 - 12  # behind the frame, which is 12 mm behind the LED board
+# The panel: the LEDs on their board, and behind it the frame, five bars of the full depth: four
+# round the edge and one up the middle. Their widths and the holes in them are in the Params.
+LED_BOARD = 2
+# What stands out from the back of the panel near the holder, seen from the back: u from the
+# left, v from the top, both from the edges; x behind the back of the frame. See PANEL.md.
+# The power connector, 18 x 8 round its middle 39 mm from the left and 80 mm from the top, with
+# its plug in reaches 20 mm behind the LED board; its cable leaves it on the top side, so it
+# bends up under the plate of the speaker holder.
+POWER_PLUG = ((30, 48), (76, 84), 20 - 12)
+# HUB75 IN, 26 x 10, 30 mm from the left and 39 mm from the bottom to its middle; the header stays
+# within the frame, the plug on it sticks out further than the power plug (guess: 12 mm and 2 mm
+# round the header). Its ribbon leaves the plug upwards and bends over the micro:bit holder to the
+# hat, so it needs room between the two.
+HUB75_HEADER = ((30, 56), (192 - 39 - 5, 192 - 39 + 5))
+HUB75_IN_PLUG = ((28, 58), (HUB75_HEADER[1][0] - 2, HUB75_HEADER[1][1] + 2), 12)
+RIBBON_ROOM = 4  # mm at least between the micro:bit holder and the top of that plug
+# The micro:bit's USB plug with its sleeve, straight: 40 mm long (measured), about 11 x 8 (guess),
+# in the middle of its USB edge, towards the Pi
+MICROBIT_PLUG = (40, 11, 8)
 SPEAKER_MASS = 74  # g
 MICROBIT_MASS = 10  # g, with the end of its cable
 PLA = 1.24 / 1000  # g/mm3; a printed part weighs less, so the stand is lighter than this
@@ -125,13 +133,40 @@ def on_base(angle):
             .multiply(App.Placement(-PIVOT, App.Rotation())))
 
 
-panel = Part.makeBox(DEPTH, SIZE, SIZE, V(0, 0, -SIZE / 2))
-led_board = DEPTH - 12  # back of the LED board
+def back(us, vs, xs):
+    """A box on the back of the panel: u from the left and v from the top as seen from the back,
+    x behind the back of the frame."""
+    return Part.makeBox(xs[1] - xs[0], vs[1] - vs[0], us[1] - us[0],
+                        V(DEPTH + xs[0], SIZE - vs[1], SIZE / 2 - us[1]))
+
+
+def hole(u, v):
+    """An M3 hole in a bar of the frame."""
+    return Part.makeCylinder(1.5, DEPTH - LED_BOARD, V(LED_BOARD, SIZE - v, SIZE / 2 - u), V(1, 0, 0))
+
+
+FRAME = DEPTH - LED_BOARD
+bw, mw = p["frame_bar_width"], p["middle_bar_width"]
+frame = back((0, bw), (0, SIZE), (-FRAME, 0))
+for bar in (back((SIZE - bw, SIZE), (0, SIZE), (-FRAME, 0)), back((0, SIZE), (0, bw), (-FRAME, 0)),
+            back((0, SIZE), (SIZE - bw, SIZE), (-FRAME, 0)),
+            back(((SIZE - mw) / 2, (SIZE + mw) / 2), (0, SIZE), (-FRAME, 0))):
+    frame = frame.fuse(bar)
+# 4 holes up the middle bar, evenly spaced; at the left and right 2 in the corners and 1 in the middle
+holes = [(SIZE / 2, p["bar_hole_top"] + i * (SIZE - 2 * p["bar_hole_top"]) / 3) for i in range(4)]
+for u, v in ((p["side_hole_left"], p["side_hole_top"]), (p["side_mid_hole_left"], p["side_mid_hole_top"]),
+             (p["side_hole_left"], SIZE - p["side_hole_top"])):
+    holes += [(u, v), (SIZE - u, v)]
+for u, v in holes:
+    frame = frame.cut(hole(u, v))
+panel = Part.makeBox(LED_BOARD, SIZE, SIZE, V(0, 0, -SIZE / 2)).fuse(frame).removeSplitter()
+power_plug = back(*POWER_PLUG[:2], (-FRAME, POWER_PLUG[2]))
+hub75_plug = back(*HUB75_IN_PLUG[:2], (-FRAME, HUB75_IN_PLUG[2]))
+
+pi_us = (p["pi_from_left"], SIZE - p["pi_from_right"])
 pi = Part.makeCompound([
-    Part.makeBox(PI_BACK - PI_FRONT, PI_TOP - PI_BOTTOM, PI_ACROSS[1] - PI_ACROSS[0],
-                 V(led_board + PI_FRONT, PI_BOTTOM, PI_ACROSS[0])),  # the Pi with the hat on it
-    Part.makeBox(PI_BACK - HAT_FRONT, PI_BOTTOM - HAT_BOTTOM, PI_ACROSS[1] - PI_ACROSS[0],
-                 V(led_board + HAT_FRONT, HAT_BOTTOM, PI_ACROSS[0]))])  # the hat below the Pi
+    back(pi_us, (p["pi_from_top"], p["pi_from_top"] + PI_LENGTH), (p["pi_gap"], p["pi_depth"])),  # Pi and hat
+    back(pi_us, (p["pi_from_top"] + PI_LENGTH, SIZE - p["hat_from_bottom"]), (HAT_FRONT, p["pi_depth"]))])  # hat
 # A countersunk screw, along z from the top of its head: a 90 degree head on a plain shank
 screw = Part.makeCone(p["screw_head_d"] / 2, p["bolt_d"] / 2 - 0.2, (p["screw_head_d"] - p["bolt_d"] + 0.4) / 2).fuse(
     Part.makeCylinder(p["bolt_d"] / 2 - 0.2, p["bolt_length"])).removeSplitter()
@@ -147,36 +182,63 @@ check("panel: stands in the cradle without overlap", overlap(panel, cradle) < TO
 check("panel: rests on the floor of the cradle and against its lip", panel.distToShape(cradle)[0] < TOUCH)
 check("panel: the back wall stays clear of the Pi and its hat", pi.distToShape(cradle)[0] >= 2,
       "%.1f mm" % pi.distToShape(cradle)[0])
+for name, plug in (("power plug", power_plug), ("HUB75 IN plug", hub75_plug)):
+    check("panel: the back wall stays clear of the %s" % name, plug.distToShape(cradle)[0] >= 1,
+          "%.1f mm" % plug.distToShape(cradle)[0])
 
-# The holder on the back of the panel, and the speaker and micro:bit in it
-li = p["speaker_length"] + 2 * p["speaker_fit"]
-hi = p["speaker_height"] + 2 * p["speaker_fit"]
-lo, ho = li + 2 * p["holder_wall"], hi + 2 * p["holder_wall"]
-xp = DEPTH + p["holder_plate"]
-xf = xp + p["microbit_thickness"] + p["microbit_fit"] + p["holder_wall"]  # floor of the cup
-yc = SIZE - ho / 2
-speaker = Part.makeBox(p["speaker_depth"], p["speaker_height"], p["speaker_length"] - p["speaker_height"],
-                       V(xf, yc - p["speaker_height"] / 2, SIZE / 2 - lo / 2 - (li - hi) / 2))
-for z in (SIZE / 2 - lo / 2 - (li - hi) / 2, SIZE / 2 - lo / 2 + (li - hi) / 2):
-    speaker = speaker.fuse(Part.makeCylinder(p["speaker_height"] / 2, p["speaker_depth"], V(xf, yc, z), V(1, 0, 0)))
+# The holder on the back of the panel, with the speaker and the micro:bit in it
+sl, st, sh = p["speaker_left"], p["speaker_top"], p["speaker_height"]
+speaker_x = (p["holder_plate"], p["holder_plate"] + p["speaker_depth"])
+speaker = back((sl + sh / 2, sl + p["speaker_length"] - sh / 2), (st, st + sh), speaker_x)
+for u in (sl + sh / 2, sl + p["speaker_length"] - sh / 2):
+    speaker = speaker.fuse(Part.makeCylinder(sh / 2, p["speaker_depth"], V(DEPTH + speaker_x[0], SIZE - st - sh / 2,
+                                                                           SIZE / 2 - u), V(1, 0, 0)))
 speaker = speaker.removeSplitter()
-microbit = Part.makeBox(p["microbit_thickness"], p["microbit_height"], p["microbit_width"],
-                        V(xp + p["microbit_fit"] / 2, yc - p["microbit_height"] / 2, SIZE / 2 - lo + p["holder_wall"]))
+mf = p["microbit_fit"] / 2
+microbit = back((p["microbit_left"] + mf, p["microbit_left"] + mf + p["microbit_height"]),
+                (p["microbit_top"] + mf, p["microbit_top"] + mf + p["microbit_width"]),
+                (p["holder_plate"] + mf, p["holder_plate"] + mf + p["microbit_thickness"]))
 fitted = (holder, speaker, microbit)
+masses_on_back = [holder.Volume * PLA, SPEAKER_MASS, MICROBIT_MASS]
 check("holder: the speaker fits its cup, under the lips", overlap(holder, speaker) < TOUCH,
       "%.3f mm3" % overlap(holder, speaker))
 check("holder: the micro:bit fits its pocket", overlap(holder, microbit) < TOUCH)
 box = holder.optimalBoundingBox()
 check("holder: within the edges of the panel, so it is not seen from the front",
-      box.ZMax <= SIZE / 2 + 1e-6 and box.YMax <= SIZE + 1e-6 and box.XMin >= DEPTH - p["rib_depth"] - 1e-6)
-check("holder: clear of the Pi and its hat", all(a.distToShape(pi)[0] >= 1 for a in fitted),
-      "%.1f mm" % min(a.distToShape(pi)[0] for a in fitted))
-check("holder: well above the power connector", box.YMin - POWER_AT[1] >= 20, "%.0f mm" % (box.YMin - POWER_AT[1]))
-check("holder: the ribs lie beside the bar, not on it",
-      overlap(holder, Part.makeBox(DEPTH, SIZE, p["bar_width"], V(0, 0, -p["bar_width"] / 2))) < TOUCH)
-sticks_out = max(a.optimalBoundingBox().XMax for a in fitted) - DEPTH
-print("     the holder with the speaker sticks out %.0f mm behind the frame, the Pi %.0f mm"
-      % (sticks_out, pi.optimalBoundingBox().XMax - DEPTH), flush=True)
+      box.ZMax <= SIZE / 2 + 1e-6 and box.YMax <= SIZE + 1e-6)
+check("holder: clear of the Pi and its hat", holder.distToShape(pi)[0] >= 1 - 1e-6, "%.1f mm" % holder.distToShape(pi)[0])
+check("holder: the speaker clear of the Pi, even modelled with straight sides", speaker.distToShape(pi)[0] >= 0.5,
+      "%.1f mm" % speaker.distToShape(pi)[0])
+cable_u = sl + p["speaker_cable_at"]
+sleeve = back((cable_u - p["cable_slot"] / 2, cable_u + p["cable_slot"] / 2),
+              (st + sh, st + sh + p["speaker_cable_room"]), speaker_x)
+check("holder: %g mm free below the speaker for its cable" % p["speaker_cable_room"],
+      all(overlap(sleeve, a) < TOUCH for a in (holder, panel, power_plug)),
+      "%.1f mm above the power plug" % sleeve.distToShape(power_plug)[0])
+plug_v = p["microbit_top"] + mf + p["microbit_width"] / 2
+plug_x = p["holder_plate"] + mf + p["microbit_thickness"] / 2
+plug_u = p["microbit_left"] + mf + p["microbit_height"]
+microbit_plug = back((plug_u, plug_u + MICROBIT_PLUG[0]), (plug_v - MICROBIT_PLUG[1] / 2, plug_v + MICROBIT_PLUG[1] / 2),
+                     (plug_x - MICROBIT_PLUG[2] / 2, plug_x + MICROBIT_PLUG[2] / 2))
+check("holder: the micro:bit's USB plug goes out through its slot", overlap(microbit_plug, holder) < TOUCH)
+reach = plug_u + MICROBIT_PLUG[0] - p["pi_from_left"]
+print("     the micro:bit's USB plug, straight, %s" % ("reaches %.1f mm under the edge of the Pi; an angled plug "
+                                                     "stays clear" % reach if reach > 0 else
+                                                     "stays %.1f mm clear of the Pi" % -reach), flush=True)
+check("holder: stays out of the frame, so the power cable can run up under it", box.XMin >= DEPTH - 1e-6)
+for name, plug in (("power plug", power_plug), ("HUB75 IN plug", hub75_plug)):
+    gap = min(a.distToShape(plug)[0] for a in fitted)
+    check("holder: clear of the %s" % name, gap >= 1, "%.1f mm" % gap)
+room = HUB75_IN_PLUG[1][0] - (SIZE - box.YMin)
+check("holder: room for the HUB75 ribbon to bend up over it", room >= RIBBON_ROOM, "%.1f mm" % room)
+above_power = holder.common(back(POWER_PLUG[0], (0, POWER_PLUG[1][0]), (-FRAME, 60)))
+room = POWER_PLUG[1][0] - (SIZE - above_power.optimalBoundingBox().YMin)
+check("holder: room for the power cable to bend up under it", room >= 8, "%.1f mm" % room)
+check("holder: on the back of the frame, not in a bar", overlap(holder, panel) < TOUCH)
+microbit_part = holder.common(back((0, SIZE / 2), (p["microbit_top"] - 5, SIZE), (-FRAME, 60)))
+print("     the speaker sticks out %.0f mm behind the frame, the micro:bit %.0f mm, the Pi %.0f mm"
+      % (max(box.XMax, speaker.optimalBoundingBox().XMax) - DEPTH,
+         microbit_part.optimalBoundingBox().XMax - DEPTH, pi.optimalBoundingBox().XMax - DEPTH), flush=True)
 
 # The hinge
 check("hinge: the ring is no wider than the round under the cradle, so it clears the base",
@@ -219,8 +281,7 @@ for angle in ANGLES:
     check("%d degrees: the letters on the base stay in view in front of the cradle" % angle, front >= text_back + 2,
           "%.1f mm in front" % (front - text_back))
     masses = [(PANEL_MASS, centre(pn)), (PI_MASS, centre(pp)), (c.Volume * PLA, centre(c)),
-              (base.Volume * PLA, centre(base)), (on[0].Volume * PLA, centre(on[0])),
-              (SPEAKER_MASS, centre(on[1])), (MICROBIT_MASS, centre(on[2]))]
+              (base.Volume * PLA, centre(base))] + [(m, centre(a)) for m, a in zip(masses_on_back, on)]
     total = sum(m for m, _ in masses)
     x = sum(m * at.x for m, at in masses) / total
     check("%d degrees: the stand does not tip over" % angle,
@@ -228,17 +289,17 @@ for angle in ANGLES:
           "centre of mass %.0f mm %s the hinge, base from %g to %g" % (abs(x), "behind" if x >= 0 else "in front of",
                                                                        -p["base_front"], p["base_back"]))
 # Upright, the panel with its Pi must still lean back, or it would fall forward out of the cradle
-upright = [(PANEL_MASS, centre(panel)), (PI_MASS, centre(pi)), (SPEAKER_MASS, centre(speaker)),
-           (MICROBIT_MASS, centre(microbit)), (holder.Volume * PLA, centre(holder))]
+upright = ([(PANEL_MASS, centre(panel)), (PI_MASS, centre(pi))]
+           + [(m, centre(a)) for m, a in zip(masses_on_back, fitted)])
 lean = sum(m * at.x for m, at in upright) / sum(m for m, _ in upright)
 check("upright, the panel still leans on the back wall", lean > 0, "centre of mass %.1f mm behind its front" % lean)
 
 # Print bed
 cradle_lying = cradle.copy()
 cradle_lying.rotate(V(), V(1, 0, 0), 90)  # on its floor
-holder_standing = holder.copy()
-holder_standing.rotate(V(), V(0, 1, 0), 90)  # on the rim of its cup
-for name, shape in (("cradle", cradle_lying), ("base", base), ("holder", holder_standing)):
+holder_lying = holder.copy()
+holder_lying.rotate(V(), V(0, 1, 0), -90)  # on its plate
+for name, shape in (("cradle", cradle_lying), ("base", base), ("holder", holder_lying)):
     box = shape.optimalBoundingBox()
     fit = bed_fit(box)
     check("print: %s fits the bed" % name, bool(fit), "%.1f x %.1f mm, %s" % (box.XLength, box.YLength, fit))
@@ -267,6 +328,9 @@ spot = on_base(PREVIEW_ANGLE)
 preview.addObject("Part::Feature", "Base").Shape = base
 preview.addObject("Part::Feature", "Cradle").Shape = placed(cradle, spot)
 preview.addObject("Part::Feature", "Panel").Shape = placed(panel, spot)
+preview.addObject("Part::Feature", "PowerPlug").Shape = placed(power_plug, spot)
+preview.addObject("Part::Feature", "Hub75Plug").Shape = placed(hub75_plug, spot)
+preview.addObject("Part::Feature", "MicrobitPlug").Shape = placed(microbit_plug, spot)
 preview.addObject("Part::Feature", "Pi_outline").Shape = placed(pi, spot)
 preview.addObject("Part::Feature", "LEDs").Shape = placed(Part.makeCompound(leds), spot)
 preview.addObject("Part::Feature", "Holder").Shape = placed(holder, spot)
