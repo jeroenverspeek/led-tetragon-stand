@@ -15,14 +15,13 @@
 # corner under the back wall is rounded round the hinge axis, so at any angle
 # the cradle stays clear of the base. Prints lying on its floor.
 #
-# Base: a plate on the table with an upright cheek at both ends. A bolt goes
-# from outside through each cheek into the nut in the ear. Tightening it
-# presses the cheek against the ring on the ear, and that friction holds the
-# angle. The name is sunk into the plate in front of the panel.
+# Base: a plate on the table with an upright cheek at both ends. A countersunk
+# screw goes from outside through each cheek into the nut in the ear, its head
+# sunk flush into the cheek. Tightening it presses the cheek against the ring
+# on the ear, and that friction holds the angle. The name is sunk into the
+# plate in front of the panel.
 #
-# Knob: holds the head of a bolt, to tighten it by hand.
-#
-# Needed: 1 x Base, 1 x Cradle, 2 x Knob; 2 x M5 x 16 hex bolt, 2 x M5 nut.
+# Needed: 1 x Base, 1 x Cradle; 2 x M5 x 12 countersunk screw, 2 x M5 nut.
 #
 # Run:  freecadcmd build_stand.py   (or ./build.sh)
 # Writes stand.FCStd (parametric: change values in the Params spreadsheet)
@@ -65,20 +64,19 @@ PARAMS = [
     ("hinge_radius", 10, "Radius of the rounded corner under the back wall, round the hinge axis"),
     ("ring_d", 18, "Raised ring round the hinge on the outside of each ear: diameter, at most 2 x hinge_radius"),
     ("ring_height", 1, "How far that ring stands out: the only place where an ear touches its cheek"),
-    ("bolt_d", 5.4, "Hole for a hinge bolt (M5)"),
-    ("bolt_length", 16, "Length of a hinge bolt under its head, M5 x 16 (only used for checking)"),
+    ("bolt_d", 5.4, "Hole for a hinge screw (M5)"),
+    ("bolt_length", 12, "Length of a hinge screw, head included: M5 x 12 countersunk (only used for checking)"),
+    ("screw_head_d", 10, "Diameter of the countersunk head of a hinge screw (M5: 10 mm; only used for checking)"),
+    ("countersink_d", 10.4, "Countersink for that head in the outside of each cheek, 90 degrees: diameter at the "
+                            "surface"),
     ("nut_af", 8.2, "Pocket for the M5 nut on the inside of each ear: across the flats (a nut is 8 mm)"),
     ("nut_depth", 4.2, "Depth of that pocket (a nut is 4 mm thick)"),
     ("base_thickness", 4, "Thickness of the base plate"),
     ("base_front", 40, "How far the base reaches in front of the hinge axis"),
     ("base_back", 90, "How far the base reaches behind the hinge axis"),
     ("base_gap", 1, "Space between the cradle and the base plate"),
-    ("cheek_thickness", 4, "Thickness of the two cheeks on the base"),
+    ("cheek_thickness", 4.5, "Thickness of the two cheeks on the base, with the countersink in it"),
     ("cheek_width", 20, "Width of a cheek; its top is a half round of this diameter round the hinge axis"),
-    ("knob_d", 16, "Diameter of a knob"),
-    ("knob_floor", 4.5, "Thickness of a knob under the bolt head; sets the bolt length"),
-    ("bolt_head_af", 8.2, "Hex pocket in a knob for the bolt head: across the flats (M5: 8 mm)"),
-    ("bolt_head_height", 4, "Depth of that pocket (an M5 bolt head is 3.5 mm)"),
     ("text_size", 10, "Height of the letters on the base"),
     ("text_depth", 0.8, "How deep the letters are sunk into the base"),
     ("text_margin", 7, "Front edge of the base to the letters"),
@@ -270,6 +268,17 @@ for side, y, y_expression in (("Right", ci, CI), ("Left", -half, "-" + HALF)):
 primitive(base, "SubtractiveCylinder", "CheekHoles",
           {"Radius": (P["bolt_d"] / 2, "Params.bolt_d / 2"), "Height": (2 * half + 2, "2 * %s + 2 mm" % HALF)},
           [(0, None), (-half - 1, "-%s - 1 mm" % HALF), (ph, PH)], ALONG_Y)
+# Countersinks for the screw heads: a 90 degree cone from the hole out to the surface of the
+# cheek, and 1 mm beyond it for a clean cut
+sink = (P["countersink_d"] - P["bolt_d"]) / 2
+SINK = "(Params.countersink_d - Params.bolt_d) / 2"
+for side, sign in (("Right", 1), ("Left", -1)):
+    primitive(base, "SubtractiveCone", "Countersink" + side,
+              {"Radius1": (P["bolt_d"] / 2, "Params.bolt_d / 2"), "Radius2": (P["countersink_d"] / 2 + 1,
+                                                                             "Params.countersink_d / 2 + 1 mm"),
+               "Height": (sink + 1, SINK + " + 1 mm")},
+              [(0, None), (sign * (half - sink), ("" if sign > 0 else "-") + "(%s - %s)" % (HALF, SINK)), (ph, PH)],
+              App.Rotation(V(1, 0, 0), -90 * sign))  # widens outwards
 
 # The name, sunk into the plate in front of the panel and readable from the front
 font = next(f for f in FONTS if os.path.exists(f))
@@ -286,29 +295,6 @@ sunk = base.newObject("PartDesign::Pocket", "TextCut")
 sunk.Profile = letters
 sunk.setExpression("Length", "Params.text_depth")
 
-###########################
-# Knob
-###########################
-
-knob = doc.addObject("PartDesign::Body", "Knob")
-knob_h = P["knob_floor"] + P["bolt_head_height"]
-KNOB_H = "(Params.knob_floor + Params.bolt_head_height)"
-primitive(knob, "AdditiveCylinder", "KnobDisc",
-          {"Radius": (P["knob_d"] / 2, "Params.knob_d / 2"), "Height": (knob_h, KNOB_H)}, [(0, None)] * 3)
-# grip: six round flutes round the rim, each over a flat of the hex pocket, where the wall is thickest
-for i in range(6):
-    c, s = math.cos(math.radians(30 + 60 * i)), math.sin(math.radians(30 + 60 * i))
-    primitive(knob, "SubtractiveCylinder", "Flute%d" % (i + 1),
-              {"Radius": (2, None), "Height": (knob_h + 2, KNOB_H + " + 2 mm")},
-              [((P["knob_d"] / 2 + 0.5) * c, "(Params.knob_d / 2 + 0.5 mm) * %.9f" % c),
-               ((P["knob_d"] / 2 + 0.5) * s, "(Params.knob_d / 2 + 0.5 mm) * %.9f" % s), (-1, None)])
-primitive(knob, "SubtractiveCylinder", "KnobHole",
-          {"Radius": (P["bolt_d"] / 2, "Params.bolt_d / 2"), "Height": (knob_h + 2, KNOB_H + " + 2 mm")},
-          [(0, None), (0, None), (-1, None)])
-hexagon(knob, "SubtractivePrism", "HeadPocket", P["bolt_head_af"], "Params.bolt_head_af",
-        P["bolt_head_height"] + 1, "Params.bolt_head_height + 1 mm",
-        [(0, None), (0, None), (P["knob_floor"], "Params.knob_floor")], App.Rotation())
-
 doc.recompute()
 
 for obj in doc.Objects:
@@ -320,7 +306,7 @@ for obj in doc.Objects:
         raise SystemExit(1)
 
 doc.saveAs(os.path.join(HERE, "stand.FCStd"))
-for part, stl in ((base, "base.stl"), (cradle, "cradle.stl"), (knob, "knob.stl")):
+for part, stl in ((base, "base.stl"), (cradle, "cradle.stl")):
     shape = part.Shape
     if not shape.isValid() or len(shape.Solids) != 1:
         print("%s is not a single valid solid" % part.Name, flush=True)

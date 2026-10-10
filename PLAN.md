@@ -17,16 +17,17 @@ degrees) is the default and a good viewing angle on a desk.
   raised ring on the outside. The corner under the back wall is rounded round
   the hinge axis, so the cradle clears the base at every angle.
 - `Base`: plate with a cheek at both ends and "Led Tetragon" sunk in front.
-- `Knob` (2): holds the head of an M5 bolt. Tightening presses cheek and ring
-  together; that friction holds the angle. 16 mm across and 8.5 mm thick, so
-  it stands out no further than needed; the bolt length follows from it.
+  Each cheek has a countersink on the outside, so the head of the screw lies
+  flush. Tightening the screw presses cheek and ring together; that friction
+  holds the angle. Set it once with a key or screwdriver so the panel turns
+  by hand but stays where it is put.
 
 Why not a prop leg in notches: the stand is so small that 5 degree steps lie
 only 4 to 6 mm apart, and a loose prop against the back of the panel slides
 unless it is fixed to the panel.
 
-Hardware: 2 x M5 x 16 hex bolt, 2 x M5 nut. Put the nuts in their pockets
-before the panel goes in.
+Hardware: 2 x M5 x 12 countersunk screw (90 degree head, any drive), 2 x M5
+nut. Put the nuts in their pockets before the panel goes in.
 
 ## Files
 
@@ -34,13 +35,13 @@ before the panel goes in.
 |---|---|
 | `build_stand.py` | Builds all parts. Run `./build.sh` |
 | `stand.FCStd` | All parts, parametric: change values in the `Params` spreadsheet |
-| `base.stl`, `cradle.stl`, `knob.stl` | For the slicer (1 base, 1 cradle, 2 knobs); the cradle prints lying on its floor |
+| `base.stl`, `cradle.stl` | For the slicer (1 of each); the cradle prints lying on its floor |
 | `check_stand.py` | Assembles the stand at 60, 75 and 90 degrees and checks it |
-| `stand_preview.FCStd` | The stand with the panel at 75 degrees, for looking at only |
+| `stand_preview.FCStd` | The stand with the panel at 75 degrees showing "Hello world", for looking at only |
 | `set_view.py` | Makes the two FreeCAD files open with the model in view |
 | `build.sh` | Build, check and view settings in one go |
 
-The base (217 x 130 mm) only just fits the 220 x 200 mm bed.
+The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
 
 ## Measured and decided
 
@@ -52,6 +53,10 @@ The base (217 x 130 mm) only just fits the 220 x 200 mm bed.
   board. With about 9 mm of parts on the hat (guess) the stack sticks out
   30 mm behind the frame.
 - `lip_height` 1 mm is fine.
+- Countersunk screws instead of knobs. From the outside of a cheek to the
+  inside of an ear is 12.5 mm, so the screws are M5 x 12; a longer one
+  reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
+  cheek and ear thicker instead would make the base too wide for the bed.
 
 ## Still guessed
 

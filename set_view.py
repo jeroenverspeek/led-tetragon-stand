@@ -71,7 +71,7 @@ def screenshot(doc, path, size=1200, margin=20):
                 min(bottom + margin, size))).save(path)
 
 
-# stand.FCStd: show the base; the cradle and the knob are modelled in their own places and stay hidden
+# stand.FCStd: show the base; the cradle is modelled in its own place and stays hidden
 doc = App.openDocument(os.path.join(HERE, "stand.FCStd"))
 for obj in doc.Objects:
     obj.ViewObject.Visibility = False
@@ -81,13 +81,13 @@ for body in doc.Objects:
         body.ViewObject.Visibility = body.Name == "Base"
 save(doc, [doc.getObject("Base")])
 
-# stand_preview.FCStd: light stand, dark panel, green outline of the Pi
+# stand_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi
 doc = App.openDocument(os.path.join(HERE, "stand_preview.FCStd"))
 colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15),
-           "Pi_outline": (0.1, 0.5, 0.2)}
+           "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1)}
 for obj in doc.Objects:
     obj.ViewObject.Visibility = True
-    obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.96, 0.52, 0.09))  # knobs orange
+    obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws black
 save(doc, doc.Objects)
 screenshot(doc, os.path.join(HERE, "stand_preview.png"))
 
