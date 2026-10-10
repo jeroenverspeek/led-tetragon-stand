@@ -2,9 +2,9 @@
 # by Jeroen Verspeek
 #
 # The tetragon is a single LED panel (64 x 64, P3, 192 x 192 mm) on its factory
-# frame. The Raspberry Pi with its hat is fixed to the back of that frame, from
-# the middle upwards, in landscape. The stand holds the panel leaning back at
-# an angle that is set by hand and held by friction.
+# frame. The Raspberry Pi with its hat is fixed to the vertical middle bar on
+# the back of that frame, in portrait. The stand holds the panel leaning back
+# at an angle that is set by hand and held by friction.
 #
 # Cradle: a channel over the full width that the bottom edge of the panel
 # stands in: a floor, a low lip in front and a back wall that reaches a little
@@ -21,7 +21,18 @@
 # on the ear, and that friction holds the angle. The name is sunk into the
 # plate in front of the panel.
 #
-# Needed: 1 x Base, 1 x Cradle; 2 x M5 x 12 countersunk screw, 2 x M5 nut.
+# Holder: carries the USB speaker and the micro:bit on the back of the panel,
+# in the top half beside the Pi (to the left of it, seen from the back). A
+# plate is screwed into the top hole of the middle bar, with a rib on both
+# sides of the bar so it cannot turn. The micro:bit lies flat on the plate,
+# parallel to the panel, in a pocket that is open to the side edge of the
+# panel; its USB plug goes down through a slot and holds it in place. On top
+# of that is a cup for the rounded back of the speaker, its grille facing
+# backwards, held by a lip along both long sides, with a slot for the cable at
+# both ends. Prints standing on the rim of the cup.
+#
+# Needed: 1 x Base, 1 x Cradle, 1 x Holder; 2 x M5 x 12 countersunk screw,
+# 2 x M5 nut, 1 x M3 x 10 screw.
 #
 # Run:  freecadcmd build_stand.py   (or ./build.sh)
 # Writes stand.FCStd (parametric: change values in the Params spreadsheet)
@@ -80,6 +91,28 @@ PARAMS = [
     ("text_size", 10, "Height of the letters on the base"),
     ("text_depth", 0.8, "How deep the letters are sunk into the base"),
     ("text_margin", 7, "Front edge of the base to the letters"),
+    ("bar_width", 20, "Width of the vertical middle bar on the back of the frame; its back is flush with the frame"),
+    ("bar_hole_top", 10, "Top screw hole in that bar (M3, brass insert): from the top edge of the panel"),
+    ("bar_fit", 0.2, "Play between the bar and the ribs of the holder on both sides of it"),
+    ("m3_d", 3.4, "Hole in the holder for its M3 screw"),
+    ("holder_plate", 3, "Thickness of the plate of the holder, against the back of the frame"),
+    ("rib_depth", 3, "How far the ribs of the holder reach into the frame beside the bar"),
+    ("rib_width", 2, "Thickness of a rib"),
+    ("rib_length", 16, "Length of a rib, along the bar"),
+    ("rib_from_top", 16, "Top edge of the panel to the top of the ribs"),
+    ("holder_wall", 1.6, "Walls of the holder"),
+    ("speaker_length", 84, "USB speaker: length of its flat grille face, a rectangle with half round ends"),
+    ("speaker_height", 43, "Height of that face"),
+    ("speaker_depth", 32, "Grille face to the back of its rounded body"),
+    ("speaker_fit", 0.4, "Play round the speaker in its cup, on each side"),
+    ("cup_lip_width", 0.8, "How far the lips along the long sides of the cup reach over the speaker's face"),
+    ("cup_lip_thickness", 1.2, "Thickness of those lips"),
+    ("cable_slot", 5, "Width of the slot for the speaker's cable at both ends of the cup"),
+    ("microbit_width", 51.6, "micro:bit V2: width, the edge with the USB port"),
+    ("microbit_height", 42, "Height of the micro:bit"),
+    ("microbit_thickness", 11.65, "Thickness of the micro:bit with its parts on both sides"),
+    ("microbit_fit", 0.6, "Play round the micro:bit in its pocket, in total"),
+    ("usb_slot", 14, "Width of the slot for the micro:bit's USB plug, below the middle of its pocket"),
 ]
 P = {alias: value for alias, value, _ in PARAMS}
 
@@ -295,6 +328,98 @@ sunk = base.newObject("PartDesign::Pocket", "TextCut")
 sunk.Profile = letters
 sunk.setExpression("Length", "Params.text_depth")
 
+###########################
+# Holder
+###########################
+
+# Modelled in the panel's frame like the cradle: x backwards from the front of the panel, y up
+# from its bottom edge, z across (seen from the back, +z is to the left). The cup is flush with
+# the top and the left edge (seen from the back), the plate reaches over the bar.
+holder = doc.addObject("PartDesign::Body", "Holder")
+size, depth = P["panel_size"], P["panel_depth"]
+li, hi = P["speaker_length"] + 2 * P["speaker_fit"], P["speaker_height"] + 2 * P["speaker_fit"]
+LI, HI = "(Params.speaker_length + 2 * Params.speaker_fit)", "(Params.speaker_height + 2 * Params.speaker_fit)"
+lo, ho = li + 2 * P["holder_wall"], hi + 2 * P["holder_wall"]
+LO, HO = "(%s + 2 * Params.holder_wall)" % LI, "(%s + 2 * Params.holder_wall)" % HI
+yb, YB = size - ho, "(Params.panel_size - %s)" % HO  # bottom of the holder
+yc, YC = size - ho / 2, "(Params.panel_size - %s / 2)" % HO  # its middle
+zs, ZS = size / 2 - lo, "(Params.panel_size / 2 - %s)" % LO  # its end towards the bar
+ends = [(zs + ho / 2, "(%s + %s / 2)" % (ZS, HO)), (size / 2 - ho / 2, "(Params.panel_size / 2 - %s / 2)" % HO)]
+xp, XP = depth + P["holder_plate"], "(Params.panel_depth + Params.holder_plate)"  # top of the plate
+mt, MT = P["microbit_thickness"] + P["microbit_fit"], "(Params.microbit_thickness + Params.microbit_fit)"
+xf, XF = xp + mt + P["holder_wall"], "(%s + %s + Params.holder_wall)" % (XP, MT)  # floor of the cup
+xl, XL = xf + P["speaker_depth"] + 0.2, "(%s + Params.speaker_depth + 0.2 mm)" % XF  # under the lips
+xr, XR = xl + P["cup_lip_thickness"], "(%s + Params.cup_lip_thickness)" % XL  # rim of the cup
+ALONG_X = App.Rotation(V(0, 1, 0), 90)  # turns a cylinder from along z to along x
+rib_out = P["bar_width"] / 2 + P["bar_fit"] + P["rib_width"]
+RIB_OUT = "(Params.bar_width / 2 + Params.bar_fit + Params.rib_width)"
+
+primitive(holder, "AdditiveBox", "HolderPlate",
+          {"Length": (P["holder_plate"], "Params.holder_plate"), "Width": (ho, HO),
+           "Height": (size / 2 + rib_out, "Params.panel_size / 2 + " + RIB_OUT)},
+          [(depth, "Params.panel_depth"), (yb, YB), (-rib_out, "-" + RIB_OUT)])
+for side, z, z_expression in (("Right", -rib_out, "-" + RIB_OUT),
+                              ("Left", P["bar_width"] / 2 + P["bar_fit"], "Params.bar_width / 2 + Params.bar_fit")):
+    primitive(holder, "AdditiveBox", "Rib" + side,
+              {"Length": (P["rib_depth"], "Params.rib_depth"), "Width": (P["rib_length"], "Params.rib_length"),
+               "Height": (P["rib_width"], "Params.rib_width")},
+              [(depth - P["rib_depth"], "Params.panel_depth - Params.rib_depth"),
+               (size - P["rib_from_top"] - P["rib_length"], "Params.panel_size - Params.rib_from_top - Params.rib_length"),
+               (z, z_expression)])
+# under the cup: a block with the pocket for the micro:bit, its top the floor of the cup
+primitive(holder, "AdditiveBox", "MicrobitBlock",
+          {"Length": (xf - xp, MT + " + Params.holder_wall"), "Width": (ho, HO), "Height": (lo, LO)},
+          [(xp, XP), (yb, YB), (zs, ZS)])
+# the cup: a rectangle with half round ends, as the speaker
+primitive(holder, "AdditiveBox", "Cup",
+          {"Length": (xr - xf, "%s - %s" % (XR, XF)), "Width": (ho, HO), "Height": (lo - ho, "%s - %s" % (LO, HO))},
+          [(xf, XF), (yb, YB), ends[0]])
+for i, end in enumerate(ends):
+    primitive(holder, "AdditiveCylinder", "CupEnd%d" % (i + 1),
+              {"Radius": (ho / 2, HO + " / 2"), "Height": (xr - xf, "%s - %s" % (XR, XF))},
+              [(xf, XF), (yc, YC), end], ALONG_X)
+primitive(holder, "SubtractiveBox", "CupInside",
+          {"Length": (xr - xf + 1, "%s - %s + 1 mm" % (XR, XF)), "Width": (hi, HI),
+           "Height": (lo - ho, "%s - %s" % (LO, HO))},
+          [(xf, XF), (yc - hi / 2, "%s - %s / 2" % (YC, HI)), ends[0]])
+for i, end in enumerate(ends):
+    primitive(holder, "SubtractiveCylinder", "CupEndInside%d" % (i + 1),
+              {"Radius": (hi / 2, HI + " / 2"), "Height": (xr - xf + 1, "%s - %s + 1 mm" % (XR, XF))},
+              [(xf, XF), (yc, YC), end], ALONG_X)
+# the lips along the long sides, over the rim of the speaker's face
+for side, y, y_expression in (("Top", yc + hi / 2 - P["cup_lip_width"], "%s + %s / 2 - Params.cup_lip_width" % (YC, HI)),
+                              ("Bottom", yc - hi / 2, "%s - %s / 2" % (YC, HI))):
+    primitive(holder, "AdditiveBox", "Lip" + side,
+              {"Length": (P["cup_lip_thickness"], "Params.cup_lip_thickness"),
+               "Width": (P["cup_lip_width"], "Params.cup_lip_width"),
+               "Height": (lo - ho, "%s - %s" % (LO, HO))},
+              [(xl, XL), (y, y_expression), ends[0]])
+# a slot for the cable at both ends, from the floor of the cup to the rim
+for i, (z, z_expression) in enumerate([(zs - 1, ZS + " - 1 mm"),
+                                       (size / 2 - P["holder_wall"] - 1, "Params.panel_size / 2 - Params.holder_wall - 1 mm")]):
+    primitive(holder, "SubtractiveBox", "CableSlot%d" % (i + 1),
+              {"Length": (xr - xf + 1, "%s - %s + 1 mm" % (XR, XF)), "Width": (P["cable_slot"], "Params.cable_slot"),
+               "Height": (P["holder_wall"] + 2, "Params.holder_wall + 2 mm")},
+              [(xf, XF), (yc - P["cable_slot"] / 2, "%s - Params.cable_slot / 2" % YC), (z, z_expression)])
+# the pocket for the micro:bit, open to the side edge of the panel: it slides in from there
+mw, MW = P["microbit_width"] + P["microbit_fit"], "(Params.microbit_width + Params.microbit_fit)"
+mh, MH = P["microbit_height"] + P["microbit_fit"], "(Params.microbit_height + Params.microbit_fit)"
+zm, ZM = zs + P["holder_wall"], "(%s + Params.holder_wall)" % ZS  # end of the pocket
+primitive(holder, "SubtractiveBox", "MicrobitPocket",
+          {"Length": (mt, MT), "Width": (mh, MH), "Height": (size / 2 + 1 - zm, "Params.panel_size / 2 + 1 mm - " + ZM)},
+          [(xp, XP), (yc - mh / 2, "%s - %s / 2" % (YC, MH)), (zm, ZM)])
+# its USB plug goes down through the bottom of the pocket, below the middle of the micro:bit
+primitive(holder, "SubtractiveBox", "UsbSlot",
+          {"Length": (mt, MT), "Width": (ho / 2 - mh / 2 + 1, "%s / 2 - %s / 2 + 1 mm" % (HO, MH)),
+           "Height": (P["usb_slot"], "Params.usb_slot")},
+          [(xp, XP), (yb - 0.5, YB + " - 0.5 mm"),
+           (zm + mw / 2 - P["usb_slot"] / 2, "%s + %s / 2 - Params.usb_slot / 2" % (ZM, MW))])
+primitive(holder, "SubtractiveCylinder", "ScrewHole",
+          {"Radius": (P["m3_d"] / 2, "Params.m3_d / 2"),
+           "Height": (P["holder_plate"] + P["rib_depth"] + 2, "Params.holder_plate + Params.rib_depth + 2 mm")},
+          [(depth - P["rib_depth"] - 1, "Params.panel_depth - Params.rib_depth - 1 mm"),
+           (size - P["bar_hole_top"], "Params.panel_size - Params.bar_hole_top"), (0, None)], ALONG_X)
+
 doc.recompute()
 
 for obj in doc.Objects:
@@ -306,7 +431,7 @@ for obj in doc.Objects:
         raise SystemExit(1)
 
 doc.saveAs(os.path.join(HERE, "stand.FCStd"))
-for part, stl in ((base, "base.stl"), (cradle, "cradle.stl")):
+for part, stl in ((base, "base.stl"), (cradle, "cradle.stl"), (holder, "holder.stl")):
     shape = part.Shape
     if not shape.isValid() or len(shape.Solids) != 1:
         print("%s is not a single valid solid" % part.Name, flush=True)
@@ -314,6 +439,10 @@ for part, stl in ((base, "base.stl"), (cradle, "cradle.stl")):
     if part is cradle:  # printed lying on its floor
         shape = shape.copy()
         shape.rotate(V(), V(1, 0, 0), 90)
+        shape.translate(V(0, 0, -shape.optimalBoundingBox().ZMin))
+    if part is holder:  # printed standing on the rim of the cup
+        shape = shape.copy()
+        shape.rotate(V(), V(0, 1, 0), 90)
         shape.translate(V(0, 0, -shape.optimalBoundingBox().ZMin))
     mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.02, AngularDeflection=0.2)
     mesh.write(os.path.join(HERE, stl))

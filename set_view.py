@@ -5,7 +5,8 @@
 # not aimed at the model. This opens them with the FreeCAD window (which can
 # be off-screen), sets what is visible, aims the camera and saves again.
 #
-# Also renders the preview as a PNG for the README.
+# Also renders the preview from the front and from the back as PNGs for the
+# README.
 #
 # Run:  QT_QPA_PLATFORM=offscreen freecad set_view.py
 ###########################
@@ -44,6 +45,8 @@ def looking_from(back):
 
 # from the front, a little from the left and from above; x points backwards, y to the left
 FRONT = looking_from(V(-2, 1, 1.2))
+# from the back, a little from the left (seen from the back) and from above
+BACK = looking_from(V(2, -1, 1.2))
 
 
 def save(doc, shown, turn=FRONT):
@@ -81,13 +84,17 @@ for body in doc.Objects:
         body.ViewObject.Visibility = body.Name == "Base"
 save(doc, [doc.getObject("Base")])
 
-# stand_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi
+# stand_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi, blue holder
+# with a black speaker and a dark green micro:bit
 doc = App.openDocument(os.path.join(HERE, "stand_preview.FCStd"))
 colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15),
-           "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1)}
+           "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1), "Holder": (0.30, 0.47, 0.66),
+           "Microbit": (0.05, 0.35, 0.25)}
 for obj in doc.Objects:
     obj.ViewObject.Visibility = True
-    obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws black
+    obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws and speaker black
+save(doc, doc.Objects, BACK)
+screenshot(doc, os.path.join(HERE, "stand_back.png"))
 save(doc, doc.Objects)
 screenshot(doc, os.path.join(HERE, "stand_preview.png"))
 
