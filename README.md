@@ -15,8 +15,9 @@ screw, 2 x M5 nut and 3 x M3 x 10 screw.
 
 The model is made in FreeCAD 1.x from `build_stand.py`; all dimensions are in
 the `Params` spreadsheet in `stand.FCStd`. Run `./build.sh` to build, check
-and save the files. See [DESIGN.md](DESIGN.md) for the design and
-[PANEL.md](PANEL.md) for the measurements of the panel.
+and save the files. See [DESIGN.md](DESIGN.md) for the design,
+[PANEL.md](PANEL.md) for the measurements of the panel and
+[PRINTING.md](PRINTING.md) for how to print the parts.
 
 ## Licence
 
