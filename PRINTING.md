@@ -22,7 +22,13 @@ flat and keeps them thick elsewhere. Not tried yet.
 ## Before printing: level the bed
 
 Level the bed with `Ender3_LEVEL_psd.gcode`, which is on the printer's SD
-card (it comes from the internet): print it from the printer's menu.
+card: print it from the printer's menu. It is one of the "Creality Leveling
+Cycle GCodes" by psdesign (Peter Solomon) on Thingiverse
+(https://www.thingiverse.com/thing:4761680), licensed under the Creative
+Commons Attribution licence (CC BY), linked from the
+description of BV3D's (Bryan Vines) video "Creality's NEW Ender 3v2 3D
+Printer! Unbox! Build! First Print!"
+(https://www.youtube.com/watch?v=L6FZjkWcW2g).
 
 ## The parts
 
