@@ -65,13 +65,21 @@ def save(doc, shown, turn=FRONT):
     doc.save()
 
 
-def screenshot(doc, path, size=1200, margin=20):
-    """Save the view of a document as a PNG, cropped to the model with a small white margin."""
+def screenshot(doc, path, size=1200):
+    """Save the view of a document as a PNG, not yet cropped."""
     Gui.getDocument(doc.Name).ActiveView.saveImage(path, size, size, "White")
-    image = Image.open(path).convert("RGB")
-    left, top, right, bottom = ImageChops.difference(image, Image.new("RGB", image.size, "white")).getbbox()
-    image.crop((max(left - margin, 0), max(top - margin, 0), min(right + margin, size),
-                min(bottom + margin, size))).save(path)
+
+
+def crop_alike(paths, margin=20):
+    """Crop the PNGs to the same box round the models, with a small white margin, so that
+    they have the same size and scale side by side."""
+    images = [Image.open(path).convert("RGB") for path in paths]
+    boxes = [ImageChops.difference(image, Image.new("RGB", image.size, "white")).getbbox() for image in images]
+    width, height = images[0].size
+    box = (max(min(b[0] for b in boxes) - margin, 0), max(min(b[1] for b in boxes) - margin, 0),
+           min(max(b[2] for b in boxes) + margin, width), min(max(b[3] for b in boxes) + margin, height))
+    for image, path in zip(images, paths):
+        image.crop(box).save(path)
 
 
 # stand.FCStd: show the base; the cradle is modelled in its own place and stays hidden
@@ -95,9 +103,11 @@ colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.
 for obj in doc.Objects:
     obj.ViewObject.Visibility = True
     obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws and speaker black
+front, back = os.path.join(HERE, "stand_preview.png"), os.path.join(HERE, "stand_back.png")
 save(doc, doc.Objects, BACK)
-screenshot(doc, os.path.join(HERE, "stand_back.png"))
+screenshot(doc, back)
 save(doc, doc.Objects)
-screenshot(doc, os.path.join(HERE, "stand_preview.png"))
+screenshot(doc, front)
+crop_alike([front, back])
 
 os._exit(0)
