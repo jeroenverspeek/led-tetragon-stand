@@ -6,7 +6,8 @@ A 3D-printed stand for the LED tetragon: one 64 x 64 P3 LED panel on its
 factory frame, with the Raspberry Pi on the back. The panel leans back at an
 angle that is set by hand (75 degrees to the table by default) and held by a
 friction hinge with two countersunk screws. A holder on the back of the panel
-carries the USB speaker and the micro:bit.
+carries the USB speaker and the micro:bit. The software that drives the
+panel is in [led-tetragon](https://github.com/jeroenverspeek/led-tetragon).
 
 Print 1 x `base.stl`, 1 x `cradle.stl` (lying on its floor) and 1 x
 `holder.stl` (lying on its plate). Also needed: 2 x M5 x 12 countersunk
