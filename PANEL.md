@@ -119,3 +119,25 @@ All on the left half, seen from the back.
 - Its USB plug with the sleeve sticks out 40 straight from the micro:bit.
 - On the back of the panel: upright between the power connector and HUB75
   IN, its USB port towards the Pi, LEDs towards the panel.
+
+## Measured and decided
+
+- `lip_height` 1 mm is fine.
+- The back wall of the cradle was 40 mm high; the HUB75 IN plug, 32 mm up,
+  sticks out behind the frame, so it is 28 mm now. That clears the hat too
+  (it comes down to 39 mm, 19 mm behind the frame).
+- Countersunk screws instead of knobs. From the outside of a cheek to the
+  inside of an ear is 12.5 mm, so the screws are M5 x 12; a longer one
+  reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
+  cheek and ear thicker instead would make the base too wide for the bed.
+
+## Still guessed
+
+- The weight of the panel (400 g) and the Pi (120 g): only used to check that
+  the stand does not tip.
+- The shape of the speaker's rounded back (from pictures); the cup only holds
+  it by its flat face and leaves room behind it.
+- How far the parts on the Pi and the hat stick out.
+- How far the HUB75 IN plug sticks out and how much bigger it is than the
+  header (12 mm and 2 mm all round). The cradle, the holder and the ribbon's
+  bend depend on it.

@@ -4,8 +4,8 @@ The tetragon is one 64 x 64 P3 LED panel (192 x 192 mm) on its factory frame.
 The Raspberry Pi with the electrodragon hat sits on the back of the frame, in
 portrait on the vertical middle bar, USB ports at the top, from the middle to
 the right seen from the back. The USB speaker and the micro:bit go in the left
-half. All measurements of the panel and what is on it are in
-[PANEL.md](PANEL.md).
+half. All measurements of the panel and what is on it, what was decided
+from them and what is still guessed are in [PANEL.md](PANEL.md).
 
 ## Design
 
@@ -67,31 +67,7 @@ in.
 | `stand_preview.png`, `stand_back.png` | Pictures of that from the front and from the back, for the README |
 | `set_view.py` | Makes the two FreeCAD files open with the model in view |
 | `build.sh` | Build, check and view settings in one go |
-| `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit |
+| `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit; what was decided from them and what is still guessed |
 | `photos/` | Photos of the back of the panel, and `grid.py` to measure from them (see `PANEL.md`) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
-
-## Measured and decided
-
-The measurements themselves are in [PANEL.md](PANEL.md).
-
-- `lip_height` 1 mm is fine.
-- The back wall of the cradle was 40 mm high; the HUB75 IN plug, 32 mm up,
-  sticks out behind the frame, so it is 28 mm now. That clears the hat too
-  (it comes down to 39 mm, 19 mm behind the frame).
-- Countersunk screws instead of knobs. From the outside of a cheek to the
-  inside of an ear is 12.5 mm, so the screws are M5 x 12; a longer one
-  reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
-  cheek and ear thicker instead would make the base too wide for the bed.
-
-## Still guessed
-
-- The weight of the panel (400 g) and the Pi (120 g): only used to check that
-  the stand does not tip.
-- The shape of the speaker's rounded back (from pictures); the cup only holds
-  it by its flat face and leaves room behind it.
-- How far the parts on the Pi and the hat stick out.
-- How far the HUB75 IN plug sticks out and how much bigger it is than the
-  header (12 mm and 2 mm all round). The cradle, the holder and the ribbon's
-  bend depend on it.
