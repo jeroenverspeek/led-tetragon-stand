@@ -32,13 +32,13 @@ degrees) is the default and a good viewing angle on a desk.
     rounded end stays clear of the Pi: a cup on the plate for its rounded
     back, held by a lip along both long sides. The cable leaves the speaker's
     bottom side, 33 mm from its left end, through a slot in the bottom of the
-    cup, with 10 mm free below it for its sleeve, 3 mm above the power plug.
+    cup, with 10 mm free below it for its sleeve, 2 mm above the power plug.
     The plate bridges the frame, so the power cable, leaving the power plug
-    upwards, bends up under it: 11 mm above the plug. The speaker sticks out
+    upwards, bends up under it: 10 mm above the plug. The speaker sticks out
     36 mm behind the frame, the Pi 30 mm.
   - A strip down the left bar, past the power plug, joins it to the micro:bit:
     upright in a pocket, parallel to the panel so it tilts with it, LEDs
-    towards the panel, USB port towards the Pi. Just below the power plug (2
+    towards the panel, USB port towards the Pi. Just below the power plug (1.1
     mm), so the HUB75 ribbon has 4 mm below it to bend up over it. The
     micro:bit slides in from the side edge of the panel, and its USB plug,
     through a slot in the side of the pocket, keeps it there. A window in the
@@ -68,6 +68,7 @@ in.
 | `set_view.py` | Makes the two FreeCAD files open with the model in view |
 | `build.sh` | Build, check and view settings in one go |
 | `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit |
+| `photos/` | Photos of the back of the panel, and `grid.py` to measure from them (see `PANEL.md`) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
 

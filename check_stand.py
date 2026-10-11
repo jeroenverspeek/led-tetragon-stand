@@ -37,16 +37,17 @@ HAT_FRONT = 33 - 1.6 - 12  # behind the frame, which is 12 mm behind the LED boa
 LED_BOARD = 2
 # What stands out from the back of the panel near the holder, seen from the back: u from the
 # left, v from the top, both from the edges; x behind the back of the frame. See PANEL.md.
-# The power connector, 18 x 8 round its middle 39 mm from the left and 80 mm from the top, with
-# its plug in reaches 20 mm behind the LED board; its cable leaves it on the top side, so it
-# bends up under the plate of the speaker holder.
-POWER_PLUG = ((30, 48), (76, 84), 20 - 12)
-# HUB75 IN, 26 x 10, 30 mm from the left and 39 mm from the bottom to its middle; the header stays
-# within the frame, the plug on it sticks out further than the power plug (guess: 12 mm and 2 mm
-# round the header). Its ribbon leaves the plug upwards and bends over the micro:bit holder to the
+# The power connector, 16.5 wide, its left side 40 mm from the left; from the top 75 mm free, its
+# snap-clip 4 mm, the connector 7 mm, and 106 mm free to the bottom. With its plug in it reaches
+# 20 mm behind the LED board; its cable leaves it on the top side, so it bends up under the plate
+# of the speaker holder.
+POWER_PLUG = ((40, 56.5), (75, 192 - 106), 20 - 12)
+# HUB75 IN, a box header of 28 x 9, 30 mm from the left and 39 mm from the bottom to its middle;
+# the header stays within the frame, the plug on it sticks out further than the power plug
+# (guess: 12 mm and 2 mm round the header). Its ribbon leaves the plug upwards and bends over the micro:bit holder to the
 # hat, so it needs room between the two.
-HUB75_HEADER = ((30, 56), (192 - 39 - 5, 192 - 39 + 5))
-HUB75_IN_PLUG = ((28, 58), (HUB75_HEADER[1][0] - 2, HUB75_HEADER[1][1] + 2), 12)
+HUB75_HEADER = ((30, 58), (192 - 39 - 4.5, 192 - 39 + 4.5))
+HUB75_IN_PLUG = ((28, 60), (HUB75_HEADER[1][0] - 2, HUB75_HEADER[1][1] + 2), 12)
 RIBBON_ROOM = 4  # mm at least between the micro:bit holder and the top of that plug
 # The micro:bit's USB plug with its sleeve, straight: 40 mm long (measured), about 11 x 8 (guess),
 # in the middle of its USB edge, towards the Pi

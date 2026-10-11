@@ -9,6 +9,31 @@ with the USB ports of the Pi at the top. "From the left" and "from the top"
 are then from the edges of the panel. Seen from the front, left and right
 swap.
 
+## Photos
+
+`photos/` has two photos of the back of the panel in its frame, taken on
+2026-10-11, without the plugs in:
+
+- `panel_back_photo.jpg`: straight from above, with a tape measure below it.
+- `panel_back_flat.jpg`: taken at an angle and flattened with the Genius Scan
+  app to the square of the panel (2531 x 2533 pixels for 192 x 192 mm, so
+  13.2 pixels per mm). The panel itself gives the scale, no ruler needed.
+  It is the same way round as "seen from the back" here: the middle bar
+  upright, the connectors in the left half.
+
+`photos/grid.py` cuts a region out of the flattened photo, enlarges it and
+draws a millimetre grid over it, for example the power connector:
+
+    python3 photos/grid.py photos/panel_back_flat.jpg power.png 36 64 72 92
+
+The numbers are millimetres from the left and the top as seen in the photo
+(left, right, top, bottom). This turned out to be a quick and precise way to
+measure: the sizes of the connectors below come from it, and it confirmed
+the hand measurements of their positions to within 1-2 mm. Those last
+millimetres are parallax: the flattening is exact in the plane of the back
+of the frame, but the board lies 12 mm deeper. Heights, such as how far a
+plug sticks out, need a photo from the side with a ruler next to it.
+
 ## Panel
 
 - One 64 x 64 LED panel, P3: 192 x 192 mm.
@@ -36,15 +61,19 @@ swap.
 
 All on the left half, seen from the back.
 
-- HUB75 IN (the lower of the two, the only one used): 26 wide and about 10
-  high, its left side 30 from the left, its middle 39 from the bottom. The
+- HUB75 IN (the lower of the two, the only one used): a 16-pin box header,
+  28 wide and 9 high (from a flattened photo, 2026-10-11), its left side 30
+  from the left, its middle 39 from the bottom. The
   header does not stick out past the bars, but the plug with its cable does,
   further than the power plug (how far is not measured). The ribbon leaves
   the plug upwards and goes over the hat to the lowest of the hat's three
   HUB75 connectors.
-- HUB75 OUT: above it, also 30 from the left; not used, not measured.
-- Power: 18 wide and 8 high round its middle, 39 from the left and 80 from
-  the top. With its plug in it reaches 20 behind the back of the LED board,
+- HUB75 OUT: the same connector, the same way round, in the top corner:
+  its left side 30 from the left, its middle 39 from the top. Not used here
+  (the tetragon has one panel; on the LED hexahedron the panels are chained).
+- Power: 16.5 wide (from the photo), its left side 40 from the left. From
+  the top: 75 free, its snap-clip 4, the connector 7, and 106 free to the
+  bottom (so its middle, clip included, 80.5 from the top). With its plug in it reaches 20 behind the back of the LED board,
   8 past the bars; the cable leaves the plug on the top side.
 
 ## Raspberry Pi with the electrodragon hat

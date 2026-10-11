@@ -127,7 +127,7 @@ PARAMS = [
     ("microbit_thickness", 11.65, "Thickness of the micro:bit with its parts on both sides"),
     ("microbit_fit", 0.6, "Play round the micro:bit in its pocket, in total"),
     ("microbit_left", 14, "Pocket of the micro:bit: from the left, just past the screw in the left bar"),
-    ("microbit_top", 88, "Pocket of the micro:bit: from the top, just below the power connector, so the HUB75 "
+    ("microbit_top", 88.65, "Pocket of the micro:bit: from the top, just below the power connector, so the HUB75 "
                          "ribbon has room below it"),
     ("microbit_window", 4, "Edge left round the window in the cover over the micro:bit"),
     ("usb_slot", 14, "Width of the slot for the micro:bit's USB plug, in the side of its pocket"),
