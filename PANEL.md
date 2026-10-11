@@ -28,11 +28,12 @@ draws a millimetre grid over it, for example the power connector:
 
 The numbers are millimetres from the left and the top as seen in the photo
 (left, right, top, bottom). This turned out to be a quick and precise way to
-measure: the sizes of the connectors below come from it, and it confirmed
-the hand measurements of their positions to within 1-2 mm. Those last
-millimetres are parallax: the flattening is exact in the plane of the back
-of the frame, but the board lies 12 mm deeper. Heights, such as how far a
-plug sticks out, need a photo from the side with a ruler next to it.
+measure: the sizes of the connectors and the positions of the screw holes
+below come from it, and it confirmed the hand measurements of the
+connectors' positions to within 1-2 mm. Those last millimetres are
+parallax: the flattening is exact in the plane of the back of the frame, but
+the board lies 12 mm deeper. Heights, such as how far a plug sticks out, need
+a photo from the side with a ruler next to it.
 
 ## Panel
 
@@ -48,14 +49,20 @@ plug sticks out, need a photo from the side with a ruler next to it.
 - Five bars, all the full 12 deep, their backs flush: four round the edge,
   16 wide, and one up the middle, 20 wide. No other bars, no magnets.
 - All holes are M3 with brass inserts; a screw can go all the way in, to the
-  LED board.
-- Middle bar: 4 holes, evenly spaced, the top one 10 from the top. The Pi is
-  on the middle two.
+  LED board. The positions below are the middles of the holes, from the
+  flattened photo (2026-10-11). The inserts lie flush with the back of the
+  frame, so there is no parallax, and the holes on the left and the right
+  agree to within 0.5 mm. The hand measurements were 1-1.5 mm off.
+- Middle bar: 4 holes, evenly spaced, in the middle of the bar: 9 from the
+  top, then 66 and 126 (in a recess, deeper in the bar), and 9 from the
+  bottom. The Pi is on the middle two.
 - Left (seen from the back): a hole in each corner, in the top and bottom
-  bars, 17 from the left and 8 from the top or bottom; and one in the left
-  bar, 9 from the left and 87 from the top. The left bar has a small pin that
-  can be snapped off if it is in the way.
-- Right: the same holes, mirrored.
+  bars, 16 from the left and 8 from the top or bottom; and one in the left
+  bar, 8 from the left and 88.5 from the top. The left bar has a small pin
+  that can be snapped off if it is in the way.
+- Right: the corner holes mirrored, 16 from the right. The one in the right
+  bar is not mirrored but turned half round: 8 from the right and 88.5 from
+  the bottom (103.5 from the top).
 
 ## Connectors of the panel
 

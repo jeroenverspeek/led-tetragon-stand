@@ -153,11 +153,13 @@ for bar in (back((SIZE - bw, SIZE), (0, SIZE), (-FRAME, 0)), back((0, SIZE), (0,
             back((0, SIZE), (SIZE - bw, SIZE), (-FRAME, 0)),
             back(((SIZE - mw) / 2, (SIZE + mw) / 2), (0, SIZE), (-FRAME, 0))):
     frame = frame.fuse(bar)
-# 4 holes up the middle bar, evenly spaced; at the left and right 2 in the corners and 1 in the middle
+# 4 holes up the middle bar, evenly spaced; at the left and right 2 in the corners, mirrored, and 1 in the
+# middle, turned half round: the one in the right bar is as far from the bottom as the left one from the top
 holes = [(SIZE / 2, p["bar_hole_top"] + i * (SIZE - 2 * p["bar_hole_top"]) / 3) for i in range(4)]
-for u, v in ((p["side_hole_left"], p["side_hole_top"]), (p["side_mid_hole_left"], p["side_mid_hole_top"]),
-             (p["side_hole_left"], SIZE - p["side_hole_top"])):
-    holes += [(u, v), (SIZE - u, v)]
+for v in (p["side_hole_top"], SIZE - p["side_hole_top"]):
+    holes += [(p["side_hole_left"], v), (SIZE - p["side_hole_left"], v)]
+holes += [(p["side_mid_hole_left"], p["side_mid_hole_top"]),
+          (SIZE - p["side_mid_hole_left"], SIZE - p["side_mid_hole_top"])]
 for u, v in holes:
     frame = frame.cut(hole(u, v))
 panel = Part.makeBox(LED_BOARD, SIZE, SIZE, V(0, 0, -SIZE / 2)).fuse(frame).removeSplitter()
