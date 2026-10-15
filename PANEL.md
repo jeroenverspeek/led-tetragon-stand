@@ -97,6 +97,13 @@ All on the left half, seen from the back.
   7 to 30 behind the frame.
 - The feed of the electrodragon board and the Pi's power (via a USB adapter)
   are separate cables.
+- Two USB cables in its ports, for the speaker and the micro:bit. Seen from
+  the back the Pi 4 lies a quarter turned, its ports along its top: the USB
+  2.0 pair 9 from its right edge to their middle, the USB 3.0 pair 27 (from
+  its drawing). The plugs (about 16 x 8, 25 long with their grip; guess)
+  stay below the top edge of the panel, 15 below it; the cables are stiff
+  and stick out above it, about 50 before they bend over (guess). Which
+  ports they are in is a guess too: the lower one of each pair.
 - Weight with the cables: about 120 g (guess).
 
 ## USB speaker
