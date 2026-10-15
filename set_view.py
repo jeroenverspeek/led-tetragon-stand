@@ -94,12 +94,13 @@ save(doc, [doc.getObject("Base")])
 
 # stand_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi, blue holder
 # with a black speaker and a dark green micro:bit, a white power plug, grey HUB75 and USB plugs and black
-# USB cables
+# USB cables, the Pi's USB-C power cable among them
 doc = App.openDocument(os.path.join(HERE, "stand_preview.FCStd"))
 colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15),
            "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1), "Holder": (0.30, 0.47, 0.66),
            "PowerPlug": (0.92, 0.92, 0.88), "Hub75Plug": (0.55, 0.55, 0.55),
            "MicrobitPlug": (0.55, 0.55, 0.55), "UsbPlugs": (0.55, 0.55, 0.55),
+           "PowerUsbPlug": (0.55, 0.55, 0.55),
            "Microbit": (0.05, 0.35, 0.25)}
 for obj in doc.Objects:
     obj.ViewObject.Visibility = True

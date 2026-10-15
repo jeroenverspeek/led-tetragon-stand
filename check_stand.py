@@ -63,9 +63,16 @@ MICROBIT_PLUG = (40, 11, 8)
 USB_PORTS_FROM_RIGHT = (9, 27)
 USB_PORT_X = 10 + 5
 USB_PLUG = (16, 8, 25)
-USB_CABLE = 4
-USB_CABLE_UP = 20  # above the top edge of the panel, before the bend
-USB_CABLE_BEND = 30
+CABLE = 4
+CABLE_OUT = 20  # past the edge of the panel, before the bend
+CABLE_BEND = 30
+# The Pi's power: a USB-C cable in the port on its right side, seen from the back, 11.2 mm from its
+# bottom end to its middle (from the drawing), its middle about 3.3 behind the Pi's board. A USB-C
+# plug with its grip, about 12 x 7 and 25 long (guess), out to the right: it stays within the right
+# edge of the panel; the stiff cable goes on straight past it, as the USB cables do past the top.
+USB_C_FROM_BOTTOM = 11.2
+USB_C_X = 10 + 3.3
+USB_C_PLUG = (12, 7, 25)
 SPEAKER_MASS = 74  # g
 MICROBIT_MASS = 10  # g, with the end of its cable
 PLA = 1.24 / 1000  # g/mm3; a printed part weighs less, so the stand is lighter than this
@@ -244,35 +251,44 @@ print("     the micro:bit's USB plug, straight, %s" % ("reaches %.1f mm under th
                                                      "stays %.1f mm clear of the Pi" % -reach), flush=True)
 check("holder: stays out of the frame, so the power cable can run up under it", box.XMin >= DEPTH - 1e-6)
 
-# The USB cables in the Pi's ports, for the preview: plugs up out of the ports, and the stiff
-# cables straight up out of them, bending over backwards only well above the panel
+def stiff_cable(start, along, edge):
+    """A stiff cable, in the panel's frame: from `start` (the end of its plug) straight on `along` (a
+    unit vector in the panel's plane) to CABLE_OUT past `edge`, where the panel ends that way, then
+    bending over backwards."""
+    end = start + along * (edge + CABLE_OUT - start.dot(along))
+    r, backwards = CABLE_BEND, V(1, 0, 0)
+    corner = end + along * r + backwards * r  # the bend's end, pointing backwards
+    middle = end + along * (r / math.sqrt(2)) + backwards * (r - r / math.sqrt(2))
+    path = Part.Wire([Part.LineSegment(start, end).toShape(), Part.Arc(end, middle, corner).toShape(),
+                      Part.LineSegment(corner, corner + backwards * r).toShape()])
+    return path.makePipeShell([Part.Wire(Part.makeCircle(CABLE / 2, start, along))], True, True)
+
+
+# The cables in the Pi's ports, for the preview: the plugs stay within the panel's edges, the stiff
+# cables go on straight out of them, bending over backwards only well past the edge
+UP, RIGHT = V(0, 1, 0), V(0, 0, -1)  # in the panel's frame, seen from the back
 usb_us = [SIZE - p["pi_from_right"] - at for at in USB_PORTS_FROM_RIGHT]
 usb_plugs = [back((u - USB_PLUG[0] / 2, u + USB_PLUG[0] / 2), (p["pi_from_top"] - USB_PLUG[2], p["pi_from_top"]),
                   (USB_PORT_X - USB_PLUG[1] / 2, USB_PORT_X + USB_PLUG[1] / 2)) for u in usb_us]
-
-
-def usb_cable(u):
-    """A stiff USB cable, in the panel's frame: from the end of its plug straight up past the top edge
-    of the panel, then bending over backwards."""
-    x, z = DEPTH + USB_PORT_X, SIZE / 2 - u
-    start, top = V(x, SIZE - p["pi_from_top"] + USB_PLUG[2], z), V(x, SIZE + USB_CABLE_UP, z)
-    r = USB_CABLE_BEND
-    corner = top + V(r, r, 0)  # the bend's end, pointing backwards
-    middle = top + V(r - r / math.sqrt(2), r / math.sqrt(2), 0)
-    path = Part.Wire([Part.LineSegment(start, top).toShape(), Part.Arc(top, middle, corner).toShape(),
-                      Part.LineSegment(corner, corner + V(r, 0, 0)).toShape()])
-    profile = Part.Wire(Part.makeCircle(USB_CABLE / 2, start, V(0, 1, 0)))
-    return path.makePipeShell([profile], True, True)
-
-
-usb_cables = [usb_cable(u) for u in usb_us]
+usb_cables = [stiff_cable(V(DEPTH + USB_PORT_X, SIZE - p["pi_from_top"] + USB_PLUG[2], SIZE / 2 - u), UP, SIZE)
+              for u in usb_us]
+usb_c_v = p["pi_from_top"] + PI_LENGTH - USB_C_FROM_BOTTOM
+usb_c_u = SIZE - p["pi_from_right"]  # the Pi's right side
+power_usb_plug = back((usb_c_u, usb_c_u + USB_C_PLUG[2]), (usb_c_v - USB_C_PLUG[0] / 2, usb_c_v + USB_C_PLUG[0] / 2),
+                      (USB_C_X - USB_C_PLUG[1] / 2, USB_C_X + USB_C_PLUG[1] / 2))
+power_usb_cable = stiff_cable(V(DEPTH + USB_C_X, SIZE - usb_c_v, SIZE / 2 - usb_c_u - USB_C_PLUG[2]), RIGHT, SIZE / 2)
 check("Pi: the USB plugs stay below the top edge of the panel", all(plug.optimalBoundingBox().YMax <= SIZE + 1e-6
                                                                     for plug in usb_plugs),
       "%.0f mm below it" % min(SIZE - plug.optimalBoundingBox().YMax for plug in usb_plugs))
-check("Pi: the USB plugs and cables clear of the holder and the speaker",
-      all(overlap(a, b) < TOUCH for a in usb_plugs + usb_cables for b in (holder, speaker)))
-print("     the stiff USB cables stick out %.0f mm above the top edge of the panel"
-      % (max(c.optimalBoundingBox().YMax for c in usb_cables) - SIZE), flush=True)
+check("Pi: the USB-C power plug stays within the right edge of the panel",
+      power_usb_plug.optimalBoundingBox().ZMin >= -SIZE / 2 - 1e-6,
+      "%.0f mm within it" % (power_usb_plug.optimalBoundingBox().ZMin + SIZE / 2))
+cables = usb_plugs + usb_cables + [power_usb_plug, power_usb_cable]
+check("Pi: its plugs and cables clear of the holder, the speaker and the frame",
+      all(overlap(a, b) < TOUCH for a in cables for b in (holder, speaker, panel)))
+print("     the stiff USB cables stick out %.0f mm above the top edge of the panel, the power cable %.0f mm past "
+      "its right edge" % (max(c.optimalBoundingBox().YMax for c in usb_cables) - SIZE,
+                          -SIZE / 2 - power_usb_cable.optimalBoundingBox().ZMin), flush=True)
 for name, plug in (("power plug", power_plug), ("HUB75 IN plug", hub75_plug)):
     gap = min(a.distToShape(plug)[0] for a in fitted)
     check("holder: clear of the %s" % name, gap >= 1, "%.1f mm" % gap)
@@ -381,6 +397,8 @@ preview.addObject("Part::Feature", "MicrobitPlug").Shape = placed(microbit_plug,
 preview.addObject("Part::Feature", "Pi_outline").Shape = placed(pi, spot)
 preview.addObject("Part::Feature", "UsbPlugs").Shape = placed(Part.makeCompound(usb_plugs), spot)
 preview.addObject("Part::Feature", "UsbCables").Shape = placed(Part.makeCompound(usb_cables), spot)
+preview.addObject("Part::Feature", "PowerUsbPlug").Shape = placed(power_usb_plug, spot)
+preview.addObject("Part::Feature", "PowerUsbCable").Shape = placed(power_usb_cable, spot)
 preview.addObject("Part::Feature", "LEDs").Shape = placed(Part.makeCompound(leds), spot)
 preview.addObject("Part::Feature", "Holder").Shape = placed(holder, spot)
 preview.addObject("Part::Feature", "Speaker").Shape = placed(speaker, spot)

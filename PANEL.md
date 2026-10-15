@@ -104,6 +104,11 @@ All on the left half, seen from the back.
   stay below the top edge of the panel, 15 below it; the cables are stiff
   and stick out above it, about 50 before they bend over (guess). Which
   ports they are in is a guess too: the lower one of each pair.
+- The Pi's power, a USB-C cable in the port on its right side seen from the
+  back, 11.2 from its bottom end (from its drawing). The plug (about 12 x 7,
+  25 long with its grip; guess) stays within the right edge of the panel, 15
+  within it; the stiff cable sticks out past it, about 50 before it bends
+  over (guess).
 - Weight with the cables: about 120 g (guess).
 
 ## USB speaker
