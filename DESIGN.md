@@ -55,6 +55,17 @@ Hardware: 2 x M5 x 12 countersunk screw (90 degree head, any drive), 2 x M5
 nut, 3 x M3 x 10 screw. Put the nuts in their pockets before the panel goes
 in.
 
+All black (black oxide steel):
+
+| Part | What | Order |
+|---|---|---|
+| 2 x hinge screw | M5 x 12 countersunk hex socket, DIN 7991, 10.9 or 12.9; 3 mm key. Not aluminium, too soft. | [RS PRO 0281467](https://benl.rs-online.com/web/p/socket-screws/0281467), [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-countersunk-hex-socket-black-DIN7991.html) |
+| 2 x nut | M5 hex nut, DIN 934: 8 across the flats, 4 thick. Not a nylon insert nut, too thick for the 4.2 mm pocket. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-hex-nut-black-DIN934.html) |
+| 3 x holder screw | M3 x 10 socket head cap, DIN 912, 12.9; 2.5 mm key. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M3-socket-head-cap-screw-black-DIN912.html) |
+
+On AliExpress the length is chosen per listing; check that it is the 12 or
+10 mm variant.
+
 ## Files
 
 | File | What |
