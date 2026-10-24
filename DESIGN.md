@@ -93,6 +93,7 @@ On AliExpress the length is chosen per listing; check that it is the 12 or
 | `build.sh` | Build, check and view settings in one go |
 | `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit; what was decided from them and what is still guessed |
 | `PRINTING.md` | Printer, slicer and settings, how each part lies on the bed, and what to do after printing |
+| `Ender3_LEVEL_psd.gcode` | The program for levelling the bed before printing (by psdesign, CC BY; see `PRINTING.md`) |
 | `photos/` | Photos of the back of the panel and of the micro:bit, and `grid.py` to measure from them (see `PANEL.md`) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
