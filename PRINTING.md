@@ -13,7 +13,13 @@ used for the [led-hexahedron-stand](https://github.com/jeroenverspeek/led-hexahe
   bed as 235 mm wide and centres the base on X = 117.5, so it reaches X =
   226; the v2 stops a few mm short of that and does not print what lies
   beyond. The first base lost the outer 3 mm of a cheek that way.
-- PLA: bed 60 °C, nozzle 200 °C.
+- PLA: bed 60 °C, nozzle 200 °C. Cura's PLA profile sets the bed to 50 °C:
+  set Build Plate Temperature (under Material) to 60. Cura writes both
+  temperatures at the top of the G-code, and the printer waits for them
+  before it homes.
+- Build Plate Adhesion Type: None, for every part. The start G-code draws
+  two purge lines along the left edge of the bed (X 0.1 and 0.4, Y 20 to
+  200), so no skirt is needed to prime the nozzle.
 
 ## Layer height
 
@@ -46,8 +52,10 @@ them in Cura as they are and only turn them on the bed.
 | `cradle.stl` | its floor | turned 24 degrees: it only fits across the diagonal | 209 x 20.5 mm |
 | `holder.stl` | its plate | as it is | 101 x 140 mm |
 
-The base (218 mm) only just fits: leave no skirt or brim that makes it
-wider than 220 mm.
+The base (218 mm) only just fits: with a skirt it is 220 mm wide, the whole
+bed, and the skirt crosses the purge lines. Without one the base lies from
+X 1 to 219, about half a millimetre from the purge lines; if they stick to
+its first layer, they snap off afterwards.
 
 ## After printing
 
