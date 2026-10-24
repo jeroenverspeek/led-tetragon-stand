@@ -179,8 +179,9 @@ All on the left half, seen from the back.
   sticks out behind the frame, so it is 28 mm now. That clears the hat too
   (it comes down to 39 mm, 19 mm behind the frame).
 - Countersunk screws instead of knobs. From the outside of a cheek to the
-  inside of an ear is 12.5 mm, so the screws are M5 x 12; a longer one
-  reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
+  inside of an ear is 12.2 mm with the cheek tightened onto its ring, so the
+  screws are M5 x 12: the end lies flush with the inside of the ear. A longer
+  one reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
   cheek and ear thicker instead would make the base too wide for the bed.
 
 ## Still guessed

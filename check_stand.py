@@ -113,7 +113,7 @@ HW = SIZE / 2 + FIT
 XBO = DEPTH + FIT + p["back_thickness"]
 PIVOT = V(XBO - p["hinge_radius"], p["hinge_radius"] - p["floor_thickness"], 0)  # in the cradle
 OUT = HW + p["ear_thickness"]
-CI = OUT + p["ring_height"]
+CI = OUT + p["ring_height"] + p["hinge_play"]
 PH = p["base_thickness"] + p["base_gap"] + p["hinge_radius"]  # height of the hinge axis above the table
 
 cradle = doc.getObject("Cradle").Shape
@@ -339,12 +339,12 @@ check("hinge: wall left behind the nut", p["ear_thickness"] - p["nut_depth"] >= 
       "%.1f mm" % (p["ear_thickness"] - p["nut_depth"]))
 # The screw runs from its head, sunk into the cheek, through the cheek and ear into the nut.
 # Its end, measured from the inside of the ear outwards, must not reach the panel and must
-# leave most of the nut in use.
+# leave most of the nut in use. Tightened, the cheek lies against the ring: no play.
 check("hinge: the screw heads sink no deeper than flush", 0 <= head_sink <= 0.5, "%.1f mm deep" % head_sink)
 check("hinge: cheek left under the countersink", p["cheek_thickness"] - (p["countersink_d"] - p["bolt_d"]) / 2 >= 1.5,
       "%.1f mm" % (p["cheek_thickness"] - (p["countersink_d"] - p["bolt_d"]) / 2))
 bolt_end = p["cheek_thickness"] - head_sink + p["ring_height"] + p["ear_thickness"] - p["bolt_length"]
-check("hinge: an M5 x %g screw does not reach the panel" % p["bolt_length"], bolt_end >= 0,
+check("hinge: an M5 x %g screw does not reach the panel" % p["bolt_length"], bolt_end >= -1e-6,
       "ends %.1f mm inside the ear" % bolt_end)
 check("hinge: and goes through at least 3 mm of the nut", p["nut_depth"] - bolt_end >= 3,
       "%.1f mm" % (p["nut_depth"] - bolt_end))
@@ -357,7 +357,9 @@ for angle in ANGLES:
     spot = on_base(angle)
     c, pn, pp = placed(cradle, spot), placed(panel, spot), placed(pi, spot)
     check("%d degrees: cradle clear of the base" % angle, overlap(c, base) < TOUCH, "%.3f mm3" % overlap(c, base))
-    check("%d degrees: the rings touch the cheeks" % angle, c.distToShape(base)[0] < TOUCH)
+    gap = c.distToShape(base)[0]
+    check("%d degrees: the rings have play between the cheeks, nothing closer" % angle,
+          abs(gap - p["hinge_play"]) < 1e-3, "%.2f mm" % gap)
     low = c.optimalBoundingBox().ZMin - p["base_thickness"]
     check("%d degrees: cradle above the plate" % angle, low >= p["base_gap"] - 1e-3, "%.2f mm" % low)
     check("%d degrees: panel and Pi clear of the base and screws" % angle,

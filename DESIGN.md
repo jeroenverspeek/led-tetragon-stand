@@ -22,9 +22,10 @@ degrees) is the default and a good viewing angle on a desk.
   the hinge axis, so the cradle clears the base at every angle.
 - `Base`: plate with a cheek at both ends and "Led Tetragon" sunk in front.
   Each cheek has a countersink on the outside, so the head of the screw lies
-  flush. Tightening the screw presses cheek and ring together; that friction
-  holds the angle. Set it once with a key or screwdriver so the panel turns
-  by hand but stays where it is put.
+  flush. The rings have 0.3 mm play between the cheeks (`hinge_play`), so the
+  cradle goes in; tightening the screw bends the cheek onto its ring, and
+  that friction holds the angle. Set it once with a key or screwdriver so
+  the panel turns by hand but stays where it is put.
 - `Holder`: one part on three M3 x 10 screws, in the left half seen from the
   back, beside the Pi: the top left corner hole, the top hole of the middle
   bar and the middle hole of the left bar. Prints lying on its plate. Only

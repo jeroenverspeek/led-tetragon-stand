@@ -17,8 +17,9 @@
 #
 # Base: a plate on the table with an upright cheek at both ends. A countersunk
 # screw goes from outside through each cheek into the nut in the ear, its head
-# sunk flush into the cheek. Tightening it presses the cheek against the ring
-# on the ear, and that friction holds the angle. The name is sunk into the
+# sunk flush into the cheek. The rings have a little play between the cheeks,
+# so the cradle goes in; tightening the screw presses the cheek against the
+# ring on the ear, and that friction holds the angle. The name is sunk into the
 # plate in front of the panel.
 #
 # Holder: the USB speaker and the micro:bit on the back of the panel, in the
@@ -83,6 +84,8 @@ PARAMS = [
     ("hinge_radius", 10, "Radius of the rounded corner under the back wall, round the hinge axis"),
     ("ring_d", 18, "Raised ring round the hinge on the outside of each ear: diameter, at most 2 x hinge_radius"),
     ("ring_height", 1, "How far that ring stands out: the only place where an ear touches its cheek"),
+    ("hinge_play", 0.3, "Space between each ring and its cheek, so the cradle goes in between the cheeks; "
+                        "tightening the screw bends the cheek onto the ring"),
     ("bolt_d", 5.4, "Hole for a hinge screw (M5)"),
     ("bolt_length", 12, "Length of a hinge screw, head included: M5 x 12 countersunk (only used for checking)"),
     ("screw_head_d", 10, "Diameter of the countersunk head of a hinge screw (M5: 10 mm; only used for checking)"),
@@ -94,7 +97,7 @@ PARAMS = [
     ("base_front", 40, "How far the base reaches in front of the hinge axis"),
     ("base_back", 90, "How far the base reaches behind the hinge axis"),
     ("base_gap", 1, "Space between the cradle and the base plate"),
-    ("cheek_thickness", 4.5, "Thickness of the two cheeks on the base, with the countersink in it"),
+    ("cheek_thickness", 4.2, "Thickness of the two cheeks on the base, with the countersink in it"),
     ("cheek_width", 20, "Width of a cheek; its top is a half round of this diameter round the hinge axis"),
     ("text_size", 10, "Height of the letters on the base"),
     ("text_depth", 0.8, "How deep the letters are sunk into the base"),
@@ -175,8 +178,8 @@ px, py = xbo - P["hinge_radius"], P["hinge_radius"] - P["floor_thickness"]  # hi
 PX, PY = "(%s - Params.hinge_radius)" % XBO, "(Params.hinge_radius - Params.floor_thickness)"
 out = hw + P["ear_thickness"]  # outside of an ear
 OUT = "(%s + Params.ear_thickness)" % HW
-ci = out + P["ring_height"]  # inside of a cheek
-CI = "(%s + Params.ring_height)" % OUT
+ci = out + P["ring_height"] + P["hinge_play"]  # inside of a cheek
+CI = "(%s + Params.ring_height + Params.hinge_play)" % OUT
 # The base is modelled as it stands: x backwards from the hinge axis, y across, z up from the table.
 ph = P["base_thickness"] + P["base_gap"] + P["hinge_radius"]  # height of the hinge axis
 PH = "(Params.base_thickness + Params.base_gap + Params.hinge_radius)"
