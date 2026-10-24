@@ -35,6 +35,22 @@ parallax: the flattening is exact in the plane of the back of the frame, but
 the board lies 12 mm deeper. Heights, such as how far a plug sticks out, need
 a photo from the side with a ruler next to it.
 
+Photos of the micro:bit and the speaker, taken on 2026-10-24, each with a
+ruler:
+
+- `microbit_front_photo.jpg`: the front of the micro:bit, from above.
+- `microbit_front_flat.jpg`: that photo flattened to the board's outline
+  (51.6 x 42 mm, 40 pixels per mm) by its four edges, as straight lines
+  through them, with a perspective transform in a one-off script; Genius
+  Scan was not used. The board gives the scale. Measure on it with
+
+      python3 photos/grid.py photos/microbit_front_flat.jpg rings.png 0 51.6 28 42 51.6 42
+
+- `microbit_side.jpg`, `microbit_end.jpg`: the micro:bit from its long and
+  its short side, held level, for how far the buttons and parts stick out.
+- `speaker_back.jpg`, `speaker_end.jpg`: the rounded back of the speaker,
+  where the cable leaves it, and the speaker from one end.
+
 ## Panel
 
 - One 64 x 64 LED panel, P3: 192 x 192 mm.
@@ -119,7 +135,17 @@ All on the left half, seen from the back.
   round ends (84 x 43); behind it the body is rounded.
 - The cable leaves the bottom side, 33 from the left end of the face (seen
   from the back, grille backwards), pointing down; with its sleeve it needs
-  10 below the speaker.
+  10 below the speaker. More exactly (photos and by hand, 2026-10-24): it
+  leaves the rounded back, not the side, through a grommet 7.5 across, its
+  middle 31 from the end and about 10 from the lowest point of the back (7
+  from the long side seen straight on the back), pointing backwards and
+  down; the cable is 3.6 thick. In the first print it went easily through
+  the slot in the cup.
+- Two small tabs, about 1.2 high, stick out of that long side at the seam
+  behind the face, 21.5 and 63.5 from the same end. A round mark 4 across
+  is in the middle of the back.
+- In the first print the speaker went into the cup easily, but the lips did
+  not hold it, perhaps because of the tabs; hence the band.
 - On the back of the panel: grille backwards, 20 from the top and 5 from the
   left, so its rounded end stays clear of the corner of the Pi.
 
@@ -131,6 +157,20 @@ All on the left half, seen from the back.
 - Its USB plug with the sleeve sticks out 40 straight from the micro:bit.
 - On the back of the panel: upright between the power connector and HUB75
   IN, its USB port towards the Pi, LEDs towards the panel.
+- The rings (from the flattened photo, seen from the front, USB edge at the
+  top): their holes 4.05 across (they take a 4 mm banana plug), their
+  middles 6.55 from the bottom edge and 4.2, 14.4, 25.9, 37.35 and 47.6
+  from the left (0, 1, 2, 3V, GND). That is symmetric round 25.9 instead of
+  25.8, the middle of the board, so 0 and GND are taken as 4.1 from the
+  ends, 43.4 apart. V2 has a notch in the bottom edge under each ring.
+- The buttons A and B: 6.5 wide and 7.5 high with their tabs, their middles
+  5.4 from the sides and 21.1 from the USB edge. They stick out 3.7 and 4.2
+  from the front of the board in the two side photos (blurred edges); 4.2
+  is used. The rest of the front is flat: the LEDs, the touch logo and a
+  microphone hole 10 below the USB edge. The USB port's tabs come through
+  the board in the middle of the USB edge, 22 to 30 from the left.
+- Behind the board the battery connector stands highest, about 6.7. The
+  board is about 1.6 thick (1.3 to 1.9 in the side photos; guess).
 
 ## Measured and decided
 
@@ -150,6 +190,8 @@ All on the left half, seen from the back.
 - The shape of the speaker's rounded back (from pictures); the cup only holds
   it by its flat face and leaves room behind it.
 - How far the parts on the Pi and the hat stick out.
+- The thickness of the micro:bit's board (1.6): the screw through its GND
+  ring ends 0.6 short of the front of the holder's plate.
 - How far the HUB75 IN plug sticks out and how much bigger it is than the
   header (12 mm and 2 mm all round). The cradle, the holder and the ribbon's
   bend depend on it.

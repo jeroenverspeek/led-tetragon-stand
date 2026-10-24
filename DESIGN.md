@@ -28,11 +28,11 @@ degrees) is the default and a good viewing angle on a desk.
 - `Holder`: one part on three M3 x 10 screws, in the left half seen from the
   back, beside the Pi: the top left corner hole, the top hole of the middle
   bar and the middle hole of the left bar. Prints lying on its plate. Only
-  the corner hole is round; the other two, 80 mm from it, are slots, 2 mm
+  the corner hole is round; the other two, 80 mm from it, are slots, 2.5 mm
   longer each way (`screw_slot`): the one in the middle bar from left to
   right, the one in the left bar from top to bottom. They take up what the
   print and the measurements from the photo are off: with three round holes
-  the third screw did not go in on the first print.
+  the third screw did not go in on the first print, 1.5 mm off.
   - Speaker at the top, grille facing backwards, 5 mm from the left so its
     rounded end stays clear of the Pi: a cup on the plate for its rounded
     back, with a lip along both long sides. The lips alone left it loose, so
@@ -45,13 +45,16 @@ degrees) is the default and a good viewing angle on a desk.
     The plate bridges the frame, so the power cable, leaving the power plug
     upwards, bends up under it: 10 mm above the plug. The speaker sticks out
     36 mm behind the frame, the Pi 30 mm.
-  - A strip down the left bar, past the power plug, joins it to the micro:bit:
-    upright in a pocket, parallel to the panel so it tilts with it, LEDs
+  - A strip down the left bar, past the power plug, joins it to a plate for
+    the micro:bit: upright, parallel to the panel so it tilts with it, LEDs
     towards the panel, USB port towards the Pi. Just below the power plug (1.1
-    mm), so the HUB75 ribbon has 4 mm below it to bend up over it. The
-    micro:bit slides in from the side edge of the panel, and its USB plug,
-    through a slot in the side of the pocket, keeps it there. A window in the
-    cover shows its back. Sticks out 17 mm.
+    mm), so the HUB75 ribbon has 4.7 mm below it to bend up over it. It lies
+    on four posts 6 mm high, 1.8 mm clear of its buttons: under the GND ring
+    a post that an M3 x 10 screw through the ring cuts its thread in, under
+    ring 0 one with a printed peg through the ring, and two under the USB
+    edge. The screw is the only metal on a ring: rings 0, 1 and 2 are touch
+    inputs, and the black oxide screws conduct; on GND it does no harm. The
+    back of the micro:bit stays open. Sticks out 16 mm.
   - The micro:bit's USB plug, straight, sticks out 40 mm and reaches 6 mm
     under the edge of the Pi; a cable with an angled (90 degree) micro USB
     plug, the cable turning up towards the Pi's USB ports, stays clear.
@@ -61,7 +64,7 @@ only 4 to 6 mm apart, and a loose prop against the back of the panel slides
 unless it is fixed to the panel.
 
 Hardware: 2 x M5 x 12 countersunk screw (90 degree head, any drive), 2 x M5
-nut, 3 x M3 x 10 screw, 1 cable tie for the speaker (at most 4.8 mm wide,
+nut, 4 x M3 x 10 screw (3 for the holder, 1 for the micro:bit), 1 cable tie for the speaker (at most 4.8 mm wide,
 at least 200 mm long). Put the nuts in their pockets before the panel goes
 in.
 
@@ -71,7 +74,7 @@ All black (black oxide steel):
 |---|---|---|
 | 2 x hinge screw | M5 x 12 countersunk hex socket, DIN 7991, 10.9 or 12.9; 3 mm key. Not aluminium, too soft. | [RS PRO 0281467](https://benl.rs-online.com/web/p/socket-screws/0281467), [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-countersunk-hex-socket-black-DIN7991.html) |
 | 2 x nut | M5 hex nut, DIN 934: 8 across the flats, 4 thick. Not a nylon insert nut, too thick for the 4.2 mm pocket. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-hex-nut-black-DIN934.html) |
-| 3 x holder screw | M3 x 10 socket head cap, DIN 912, 12.9; 2.5 mm key. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M3-socket-head-cap-screw-black-DIN912.html) |
+| 4 x holder screw | M3 x 10 socket head cap, DIN 912, 12.9; 2.5 mm key. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M3-socket-head-cap-screw-black-DIN912.html) |
 
 On AliExpress the length is chosen per listing; check that it is the 12 or
 10 mm variant.
@@ -90,22 +93,7 @@ On AliExpress the length is chosen per listing; check that it is the 12 or
 | `build.sh` | Build, check and view settings in one go |
 | `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit; what was decided from them and what is still guessed |
 | `PRINTING.md` | Printer, slicer and settings, how each part lies on the bed, and what to do after printing |
-| `photos/` | Photos of the back of the panel, and `grid.py` to measure from them (see `PANEL.md`) |
+| `photos/` | Photos of the back of the panel and of the micro:bit, and `grid.py` to measure from them (see `PANEL.md`) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
 
-## To do
-
-- micro:bit: it lies loose in its pocket. Plan: no pocket, but fixed from
-  the back, LEDs still towards the panel: an M3 x 10 screw through the GND
-  ring into a post on the plate, a printed peg through ring 0 (no metal:
-  rings 0, 1 and 2 are touch inputs; the black oxide screws conduct) and
-  rests under the USB edge. In the pocket a post under the GND ring would
-  be in the way of button B when it slides in. Needed first, from two
-  photos in `photos/`: the front, flattened with Genius Scan to the board
-  (51.6 x 42), for the distance between rings 0 and GND and from a ring to
-  the edge; and one from the side, level with the board with a ruler next
-  to it, for how far the buttons stick out. `grid.py` measures only square
-  photos now: give it a width and a height.
-- Holder slots: the third hole of the first print was 1.5 mm off, so make
-  `screw_slot` 2.5 mm.

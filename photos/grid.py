@@ -1,15 +1,15 @@
 # Measuring grid for a flattened photo
 # by Jeroen Verspeek
 #
-# Cuts a region out of a photo that has been flattened to a known square
+# Cuts a region out of a photo that has been flattened to a known rectangle
 # (such as panel_back_flat.jpg: the back of the panel, 192 x 192 mm, made
 # with the Genius Scan app), enlarges it and draws a grid over it: a line
 # every millimetre, a thicker one with its number every 5 mm. Positions are
 # measured from the left and the top edge of the photo, as seen in it.
 #
-# Run:  python3 grid.py photo.jpg out.png left right top bottom [size]
-#       left, right, top, bottom: the region in mm; size: the edge of the
-#       square the photo shows, in mm (default 192)
+# Run:  python3 grid.py photo.jpg out.png left right top bottom [width [height]]
+#       left, right, top, bottom: the region in mm; width, height: what the
+#       photo shows, in mm (default 192; the height defaults to the width)
 # Example, the power connector:  python3 grid.py panel_back_flat.jpg power.png 36 64 72 92
 ###########################
 
@@ -19,16 +19,17 @@ from PIL import Image, ImageDraw
 
 ENLARGE = 4
 
-if len(sys.argv) not in (7, 8):
-    sys.exit("usage: python3 grid.py photo.jpg out.png left right top bottom [size]")
+if len(sys.argv) not in (7, 8, 9):
+    sys.exit("usage: python3 grid.py photo.jpg out.png left right top bottom [width [height]]")
 source, out = sys.argv[1], sys.argv[2]
 left, right, top, bottom = map(float, sys.argv[3:7])
-size = float(sys.argv[7]) if len(sys.argv) == 8 else 192.0
+width = float(sys.argv[7]) if len(sys.argv) > 7 else 192.0
+height = float(sys.argv[8]) if len(sys.argv) > 8 else width
 
 photo = Image.open(source).convert("RGB")
-if abs(photo.size[0] / photo.size[1] - 1) > 0.01:
-    print("note: the photo is %d x %d pixels, not square; measuring each way on its own scale" % photo.size)
-per_mm_x, per_mm_y = photo.size[0] / size, photo.size[1] / size
+per_mm_x, per_mm_y = photo.size[0] / width, photo.size[1] / height
+if abs(per_mm_x / per_mm_y - 1) > 0.01:
+    print("note: %.1f pixels per mm across, %.1f down; measuring each way on its own scale" % (per_mm_x, per_mm_y))
 region = photo.crop((round(left * per_mm_x), round(top * per_mm_y), round(right * per_mm_x), round(bottom * per_mm_y)))
 region = region.resize((region.size[0] * ENLARGE, region.size[1] * ENLARGE), Image.LANCZOS)
 draw = ImageDraw.Draw(region)

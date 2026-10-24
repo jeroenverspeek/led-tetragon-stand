@@ -31,14 +31,16 @@
 # wire) loops round an eye on both long sides of the cup and over the middle
 # of the grille, and presses the speaker in; notches at both ends let a
 # screwdriver lever it out. The plate bridges the frame, so the power cable
-# can run up under it. A strip down the left bar joins it to the pocket for
+# can run up under it. A strip down the left bar joins it to the plate for
 # the micro:bit, upright and parallel to the panel, between the power
-# connector and HUB75 IN. The micro:bit slides in from the side edge of the
-# panel; its USB plug, pointing to the Pi through a slot, holds it there.
+# connector and HUB75 IN, its LEDs towards the panel and its USB port towards
+# the Pi. It lies on four posts, high enough for its buttons: one under the
+# GND ring, with a screw through the ring into it; one under ring 0, with a
+# printed peg through the ring; two under its USB edge.
 # Prints lying on its plate.
 #
 # Needed: 1 x Base, 1 x Cradle, 1 x Holder; 2 x M5 x 12 countersunk screw,
-# 2 x M5 nut, 3 x M3 x 10 screw, a cable tie or rubber band for the speaker.
+# 2 x M5 nut, 4 x M3 x 10 screw, a cable tie or rubber band for the speaker.
 #
 # Run:  freecadcmd build_stand.py   (or ./build.sh)
 # Writes stand.FCStd (parametric: change values in the Params spreadsheet)
@@ -113,7 +115,8 @@ PARAMS = [
     ("pi_gap", 7, "Back of the frame to the solder under the Pi, whose board lies 10 mm behind it"),
     ("pi_depth", 30, "How far the Pi with its hat sticks out behind the frame"),
     ("m3_d", 3.4, "Holes in the holder for its M3 screws"),
-    ("screw_slot", 2, "The holder's holes in the middle bar and the left bar are slots, this much longer each way "
+    ("m3_tap_d", 2.6, "Hole in a post that an M3 screw cuts its own thread in"),
+    ("screw_slot", 2.5, "The holder's holes in the middle bar and the left bar are slots, this much longer each way "
                       "than a hole: they take up the difference between the frame and the print"),
     ("holder_plate", 3, "Thickness of the plate of the holder, against the back of the frame"),
     ("holder_wall", 1.6, "Walls of the holder"),
@@ -141,12 +144,21 @@ PARAMS = [
     ("microbit_width", 51.6, "micro:bit V2: width, the edge with the USB port; upright in its holder"),
     ("microbit_height", 42, "Height of the micro:bit; across in its holder"),
     ("microbit_thickness", 11.65, "Thickness of the micro:bit with its parts on both sides"),
-    ("microbit_fit", 0.6, "Play round the micro:bit in its pocket, in total"),
-    ("microbit_left", 14, "Pocket of the micro:bit: from the left, just past the screw in the left bar"),
-    ("microbit_top", 88.65, "Pocket of the micro:bit: from the top, just below the power connector, so the HUB75 "
-                         "ribbon has room below it"),
-    ("microbit_window", 4, "Edge left round the window in the cover over the micro:bit"),
-    ("usb_slot", 14, "Width of the slot for the micro:bit's USB plug, in the side of its pocket"),
+    ("microbit_board", 1.6, "Thickness of the micro:bit's board (guess, 1.3 to 1.9 in the photos)"),
+    ("microbit_buttons", 4.2, "How far the buttons A and B stick out from the front of the micro:bit"),
+    ("microbit_left", 14, "micro:bit: from the left to its edge with the rings, just past the screw in the left bar"),
+    ("microbit_top", 88.65, "micro:bit: from the top, just below the power connector, so the HUB75 ribbon has room "
+                            "below it"),
+    ("ring_from_edge", 6.55, "The micro:bit's rings 0 and GND: their middles from its edge with the rings"),
+    ("ring_from_end", 4.1, "Rings 0 and GND: their middles from the ends of that edge"),
+    ("microbit_rest", 6, "Height of the posts the micro:bit lies on, above the plate: clear of its buttons, and "
+                         "an M3 x 10 screw through the board stays within the post and the plate"),
+    ("ring_post_d", 7, "Diameter of the posts under rings 0 and GND"),
+    ("ring_peg_d", 3.6, "Printed peg through ring 0 (a hole of 4 mm for a banana plug)"),
+    ("ring_peg", 1.5, "How far that peg sticks out past the back of the board"),
+    ("usb_rest_d", 5, "Diameter of the two posts under the USB edge"),
+    ("usb_rest_at", 5, "Those posts: their middles from the ends of the USB edge, and 3 mm from that edge; "
+                       "clear of the USB port's tabs in the middle"),
 ]
 P = {alias: value for alias, value, _ in PARAMS}
 
@@ -500,30 +512,37 @@ bar_u = mm(size / 2, "Params.panel_size / 2")
 stadium(holder, "SubtractiveBox", "BarScrewSlot", THROUGH, (add(bar_u, SLOT, -1), add(bar_u, SLOT)),
         mm(P["bar_hole_top"], "Params.bar_hole_top"), M3)
 
-# The micro:bit below it, upright, its USB edge towards the Pi
+# The micro:bit below it, upright, its USB edge towards the Pi and its LEDs towards the panel, on four
+# posts clear of its buttons: under the GND ring at the top a post that a screw through the ring cuts
+# its thread in, under ring 0 at the bottom one with a peg through the ring, and two under the USB edge
 ml = mm(P["microbit_left"], "Params.microbit_left")
 mt = mm(P["microbit_top"], "Params.microbit_top")
-across = mm(P["microbit_height"] + P["microbit_fit"], "Params.microbit_height + Params.microbit_fit")
-down = mm(P["microbit_width"] + P["microbit_fit"], "Params.microbit_width + Params.microbit_fit")
-cover = add(PLATE, mm(P["microbit_thickness"] + P["microbit_fit"], "Params.microbit_thickness + Params.microbit_fit"))
-pocket_u, pocket_v = (ml, add(ml, across)), (mt, add(mt, down))
-outer_u, outer_v = (add(ml, WALL, -1), add(pocket_u[1], WALL)), (add(mt, WALL, -1), add(pocket_v[1], WALL))
+across = mm(P["microbit_height"], "Params.microbit_height")
+down = mm(P["microbit_width"], "Params.microbit_width")
+outer_u = (add(ml, WALL, -1), add(add(ml, across), WALL))
+outer_v = (add(mt, WALL, -1), add(add(mt, down), WALL))
 region(holder, "AdditiveBox", "MicrobitPlate", (D, PLATE), (mm(1), outer_u[1]), outer_v)
 screw_u = mm(P["side_mid_hole_left"], "Params.side_mid_hole_left")
 screw_v = mm(P["side_mid_hole_top"], "Params.side_mid_hole_top")
 # a strip down the left bar joins it to the plate of the speaker, past the middle hole of that bar
 region(holder, "AdditiveBox", "LeftStrip", (D, PLATE), (mm(1), outer_u[0]), (middle, add(outer_v[0], mm(1))))
-region(holder, "AdditiveBox", "MicrobitWalls", (PLATE, add(cover, WALL)), outer_u, outer_v)
-# the pocket, open to the side edge of the panel
-region(holder, "SubtractiveBox", "MicrobitPocket", (PLATE, cover), (mm(-1), pocket_u[1]), pocket_v)
-window = mm(P["microbit_window"], "Params.microbit_window")
-region(holder, "SubtractiveBox", "Window", (add(cover, mm(1), -1), add(add(cover, WALL), mm(1))),
-       (add(ml, window), add(pocket_u[1], window, -1)), (add(mt, window), add(pocket_v[1], window, -1)))
-usb = mm(P["usb_slot"] / 2, "Params.usb_slot / 2")
-centre_v = add(mt, mm((P["microbit_width"] + P["microbit_fit"]) / 2,
-                      "(Params.microbit_width + Params.microbit_fit) / 2"))
-region(holder, "SubtractiveBox", "UsbSlot", (PLATE, cover),
-       (add(pocket_u[1], mm(1), -1), add(outer_u[1], mm(1))), (add(centre_v, usb, -1), add(centre_v, usb)))
+REST = add(PLATE, mm(P["microbit_rest"], "Params.microbit_rest"))  # front of the micro:bit's board
+ring_u = add(ml, mm(P["ring_from_edge"], "Params.ring_from_edge"))
+ring_end = mm(P["ring_from_end"], "Params.ring_from_end")
+gnd_v, ring0_v = add(mt, ring_end), add(add(mt, down), ring_end, -1)
+ring_post = mm(P["ring_post_d"] / 2, "Params.ring_post_d / 2")
+post(holder, "AdditiveCylinder", "GndPost", (PLATE, REST), ring_u, gnd_v, ring_post)
+post(holder, "AdditiveCylinder", "Ring0Post", (PLATE, REST), ring_u, ring0_v, ring_post)
+peg_end = add(add(REST, mm(P["microbit_board"], "Params.microbit_board")), mm(P["ring_peg"], "Params.ring_peg"))
+post(holder, "AdditiveCylinder", "Ring0Peg", (REST, peg_end), ring_u, ring0_v,
+     mm(P["ring_peg_d"] / 2, "Params.ring_peg_d / 2"))
+usb_u = add(add(ml, across), mm(3), -1)
+usb_at = mm(P["usb_rest_at"], "Params.usb_rest_at")
+for i, v in enumerate((add(mt, usb_at), add(add(mt, down), usb_at, -1))):
+    post(holder, "AdditiveCylinder", "UsbRest%d" % (i + 1), (PLATE, REST), usb_u, v,
+         mm(P["usb_rest_d"] / 2, "Params.usb_rest_d / 2"))
+post(holder, "SubtractiveCylinder", "GndScrewHole", (add(D, mm(1), -1), add(REST, mm(1))), ring_u, gnd_v,
+     mm(P["m3_tap_d"] / 2, "Params.m3_tap_d / 2"))
 # the hole in the left bar, 80 mm below the corner, is a slot from top to bottom
 slot_v = (add(screw_v, SLOT, -1), add(screw_v, SLOT))
 region(holder, "SubtractiveBox", "LeftScrewSlot", THROUGH, (add(screw_u, M3, -1), add(screw_u, M3)), slot_v)

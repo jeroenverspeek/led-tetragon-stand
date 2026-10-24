@@ -44,7 +44,7 @@ them in Cura as they are and only turn them on the bed.
 |---|---|---|---|
 | `base.stl` | its plate, the letters up | its long side from left to right | 218 x 130 mm |
 | `cradle.stl` | its floor | turned 24 degrees: it only fits across the diagonal | 209 x 20.5 mm |
-| `holder.stl` | its plate | as it is | 101 x 140.5 mm |
+| `holder.stl` | its plate | as it is | 101 x 140 mm |
 
 The base (218 mm) only just fits: leave no skirt or brim that makes it
 wider than 220 mm.
@@ -60,6 +60,10 @@ wider than 220 mm.
 - Fix the holder with three M3 x 10 screws: first in the top left corner
   hole (the round one), then the top hole of the middle bar and the middle
   hole of the left bar (the slots). Leave them loose until all three are in.
+- The micro:bit: LEDs towards the panel, USB port towards the Pi. Put ring 0
+  over the peg, then a fourth M3 x 10 screw through the GND ring into its
+  post; it cuts its own thread, so turn it in gently and stop when the board
+  is held.
 - The speaker: press it into its cup, then loop a cable tie (at most 4.8 mm
   wide) through both eyes and twice over the grille, in the notches, and
   pull it tight. To take it out, cut the tie and lever the speaker out with

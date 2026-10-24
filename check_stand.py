@@ -50,8 +50,17 @@ HUB75_HEADER = ((30, 58), (192 - 39 - 4.5, 192 - 39 + 4.5))
 HUB75_IN_PLUG = ((28, 60), (HUB75_HEADER[1][0] - 2, HUB75_HEADER[1][1] + 2), 12)
 RIBBON_ROOM = 4  # mm at least between the micro:bit holder and the top of that plug
 # The micro:bit's USB plug with its sleeve, straight: 40 mm long (measured), about 11 x 8 (guess),
-# in the middle of its USB edge, towards the Pi
+# in the middle of its USB edge, towards the Pi; the port on the back of the board, its middle about
+# 1.5 mm behind it (guess)
 MICROBIT_PLUG = (40, 11, 8)
+USB_PORT_BEHIND = 1.5
+# On the front of the micro:bit (photo, 2026-10-24): the buttons A and B, 6.5 along the USB edge and
+# 7.5 across it with their tabs, their middles 5.4 from the ends and 21.1 from the USB edge; the holes in
+# the rings are 4.05 across. The rest of the front is flat: LEDs and the touch logo.
+BUTTON = (6.5, 7.5)
+BUTTON_AT = (5.4, 21.1)
+RING_HOLE = 4.05
+SCREW_LENGTH = 10  # the M3 screw through the GND ring
 # Two USB cables in the Pi's USB ports, for the speaker and the micro:bit. Seen from the back the Pi
 # 4 lies a quarter turned, its ports along its top: the USB 2.0 pair 9 mm from its right edge to
 # their middle, the USB 3.0 pair 27 (from its drawing). Which ports they are in is a guess: the
@@ -218,15 +227,30 @@ for u in (sl + sh / 2, sl + p["speaker_length"] - sh / 2):
     speaker = speaker.fuse(Part.makeCylinder(sh / 2, p["speaker_depth"], V(DEPTH + speaker_x[0], SIZE - st - sh / 2,
                                                                            SIZE / 2 - u), V(1, 0, 0)))
 speaker = speaker.removeSplitter()
-mf = p["microbit_fit"] / 2
-microbit = back((p["microbit_left"] + mf, p["microbit_left"] + mf + p["microbit_height"]),
-                (p["microbit_top"] + mf, p["microbit_top"] + mf + p["microbit_width"]),
-                (p["holder_plate"] + mf, p["holder_plate"] + mf + p["microbit_thickness"]))
+# The micro:bit: its board with the parts behind it, the holes in rings 0 and GND, and the buttons in front
+ml, mt, mw, mh = p["microbit_left"], p["microbit_top"], p["microbit_width"], p["microbit_height"]
+board_x = p["holder_plate"] + p["microbit_rest"]  # front of the board, behind the frame
+ring_u = ml + p["ring_from_edge"]
+ring_vs = (mt + p["ring_from_end"], mt + mw - p["ring_from_end"])  # GND, ring 0
+microbit = back((ml, ml + mh), (mt, mt + mw), (board_x, board_x + p["microbit_thickness"] - p["microbit_buttons"]))
+for v in ring_vs:
+    microbit = microbit.cut(Part.makeCylinder(RING_HOLE / 2, 20, V(DEPTH + board_x - 1, SIZE - v, SIZE / 2 - ring_u),
+                                              V(1, 0, 0)))
+button_u = ml + mh - BUTTON_AT[1]
+buttons = [back((button_u - BUTTON[1] / 2, button_u + BUTTON[1] / 2), (v - BUTTON[0] / 2, v + BUTTON[0] / 2),
+                (board_x - p["microbit_buttons"], board_x)) for v in (mt + BUTTON_AT[0], mt + mw - BUTTON_AT[0])]
+microbit = microbit.fuse(buttons).removeSplitter()
 fitted = (holder, speaker, microbit)
 masses_on_back = [holder.Volume * PLA, SPEAKER_MASS, MICROBIT_MASS]
 check("holder: the speaker fits its cup, under the lips", overlap(holder, speaker) < TOUCH,
       "%.3f mm3" % overlap(holder, speaker))
-check("holder: the micro:bit fits its pocket", overlap(holder, microbit) < TOUCH)
+check("holder: the micro:bit lies on its posts, the peg through ring 0",
+      overlap(holder, microbit) < TOUCH and microbit.distToShape(holder)[0] < TOUCH)
+gap = min(b.distToShape(holder)[0] for b in buttons)
+check("holder: the micro:bit's buttons clear of the plate and the posts", gap >= 1, "%.1f mm" % gap)
+screw_room = p["holder_plate"] + p["microbit_rest"] - (SCREW_LENGTH - p["microbit_board"])
+check("holder: an M3 x %g screw through the GND ring ends in its post" % SCREW_LENGTH, screw_room >= 0,
+      "%.1f mm short of the frame" % screw_room)
 box = holder.optimalBoundingBox()
 check("holder: within the edges of the panel, so it is not seen from the front",
       box.ZMax <= SIZE / 2 + 1e-6 and box.YMax <= SIZE + 1e-6)
@@ -239,12 +263,13 @@ sleeve = back((cable_u - p["cable_slot"] / 2, cable_u + p["cable_slot"] / 2),
 check("holder: %g mm free below the speaker for its cable" % p["speaker_cable_room"],
       all(overlap(sleeve, a) < TOUCH for a in (holder, panel, power_plug)),
       "%.1f mm above the power plug" % sleeve.distToShape(power_plug)[0])
-plug_v = p["microbit_top"] + mf + p["microbit_width"] / 2
-plug_x = p["holder_plate"] + mf + p["microbit_thickness"] / 2
-plug_u = p["microbit_left"] + mf + p["microbit_height"]
+plug_v = mt + mw / 2
+plug_x = board_x + p["microbit_board"] + USB_PORT_BEHIND
+plug_u = ml + mh
 microbit_plug = back((plug_u, plug_u + MICROBIT_PLUG[0]), (plug_v - MICROBIT_PLUG[1] / 2, plug_v + MICROBIT_PLUG[1] / 2),
                      (plug_x - MICROBIT_PLUG[2] / 2, plug_x + MICROBIT_PLUG[2] / 2))
-check("holder: the micro:bit's USB plug goes out through its slot", overlap(microbit_plug, holder) < TOUCH)
+check("holder: the micro:bit's USB plug clear of the holder", microbit_plug.distToShape(holder)[0] >= 1,
+      "%.1f mm" % microbit_plug.distToShape(holder)[0])
 reach = plug_u + MICROBIT_PLUG[0] - p["pi_from_left"]
 print("     the micro:bit's USB plug, straight, %s" % ("reaches %.1f mm under the edge of the Pi; an angled plug "
                                                      "stays clear" % reach if reach > 0 else
@@ -300,10 +325,9 @@ above_power = holder.common(back(POWER_PLUG[0], (0, POWER_PLUG[1][0]), (-FRAME, 
 room = POWER_PLUG[1][0] - (SIZE - above_power.optimalBoundingBox().YMin)
 check("holder: room for the power cable to bend up under it", room >= 8, "%.1f mm" % room)
 check("holder: on the back of the frame, not in a bar", overlap(holder, panel) < TOUCH)
-microbit_part = holder.common(back((0, SIZE / 2), (p["microbit_top"] - 5, SIZE), (-FRAME, 60)))
 print("     the speaker sticks out %.0f mm behind the frame, the micro:bit %.0f mm, the Pi %.0f mm"
       % (max(box.XMax, speaker.optimalBoundingBox().XMax) - DEPTH,
-         microbit_part.optimalBoundingBox().XMax - DEPTH, pi.optimalBoundingBox().XMax - DEPTH), flush=True)
+         microbit.optimalBoundingBox().XMax - DEPTH, pi.optimalBoundingBox().XMax - DEPTH), flush=True)
 
 # The hinge
 check("hinge: the ring is no wider than the round under the cradle, so it clears the base",
