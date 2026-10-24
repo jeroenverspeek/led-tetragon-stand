@@ -24,17 +24,21 @@
 # Holder: the USB speaker and the micro:bit on the back of the panel, in the
 # left half seen from the back, beside the Pi; one part on three screws: the
 # top left corner hole, the top hole of the middle bar and the middle hole of
-# the left bar. At the top a plate with a cup for the rounded back of the
-# speaker, grille facing backwards, held by a lip along both long sides, with
-# a slot in the bottom for its cable. The plate bridges the frame, so the
-# power cable can run up under it. A strip down the left bar joins it to the
-# pocket for the micro:bit, upright and parallel to the panel, between the
-# power connector and HUB75 IN. The micro:bit slides in from the side edge of
-# the panel; its USB plug, pointing to the Pi through a slot, holds it there.
+# the left bar; the last two are slots, so the screws go in even when the
+# print is a little off. At the top a plate with a cup for the rounded back
+# of the speaker, grille facing backwards, with a lip along both long sides
+# and a slot in the bottom for its cable. A band (a cable tie, rubber band or
+# wire) loops round an eye on both long sides of the cup and over the middle
+# of the grille, and presses the speaker in; notches at both ends let a
+# screwdriver lever it out. The plate bridges the frame, so the power cable
+# can run up under it. A strip down the left bar joins it to the pocket for
+# the micro:bit, upright and parallel to the panel, between the power
+# connector and HUB75 IN. The micro:bit slides in from the side edge of the
+# panel; its USB plug, pointing to the Pi through a slot, holds it there.
 # Prints lying on its plate.
 #
 # Needed: 1 x Base, 1 x Cradle, 1 x Holder; 2 x M5 x 12 countersunk screw,
-# 2 x M5 nut, 3 x M3 x 10 screw.
+# 2 x M5 nut, 3 x M3 x 10 screw, a cable tie or rubber band for the speaker.
 #
 # Run:  freecadcmd build_stand.py   (or ./build.sh)
 # Writes stand.FCStd (parametric: change values in the Params spreadsheet)
@@ -109,6 +113,8 @@ PARAMS = [
     ("pi_gap", 7, "Back of the frame to the solder under the Pi, whose board lies 10 mm behind it"),
     ("pi_depth", 30, "How far the Pi with its hat sticks out behind the frame"),
     ("m3_d", 3.4, "Holes in the holder for its M3 screws"),
+    ("screw_slot", 2, "The holder's holes in the middle bar and the left bar are slots, this much longer each way "
+                      "than a hole: they take up the difference between the frame and the print"),
     ("holder_plate", 3, "Thickness of the plate of the holder, against the back of the frame"),
     ("holder_wall", 1.6, "Walls of the holder"),
     ("speaker_length", 84, "USB speaker: length of its flat grille face, a rectangle with half round ends"),
@@ -122,6 +128,16 @@ PARAMS = [
     ("speaker_cable_at", 33, "Speaker's cable: leaves the bottom side this far from the left end of its face"),
     ("speaker_cable_room", 10, "Speaker's cable: room it needs below the speaker, for its sleeve"),
     ("cable_slot", 8, "Width of the slot in the bottom of the cup for the speaker's cable and its sleeve"),
+    ("band_at", 50, "A band over the middle of the speaker's grille holds it in its cup (a cable tie, rubber band or "
+                    "wire): its middle, from the left, clear of the cable slot"),
+    ("band_width", 6, "Width of the notches in the rim that the band presses the face through, and of the eyes on the "
+                      "outside of the cup that it loops round"),
+    ("band_gap", 2.5, "Eyes for the band: gap between the cup and the bar of an eye, that the band goes through"),
+    ("eye_bar", 3, "Eyes for the band: thickness of the bar, and of the posts that hold it on both sides"),
+    ("eye_height", 8, "Eyes for the band: height of the bar, along the side of the cup"),
+    ("lever_notch", 8, "Notch in the rim at both round ends of the cup, for a screwdriver to lever the speaker out: "
+                       "width"),
+    ("lever_depth", 3, "How far those notches reach below the face of the speaker"),
     ("microbit_width", 51.6, "micro:bit V2: width, the edge with the USB port; upright in its holder"),
     ("microbit_height", 42, "Height of the micro:bit; across in its holder"),
     ("microbit_thickness", 11.65, "Thickness of the micro:bit with its parts on both sides"),
@@ -427,15 +443,62 @@ slot = mm(P["cable_slot"] / 2, "Params.cable_slot / 2")
 cable_u = add(left, mm(P["speaker_cable_at"], "Params.speaker_cable_at"))
 region(holder, "SubtractiveBox", "CableSlot", (PLATE, add(rim, mm(1))),
        (add(cable_u, slot, -1), add(cable_u, slot)), (add(middle, add(r_in, mm(1), -1)), add(middle, add(r_out, mm(1)))))
+# The band: it crosses the face in a notch in the rim on both long sides, 1 mm below the face so it
+# presses the speaker onto the plate, and loops round the bar of an eye on the outside of the cup,
+# 2 mm below the notch. The underside of an eye slopes at 45 degrees, so it prints without support.
+band_u = mm(P["band_at"], "Params.band_at")
+band_half = mm(P["band_width"] / 2, "Params.band_width / 2")
+bar = mm(P["eye_bar"], "Params.eye_bar")
+gap = mm(P["band_gap"], "Params.band_gap")
+reach = add(gap, bar)  # how far an eye stands out from the cup
+notch = add(lips, mm(1), -1)  # bottom of a notch
+eye_top = add(notch, mm(2), -1)
+eye_bottom = add(eye_top, mm(P["eye_height"], "Params.eye_height"), -1)
+lip = mm(P["cup_lip_width"], "Params.cup_lip_width")
+
+
+def xy(x, v):
+    """A corner in the XY plane: x backwards, v from the top."""
+    return x[0], size - v[0], x[1], "Params.panel_size - (%s)" % v[1]
+
+
+for side, sign in (("Top", -1), ("Bottom", 1)):
+    wall = add(middle, r_out, sign)  # outside of the cup
+    inside = add(wall, mm(P["holder_wall"] / 2, "Params.holder_wall / 2"), -sign)
+    outside = add(wall, reach, sign)
+    eye = new_sketch(holder, "Eye%sSketch" % side, "XY_Plane", size / 2 - P["band_at"],
+                     "Params.panel_size / 2 - Params.band_at")
+    pinned_polygon(eye, [xy(eye_top, inside), xy(add(eye_bottom, reach, -1), inside),
+                         xy(add(eye_bottom, reach, -1), wall), xy(eye_bottom, outside), xy(eye_top, outside)])
+    pad(holder, "Eye" + side, eye, "Params.band_width + 2 * Params.eye_bar", symmetric=True)
+    channel = (wall, add(wall, gap, sign))[::sign]
+    region(holder, "SubtractiveBox", "Eye%sChannel" % side, (add(add(eye_bottom, reach, -1), mm(1), -1), add(eye_top, mm(1))),
+           (add(band_u, band_half, -1), add(band_u, band_half)), channel)
+    lips_edge = add(add(middle, r_in, sign), lip, -sign)  # inner edge of the lip on this side
+    region(holder, "SubtractiveBox", "BandNotch" + side, (notch, add(rim, mm(1))),
+           (add(band_u, band_half, -1), add(band_u, band_half)),
+           (add(wall, mm(1), sign), add(lips_edge, mm(1), -sign))[::-sign])
+# notches at both round ends, for a screwdriver to go in beside the speaker and lever it out
+lever = mm(P["lever_notch"] / 2, "Params.lever_notch / 2")
+for side, end, sign in (("Left", ends[0], -1), ("Right", ends[1], 1)):
+    region(holder, "SubtractiveBox", "LeverNotch" + side,
+           (add(lips, mm(P["lever_depth"], "Params.lever_depth"), -1), add(rim, mm(1))),
+           (add(add(end, r_out, sign), mm(1), sign), add(add(end, r_in, sign), mm(1), -sign))[::-sign],
+           (add(middle, lever, -1), add(middle, lever)))
 # where the Pi comes close, only the plate and the rim of the cup stay
 region(holder, "SubtractiveBox", "PiClearance",
        (add(D, mm(P["pi_gap"] - 1, "Params.pi_gap - 1 mm")), add(D, mm(P["pi_depth"] + 1, "Params.pi_depth + 1 mm"))),
        (mm(P["pi_from_left"] - 1, "Params.pi_from_left - 1 mm"), mm(size, "Params.panel_size")),
        (mm(P["pi_from_top"] - 1, "Params.pi_from_top - 1 mm"), mm(size, "Params.panel_size")))
-for name, u, v in (("SideScrewHole", mm(P["side_hole_left"], "Params.side_hole_left"),
-                    mm(P["side_hole_top"], "Params.side_hole_top")),
-                   ("BarScrewHole", mm(size / 2, "Params.panel_size / 2"), mm(P["bar_hole_top"], "Params.bar_hole_top"))):
-    post(holder, "SubtractiveCylinder", name, (add(D, mm(1), -1), add(PLATE, mm(1))), u, v, M3)
+# the screw in the top left corner goes in first and fixes the holder; the hole in the middle bar,
+# 80 mm to the right of it, is a slot from left to right
+THROUGH = (add(D, mm(1), -1), add(PLATE, mm(1)))
+SLOT = mm(P["screw_slot"], "Params.screw_slot")
+post(holder, "SubtractiveCylinder", "SideScrewHole", THROUGH, mm(P["side_hole_left"], "Params.side_hole_left"),
+     mm(P["side_hole_top"], "Params.side_hole_top"), M3)
+bar_u = mm(size / 2, "Params.panel_size / 2")
+stadium(holder, "SubtractiveBox", "BarScrewSlot", THROUGH, (add(bar_u, SLOT, -1), add(bar_u, SLOT)),
+        mm(P["bar_hole_top"], "Params.bar_hole_top"), M3)
 
 # The micro:bit below it, upright, its USB edge towards the Pi
 ml = mm(P["microbit_left"], "Params.microbit_left")
@@ -461,7 +524,11 @@ centre_v = add(mt, mm((P["microbit_width"] + P["microbit_fit"]) / 2,
                       "(Params.microbit_width + Params.microbit_fit) / 2"))
 region(holder, "SubtractiveBox", "UsbSlot", (PLATE, cover),
        (add(pocket_u[1], mm(1), -1), add(outer_u[1], mm(1))), (add(centre_v, usb, -1), add(centre_v, usb)))
-post(holder, "SubtractiveCylinder", "LeftScrewHole", (add(D, mm(1), -1), add(PLATE, mm(1))), screw_u, screw_v, M3)
+# the hole in the left bar, 80 mm below the corner, is a slot from top to bottom
+slot_v = (add(screw_v, SLOT, -1), add(screw_v, SLOT))
+region(holder, "SubtractiveBox", "LeftScrewSlot", THROUGH, (add(screw_u, M3, -1), add(screw_u, M3)), slot_v)
+for i, v in enumerate(slot_v):
+    post(holder, "SubtractiveCylinder", "LeftScrewSlotEnd%d" % (i + 1), THROUGH, screw_u, v, M3)
 
 doc.recompute()
 

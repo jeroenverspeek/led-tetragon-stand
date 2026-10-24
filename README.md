@@ -11,7 +11,7 @@ panel is in [led-tetragon](https://github.com/jeroenverspeek/led-tetragon).
 
 Print 1 x `base.stl`, 1 x `cradle.stl` (lying on its floor) and 1 x
 `holder.stl` (lying on its plate). Also needed: 2 x M5 x 12 countersunk
-screw, 2 x M5 nut and 3 x M3 x 10 screw.
+screw, 2 x M5 nut, 3 x M3 x 10 screw and a cable tie for the speaker.
 
 The model is made in FreeCAD 1.x from `build_stand.py`; all dimensions are in
 the `Params` spreadsheet in `stand.FCStd`. Run `./build.sh` to build, check

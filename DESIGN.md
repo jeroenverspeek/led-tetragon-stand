@@ -27,10 +27,19 @@ degrees) is the default and a good viewing angle on a desk.
   by hand but stays where it is put.
 - `Holder`: one part on three M3 x 10 screws, in the left half seen from the
   back, beside the Pi: the top left corner hole, the top hole of the middle
-  bar and the middle hole of the left bar. Prints lying on its plate.
+  bar and the middle hole of the left bar. Prints lying on its plate. Only
+  the corner hole is round; the other two, 80 mm from it, are slots, 2 mm
+  longer each way (`screw_slot`): the one in the middle bar from left to
+  right, the one in the left bar from top to bottom. They take up what the
+  print and the measurements from the photo are off: with three round holes
+  the third screw did not go in on the first print.
   - Speaker at the top, grille facing backwards, 5 mm from the left so its
     rounded end stays clear of the Pi: a cup on the plate for its rounded
-    back, held by a lip along both long sides. The cable leaves the speaker's
+    back, with a lip along both long sides. The lips alone left it loose, so
+    a cable tie loops through an eye on both long sides of the cup and twice
+    over the middle of the grille, in a notch 1 mm below the face, and
+    presses it onto the plate. A notch at both round ends lets a screwdriver
+    lever it out. The cable leaves the speaker's
     bottom side, 33 mm from its left end, through a slot in the bottom of the
     cup, with 10 mm free below it for its sleeve, 2 mm above the power plug.
     The plate bridges the frame, so the power cable, leaving the power plug
@@ -52,7 +61,8 @@ only 4 to 6 mm apart, and a loose prop against the back of the panel slides
 unless it is fixed to the panel.
 
 Hardware: 2 x M5 x 12 countersunk screw (90 degree head, any drive), 2 x M5
-nut, 3 x M3 x 10 screw. Put the nuts in their pockets before the panel goes
+nut, 3 x M3 x 10 screw, 1 cable tie for the speaker (at most 4.8 mm wide,
+at least 200 mm long). Put the nuts in their pockets before the panel goes
 in.
 
 All black (black oxide steel):
@@ -83,3 +93,19 @@ On AliExpress the length is chosen per listing; check that it is the 12 or
 | `photos/` | Photos of the back of the panel, and `grid.py` to measure from them (see `PANEL.md`) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
+
+## To do
+
+- micro:bit: it lies loose in its pocket. Plan: no pocket, but fixed from
+  the back, LEDs still towards the panel: an M3 x 10 screw through the GND
+  ring into a post on the plate, a printed peg through ring 0 (no metal:
+  rings 0, 1 and 2 are touch inputs; the black oxide screws conduct) and
+  rests under the USB edge. In the pocket a post under the GND ring would
+  be in the way of button B when it slides in. Needed first, from two
+  photos in `photos/`: the front, flattened with Genius Scan to the board
+  (51.6 x 42), for the distance between rings 0 and GND and from a ring to
+  the edge; and one from the side, level with the board with a ruler next
+  to it, for how far the buttons stick out. `grid.py` measures only square
+  photos now: give it a width and a height.
+- Holder slots: the third hole of the first print was 1.5 mm off, so make
+  `screw_slot` 2.5 mm.

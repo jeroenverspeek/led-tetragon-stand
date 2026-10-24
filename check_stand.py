@@ -294,7 +294,9 @@ for name, plug in (("power plug", power_plug), ("HUB75 IN plug", hub75_plug)):
     check("holder: clear of the %s" % name, gap >= 1, "%.1f mm" % gap)
 room = HUB75_IN_PLUG[1][0] - (SIZE - box.YMin)
 check("holder: room for the HUB75 ribbon to bend up over it", room >= RIBBON_ROOM, "%.1f mm" % room)
-above_power = holder.common(back(POWER_PLUG[0], (0, POWER_PLUG[1][0]), (-FRAME, 60)))
+# the cable bends from the top of the plug towards the panel, under the plate: only what is within
+# the plug's depth and a cable's thickness is in its way, not the eye for the speaker's band further back
+above_power = holder.common(back(POWER_PLUG[0], (0, POWER_PLUG[1][0]), (-FRAME, POWER_PLUG[2] + CABLE)))
 room = POWER_PLUG[1][0] - (SIZE - above_power.optimalBoundingBox().YMin)
 check("holder: room for the power cable to bend up under it", room >= 8, "%.1f mm" % room)
 check("holder: on the back of the frame, not in a bar", overlap(holder, panel) < TOUCH)

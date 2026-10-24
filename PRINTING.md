@@ -7,7 +7,12 @@ used for the [led-hexahedron-stand](https://github.com/jeroenverspeek/led-hexahe
 
 - Creality Ender 3 v2. The bed is 220 x 220 mm; the model takes 220 x 200 mm
   as usable (`BED` in `check_stand.py`), 220 from left to right.
-- Sliced with Ultimaker Cura.
+- Sliced with Ultimaker Cura. Use the printer "Creality Ender-3 V2", or set
+  Printer width (X) to 220 mm under Preferences > Printers > Machine
+  Settings. The combined profile "Creality Ender-3 / Ender-3 v2" takes the
+  bed as 235 mm wide and centres the base on X = 117.5, so it reaches X =
+  226; the v2 stops a few mm short of that and does not print what lies
+  beyond. The first base lost the outer 3 mm of a cheek that way.
 - PLA: bed 60 °C, nozzle 200 °C.
 
 ## Layer height
@@ -52,5 +57,10 @@ wider than 220 mm.
   reaches into the panel.
 - Tighten the hinge screws so that the panel turns by hand but stays where
   it is put.
-- Fix the holder with three M3 x 10 screws: in the top left corner hole, the
-  top hole of the middle bar and the middle hole of the left bar.
+- Fix the holder with three M3 x 10 screws: first in the top left corner
+  hole (the round one), then the top hole of the middle bar and the middle
+  hole of the left bar (the slots). Leave them loose until all three are in.
+- The speaker: press it into its cup, then loop a cable tie (at most 4.8 mm
+  wide) through both eyes and twice over the grille, in the notches, and
+  pull it tight. To take it out, cut the tie and lever the speaker out with
+  a screwdriver in a notch at one of its ends.
