@@ -84,6 +84,8 @@ PARAMS = [
     ("hinge_radius", 10, "Radius of the rounded corner under the back wall, round the hinge axis"),
     ("ring_d", 18, "Raised ring round the hinge on the outside of each ear: diameter, at most 2 x hinge_radius"),
     ("ring_height", 1, "How far that ring stands out: the only place where an ear touches its cheek"),
+    # The printed base came out with 1 mm in total between the rings and the cheeks, not 0.6; an M5 spring
+    # washer at one end takes it up (see PANEL.md). A reprint without the washer needs less play; not tried.
     ("hinge_play", 0.3, "Space between each ring and its cheek, so the cradle goes in between the cheeks; "
                         "tightening the screw bends the cheek onto the ring"),
     ("bolt_d", 5.4, "Hole for a hinge screw (M5)"),

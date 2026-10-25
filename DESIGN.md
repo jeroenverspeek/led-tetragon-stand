@@ -25,7 +25,11 @@ degrees) is the default and a good viewing angle on a desk.
   flush. The rings have 0.3 mm play between the cheeks (`hinge_play`), so the
   cradle goes in; tightening the screw bends the cheek onto its ring, and
   that friction holds the angle. Set it once with a key or screwdriver so
-  the panel turns by hand but stays where it is put.
+  the panel turns by hand but stays where it is put. On the printed stand
+  the rings had 1 mm of play in total instead of 0.6, and with the screws
+  tight the panel still fell flat: an open M5 spring washer (1.5 mm)
+  between the ring and the cheek at one end takes up the play. Tighten the
+  screws firmly; the washer keeps pressing as the PLA gives way.
 - `Holder`: one part on three M3 x 10 screws, in the left half seen from the
   back, beside the Pi: the top left corner hole, the top hole of the middle
   bar and the middle hole of the left bar. Prints lying on its plate. Only
@@ -65,7 +69,7 @@ only 4 to 6 mm apart, and a loose prop against the back of the panel slides
 unless it is fixed to the panel.
 
 Hardware: 2 x M5 x 12 countersunk screw (90 degree head, any drive), 2 x M5
-nut, 4 x M3 x 10 screw (3 for the holder, 1 for the micro:bit), 1 cable tie for the speaker (at most 4.8 mm wide,
+nut, 1 x M5 spring washer for the hinge, 4 x M3 x 10 screw (3 for the holder, 1 for the micro:bit), 1 cable tie for the speaker (at most 4.8 mm wide,
 at least 200 mm long). Put the nuts in their pockets before the panel goes
 in.
 
@@ -75,6 +79,7 @@ All black (black oxide steel):
 |---|---|---|
 | 2 x hinge screw | M5 x 12 countersunk hex socket, DIN 7991, 10.9 or 12.9; 3 mm key. Not aluminium, too soft. | [RS PRO 0281467](https://benl.rs-online.com/web/p/socket-screws/0281467), [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-countersunk-hex-socket-black-DIN7991.html) |
 | 2 x nut | M5 hex nut, DIN 934: 8 across the flats, 4 thick. Not a nylon insert nut, too thick for the 4.2 mm pocket. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-hex-nut-black-DIN934.html) |
+| 1 x hinge washer | M5 spring washer (split ring), DIN 127. Between a ring and its cheek, at one end; the one on the printed stand is 1.5 mm. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M5-spring-washer-black-DIN127.html) |
 | 4 x holder screw | M3 x 10 socket head cap, DIN 912, 12.9; 2.5 mm key. | [AliExpress](https://nl.aliexpress.com/w/wholesale-M3-socket-head-cap-screw-black-DIN912.html) |
 
 On AliExpress the length is chosen per listing; check that it is the 12 or

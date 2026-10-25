@@ -63,8 +63,12 @@ its first layer, they snap off afterwards.
   before the panel goes in.
 - The hinge screws are M5 x 12 countersunk; cut a longer one to 12 mm, or it
   reaches into the panel.
-- Tighten the hinge screws so that the panel turns by hand but stays where
-  it is put.
+- Put the M5 spring washer on one hinge screw, between the ring on the ear
+  and the cheek, when the cradle goes in between the cheeks. Without it the
+  rings have 1 mm of play in total and the panel falls flat however tight
+  the screws are.
+- Tighten the hinge screws firmly, so that the panel turns by hand but stays
+  where it is put. If it starts to slip later, turn them a little further.
 - Fix the holder with three M3 x 10 screws: first in the top left corner
   hole (the round one), then the top hole of the middle bar and the middle
   hole of the left bar (the slots). Leave them loose until all three are in.

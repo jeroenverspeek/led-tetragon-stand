@@ -183,6 +183,13 @@ All on the left half, seen from the back.
   screws are M5 x 12: the end lies flush with the inside of the ear. A longer
   one reaches into the panel (a 19 mm one by 7 mm), so cut it to 12 mm. Making
   cheek and ear thicker instead would make the base too wide for the bed.
+- The hinge on the printed stand: 1 mm in total between the rings and the
+  cheeks instead of the modelled 0.6 (`hinge_play` 0.3 a side). Tightening
+  the screws did not bend the cheeks onto the rings, and the panel fell
+  flat. An open M5 spring washer of 1.5 mm between a ring and its cheek at
+  one end takes up the play; with the screws tight the panel holds its
+  angle. At that end the screw ends about 1.5 mm short of the inside of the
+  ear, still about 2.5 mm into the nut. Do not add a second washer there.
 
 ## Still guessed
 
