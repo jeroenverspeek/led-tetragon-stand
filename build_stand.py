@@ -50,20 +50,18 @@
 
 import math
 import os
+import sys
 
 import Draft
 import FreeCAD as App
-import MeshPart
-import Part
-import Sketcher
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from stand_lib import check_built, font, make_params, new_sketch, pad, pinned_polygon, primitive, write_stl  # noqa: E402
+
 V = App.Vector
 
-# Text on the base, and the font for it: the first file that exists (as on the cube's stand)
-TEXT = "Led Tetragon"
-FONTS = [os.path.expanduser("~/.fonts/segoescb.ttf"), "/run/media/jeroen/OS/Windows/Fonts/segoescb.ttf",
-         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
+TEXT = "Led Tetragon"  # on the base
 
 # alias, value in mm, meaning
 PARAMS = [
@@ -186,84 +184,8 @@ CI = "(%s + Params.ring_height + Params.hinge_play)" % OUT
 ph = P["base_thickness"] + P["base_gap"] + P["hinge_radius"]  # height of the hinge axis
 PH = "(Params.base_thickness + Params.base_gap + Params.hinge_radius)"
 
-ORIGIN = (-1, 1)  # sketch origin point
-H_AXIS, V_AXIS = -1, -2
 ALONG_Y = App.Rotation(V(1, 0, 0), -90)  # turns a cylinder or prism from along z to along y
 POINT_UP = App.Rotation(V(0, 0, 1), 30)  # turns a hex so that a corner, not a flat, points along y
-
-
-def new_sketch(body, name, plane, z=0, z_expression=None):
-    sketch = body.newObject("Sketcher::SketchObject", name)
-    support = next(f for f in body.Origin.OriginFeatures if f.Role == plane)
-    sketch.AttachmentSupport = [(support, "")]
-    sketch.MapMode = "FlatFace"
-    sketch.AttachmentOffset = App.Placement(V(0, 0, z), App.Rotation())
-    if z_expression:
-        sketch.setExpression("AttachmentOffset.Base.z", z_expression)
-    return sketch
-
-
-def dimension(sketch, constraint, name, expression):
-    """Add a dimension that follows the Params spreadsheet."""
-    sketch.renameConstraint(sketch.addConstraint(constraint), name)
-    sketch.setExpression("Constraints." + name, expression)
-
-
-def pinned_polygon(sketch, corners, arcs=()):
-    """A closed outline whose corners are each held at (x, y), given as (x, y, x expression, y expression).
-    An expression gives the distance from the axis, so it is never negative; None means on the axis.
-    `arcs` maps i to (cx, cy, cx expression): the side from corner i to the next is then an arc round
-    (cx, cy), anticlockwise, instead of a straight line."""
-    n = len(corners)
-    arcs = dict(arcs)
-    for i in range(n):
-        start, end = V(*corners[i][:2]), V(*corners[(i + 1) % n][:2])
-        if i in arcs:
-            centre = V(*arcs[i][:2])
-            sketch.addGeometry(Part.ArcOfCircle(Part.Circle(centre, V(0, 0, 1), (start - centre).Length),
-                                                math.atan2(start.y - centre.y, start.x - centre.x),
-                                                math.atan2(end.y - centre.y, end.x - centre.x)))
-        else:
-            sketch.addGeometry(Part.LineSegment(start, end))
-    for i in range(n):
-        sketch.addConstraint(Sketcher.Constraint("Coincident", i, 2, (i + 1) % n, 1))
-    for i, (x, y, x_expression, y_expression) in enumerate(corners):
-        for axis, value, expression, line in (("X", x, x_expression, V_AXIS), ("Y", y, y_expression, H_AXIS)):
-            name = "corner%d_%s" % (i, axis.lower())
-            if expression is None:
-                sketch.addConstraint(Sketcher.Constraint("PointOnObject", i, 1, line))
-            elif value >= 0:
-                dimension(sketch, Sketcher.Constraint("Distance" + axis, *ORIGIN, i, 1, value), name, expression)
-            else:
-                dimension(sketch, Sketcher.Constraint("Distance" + axis, i, 1, *ORIGIN, -value), name, expression)
-    for i, (cx, _, cx_expression) in arcs.items():
-        # both ends are held already, so the place of the centre across fixes the arc
-        dimension(sketch, Sketcher.Constraint("DistanceX", *ORIGIN, i, 3, cx), "arc%d_centre_x" % i, cx_expression)
-
-
-def pad(body, name, sketch, length_expression, symmetric=False, reversed_=False):
-    feature = body.newObject("PartDesign::Pad", name)
-    feature.Profile = sketch
-    feature.setExpression("Length", length_expression)
-    if symmetric:
-        feature.SideType = "Symmetric"
-    feature.Reversed = reversed_
-    return feature
-
-
-def primitive(body, kind, name, sizes, at, turn=App.Rotation()):
-    """A PartDesign primitive. `sizes` maps a property to (value, expression); `at` is three
-    (value, expression) pairs for its place, an expression None meaning a fixed value."""
-    feature = body.newObject("PartDesign::" + kind, name)
-    for prop, (value, expression) in sizes.items():
-        setattr(feature, prop, value)
-        if expression:
-            feature.setExpression(prop, expression)
-    feature.Placement = App.Placement(V(*(value for value, _ in at)), turn)
-    for axis, (_, expression) in zip("xyz", at):
-        if expression:
-            feature.setExpression("Placement.Base." + axis, expression)
-    return feature
 
 
 def hexagon(body, kind, name, across_flats, af_expression, height, height_expression, at, turn):
@@ -274,13 +196,7 @@ def hexagon(body, kind, name, across_flats, af_expression, height, height_expres
 
 doc = App.newDocument("stand")
 
-params = doc.addObject("Spreadsheet::Sheet", "Params")
-for row, (alias, value, meaning) in enumerate(PARAMS, start=1):
-    params.set("A%d" % row, alias)
-    params.set("B%d" % row, "%g mm" % value)
-    params.set("C%d" % row, meaning)
-    params.setAlias("B%d" % row, alias)
-doc.recompute()
+make_params(doc, PARAMS)
 
 ###########################
 # Cradle
@@ -365,8 +281,7 @@ for side, sign in (("Right", 1), ("Left", -1)):
               App.Rotation(V(1, 0, 0), -90 * sign))  # widens outwards
 
 # The name, sunk into the plate in front of the panel and readable from the front
-font = next(f for f in FONTS if os.path.exists(f))
-letters = Draft.make_shapestring(TEXT, font, P["text_size"])
+letters = Draft.make_shapestring(TEXT, font(), P["text_size"])
 letters.Label = "Text"
 letters.Justification = "Middle-Center"
 letters.setExpression("Size", "Params.text_size")
@@ -556,30 +471,8 @@ for i, v in enumerate(slot_v):
 
 doc.recompute()
 
-for obj in doc.Objects:
-    if obj.isDerivedFrom("Sketcher::SketchObject") and not obj.FullyConstrained:
-        print("%s is not fully constrained" % obj.Name, flush=True)
-        raise SystemExit(1)
-    if obj.State and "Invalid" in obj.State:
-        print("%s did not build" % obj.Name, flush=True)
-        raise SystemExit(1)
-
+check_built(doc)
 doc.saveAs(os.path.join(HERE, "stand.FCStd"))
-for part, stl in ((base, "base.stl"), (cradle, "cradle.stl"), (holder, "holder.stl")):
-    shape = part.Shape
-    if not shape.isValid() or len(shape.Solids) != 1:
-        print("%s is not a single valid solid" % part.Name, flush=True)
-        raise SystemExit(1)
-    if part is cradle:  # printed lying on its floor
-        shape = shape.copy()
-        shape.rotate(V(), V(1, 0, 0), 90)
-        shape.translate(V(0, 0, -shape.optimalBoundingBox().ZMin))
-    if part is holder:  # printed lying on its plate
-        shape = shape.copy()
-        shape.rotate(V(), V(0, 1, 0), -90)
-        shape.translate(V(0, 0, -shape.optimalBoundingBox().ZMin))
-    mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.02, AngularDeflection=0.2)
-    mesh.write(os.path.join(HERE, stl))
-    box = shape.optimalBoundingBox()
-    print("%s %.2f x %.2f x %.2f mm, %.2f cm3" % (stl, box.XLength, box.YLength, box.ZLength, shape.Volume / 1000),
-          flush=True)
+write_stl("Base", base.Shape, os.path.join(HERE, "base.stl"))
+write_stl("Cradle", cradle.Shape, os.path.join(HERE, "cradle.stl"), V(1, 0, 0), 90)  # lying on its floor
+write_stl("Holder", holder.Shape, os.path.join(HERE, "holder.stl"), V(0, 1, 0), -90)  # lying on its plate

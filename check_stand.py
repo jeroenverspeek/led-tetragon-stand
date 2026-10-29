@@ -12,14 +12,18 @@
 
 import math
 import os
+import sys
 
 import FreeCAD as App
 import Part
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from stand_lib import (PLA, TOUCH, bed_fit, centre, check, overlap, placed, preview_leds, read_params,  # noqa: E402
+                       summary)
+
 V = App.Vector
 BED = (220, 200)  # usable print bed in mm
-TOUCH = 1e-6
 
 ANGLES = (60, 75, 90)  # panel to the table, in degrees, from leaning far back to upright
 PREVIEW_ANGLE = 75
@@ -84,30 +88,14 @@ USB_C_X = 10 + 3.3
 USB_C_PLUG = (12, 7, 25)
 SPEAKER_MASS = 74  # g
 MICROBIT_MASS = 10  # g, with the end of its cable
-PLA = 1.24 / 1000  # g/mm3; a printed part weighs less, so the stand is lighter than this
 TIP_MARGIN = 15  # mm, the centre of mass stays at least this far inside the base
-# Shown on the panel in the preview, in a 5 x 7 font, each dot of it 2 x 2 LEDs
+# Shown on the panel in the preview, each dot of the font 2 x 2 LEDs
 PREVIEW_TEXT = ("Hello", "world")
-FONT = {
-    "H": ("10001", "10001", "10001", "11111", "10001", "10001", "10001"),
-    "e": ("00000", "00000", "01110", "10001", "11111", "10000", "01110"),
-    "l": ("01100", "00100", "00100", "00100", "00100", "00100", "01110"),
-    "o": ("00000", "00000", "01110", "10001", "10001", "10001", "01110"),
-    "w": ("00000", "00000", "10001", "10001", "10101", "10101", "01010"),
-    "r": ("00000", "00000", "10110", "11001", "10000", "10000", "10000"),
-    "d": ("00001", "00001", "01101", "10011", "10001", "10001", "01111"),
-}
 LEDS = 64  # LEDs along an edge of the panel
 
 doc = App.openDocument(os.path.join(HERE, "stand.FCStd"))
 doc.recompute()
-params = doc.getObject("Params")
-p = {}  # every parameter by its alias, in mm
-row = 1
-while params.getContents("A%d" % row):
-    alias = params.getContents("A%d" % row).lstrip("'")
-    p[alias] = getattr(params, alias).Value
-    row += 1
+p = read_params(doc)  # every parameter by its alias, in mm
 SIZE, DEPTH, FIT = p["panel_size"], p["panel_depth"], p["panel_fit"]
 HW = SIZE / 2 + FIT
 XBO = DEPTH + FIT + p["back_thickness"]
@@ -119,41 +107,6 @@ PH = p["base_thickness"] + p["base_gap"] + p["hinge_radius"]  # height of the hi
 cradle = doc.getObject("Cradle").Shape
 base = doc.getObject("Base").Shape
 holder = doc.getObject("Holder").Shape
-
-failures = []
-
-
-def check(name, ok, detail=""):
-    print("%-4s %s %s" % ("ok" if ok else "FAIL", name, detail), flush=True)
-    if not ok:
-        failures.append(name)
-
-
-def placed(shape, placement):
-    copy = shape.copy()
-    copy.Placement = placement.multiply(copy.Placement)
-    return copy
-
-
-def centre(shape):
-    """Centre of mass of a solid or of a compound of solids."""
-    solids = shape.Solids
-    return sum((solid.CenterOfMass * solid.Volume for solid in solids), V()) / sum(solid.Volume for solid in solids)
-
-
-def overlap(a, b):
-    return a.common(b).Volume if a.BoundBox.intersect(b.BoundBox) else 0.0
-
-
-def bed_fit(box):
-    """How the part fits the bed lying as modelled: 'straight', 'turned N degrees' or ''."""
-    for degrees in range(0, 91):
-        turn = math.radians(degrees)
-        if (box.XLength * math.cos(turn) + box.YLength * math.sin(turn) <= BED[0]
-                and box.XLength * math.sin(turn) + box.YLength * math.cos(turn) <= BED[1]):
-            return "straight" if degrees == 0 else "turned %d degrees" % degrees
-    return ""
-
 
 def on_base(angle):
     """Where the cradle (in the panel's frame: x backwards from the front of the panel, y up from
@@ -392,26 +345,11 @@ holder_lying = holder.copy()
 holder_lying.rotate(V(), V(0, 1, 0), -90)  # on its plate
 for name, shape in (("cradle", cradle_lying), ("base", base), ("holder", holder_lying)):
     box = shape.optimalBoundingBox()
-    fit = bed_fit(box)
+    fit = bed_fit(box, BED)
     check("print: %s fits the bed" % name, bool(fit), "%.1f x %.1f mm, %s" % (box.XLength, box.YLength, fit))
 
-# The lit LEDs for the preview: PREVIEW_TEXT in the middle of the panel, in the panel's frame
-pitch = SIZE / LEDS
-# each line as 7 rows of font dots, one empty font column between the letters
-lines = [[" ".join(FONT[ch][row] for ch in line) for row in range(7)] for line in PREVIEW_TEXT]
-height = 2 * (7 * len(lines) + 2 * (len(lines) - 1))  # in LEDs, 2 empty font rows between the lines
-width = 2 * max(len(rows[0]) for rows in lines)
+leds, (width, height) = preview_leds(PREVIEW_TEXT, SIZE, LEDS, 2)
 check("preview: the text fits the panel", height <= LEDS and width <= LEDS, "%d x %d LEDs" % (width, height))
-leds = []
-for n, rows in enumerate(lines):
-    for row, dots in enumerate(rows):
-        for col, dot in enumerate(dots):
-            for dy in range(2 if dot == "1" else 0):
-                for dx in range(2):
-                    left = (LEDS - 2 * len(dots)) // 2 + 2 * col + dx  # LEDs from the left
-                    top = (LEDS - height) // 2 + 2 * (9 * n + row) + dy  # LEDs from the top
-                    leds.append(Part.makeBox(0.4, 0.8 * pitch, 0.8 * pitch,
-                                             V(-0.4, SIZE - (top + 0.9) * pitch, -SIZE / 2 + (left + 0.1) * pitch)))
 
 # preview document
 preview = App.newDocument("stand_preview")
@@ -436,4 +374,4 @@ for i, s in enumerate(screws):
 preview.recompute()
 preview.saveAs(os.path.join(HERE, "stand_preview.FCStd"))
 
-print("%d checks failed" % len(failures) if failures else "all checks passed", flush=True)
+summary()
