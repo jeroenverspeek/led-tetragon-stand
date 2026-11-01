@@ -64,6 +64,7 @@ M3_HEAD = (5.5, 3)  # diameter, height
 # The screws of the converter: M3 x 10 with a small washer (DIN 433: 6 across, 0.5 thick)
 CONVERTER_SCREW = 10
 WASHER = (6, 0.5)
+PANEL_SCREW = 10  # M3 x 10 through the back wall into the panel
 # The plugs on the panel, the only ones that matter being those in use: a HUB75 plug is 2 mm bigger
 # all round than its header and 12 high, a power plug 8 high (from the 64 x 64)
 HUB75_US = (93, 125)
@@ -299,6 +300,25 @@ check("cables: the USB cables clear of the converter", far >= 1, "%.1f mm" % far
 check("converter: clear of the channel", converter.BoundBox.XMin >= channel.XMax + 1,
       "%.1f mm" % (converter.BoundBox.XMin - channel.XMax))
 far = min(converter.distToShape(s)[0] for s in (panel, placed(holder, spot), placed(pi, spot)))
+# The two screws through the back wall into the outer inserts of the panel's bottom edge
+wall_back = DEPTH + FIT + p["back_thickness"]
+screw_z = SIZE / 2 - p["panel_screw_along"]
+holes = [placed(Part.makeCylinder(p["panel_screw_d"] / 2, p["back_thickness"], V(DEPTH + FIT, p["insert_edge"], s * screw_z),
+                                  V(1, 0, 0)), spot) for s in (-1, 1)]
+panel_heads = [placed(Part.makeCylinder(M3_HEAD[0] / 2, M3_HEAD[1], V(wall_back, p["insert_edge"], s * screw_z), V(1, 0, 0)), spot)
+               for s in (-1, 1)]
+check("panel screws: the holes go right through the back wall", max(h_.common(stand).Volume for h_ in holes) < TOUCH)
+check("panel screws: their heads lie on the back wall",
+      M3_HEAD[0] / 2 <= p["back_height"] - p["insert_edge"] and M3_HEAD[0] > p["panel_screw_d"],
+      "head %g mm, hole %g mm" % (M3_HEAD[0], p["panel_screw_d"]))
+in_insert = PANEL_SCREW - p["back_thickness"] - FIT
+check("panel screws: reach into the inserts, no deeper than the holder's", 4 <= in_insert <= PANEL_SCREW - PLATE,
+      "%.1f mm" % in_insert)
+far = min(h_.distToShape(converter)[0] for h_ in panel_heads)
+check("panel screws: the heads clear of the converter", far >= 5, "%.1f mm" % far)
+far = min(h_.BoundBox.YMin for h_ in panel_heads) - BT
+check("panel screws: the heads clear of the plate", far >= 3, "%.1f mm" % far)
+check("panel screws: clear of the holder", min(holder.distToShape(Part.makeCylinder(M3_HEAD[0] / 2, PANEL_SCREW, V(DEPTH - in_insert, p["insert_edge"], s * screw_z), V(1, 0, 0)))[0] for s in (-1, 1)) >= 1)
 check("converter: well below the panel and what is on its back", far >= 5, "%.1f mm" % far)
 check("converter: stays on the base", p["converter_front"] + cw <= p["base_back"] - 1
       and cl / 2 <= SIZE / 2, "%.0f mm behind it" % (p["base_back"] - p["converter_front"] - cw))

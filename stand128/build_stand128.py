@@ -12,6 +12,8 @@
 # front of the panel. Behind the channel the 48 -> 5 V converter is screwed
 # through the four U-shaped slots in its flanges onto four posts on the
 # plate, in the middle, with room at both ends for the wires of its terminals.
+# Two M3 screws through the back wall go into the two outer brass inserts of
+# the bottom edge of the panel, so a touch does not push it out of the channel.
 #
 # The stand is 249 mm wide: in one piece on the Bambu Lab X2D (256 x 256 mm),
 # in two halves on the Ender 3 v2, glued. The joint goes across between the
@@ -64,6 +66,9 @@ PARAMS = [
     ("back_height", 28, "How far the back wall reaches up the back of the panel; the connectors start 47 from an "
                         "edge"),
     ("back_thickness", 4, "Thickness of the back wall"),
+    ("panel_screw_d", 4, "Holes in the back wall for the two M3 screws into the panel: wide, as printed holes come "
+                         "out small and the inserts are only measured from a photo"),
+    ("panel_screw_along", 39, "Those holes, at the two outer inserts of the bottom edge: from the ends of that edge"),
     ("ear_thickness", 4, "Thickness of the ears at both ends of the channel, which keep the panel in the middle"),
     ("ear_front_height", 16, "Height of an ear at its front, beside the panel; its top slopes up from there to the "
                              "top of the back wall"),
@@ -258,6 +263,22 @@ for i, (front_back, side) in enumerate(((-1, -1), (-1, 1), (1, -1), (1, 1))):
     primitive(stand, "SubtractiveCylinder", "ConverterTap%d" % (i + 1),
               {"Radius": (P["m3_tap_d"] / 2, "Params.m3_tap_d / 2"), "Height": (post_top - 0.5, POST_TOP + " - 0.5 mm")},
               [at_x, (0.5, "0.5 mm"), at_z], ALONG_Y)
+
+# Two holes through the back wall, square to it, for the screws that hold the panel: at the two outer
+# inserts of its bottom edge, left and right of the converter
+ACROSS_WALL = App.Rotation(V(0, 0, -1), P["tilt"]).multiply(App.Rotation(V(0, 1, 0), 90))
+for i, side in enumerate((-1, 1)):
+    z = P["panel_size"] / 2 - P["panel_screw_along"]
+    across, up = xb - 1, P["insert_edge"]
+    primitive(stand, "SubtractiveCylinder", "PanelScrew%d" % (i + 1),
+              {"Radius": (P["panel_screw_d"] / 2, "Params.panel_screw_d / 2"),
+               "Height": (P["back_thickness"] + 2, "Params.back_thickness + 2 mm")},
+              [(across * math.cos(tilt) + up * math.sin(tilt),
+                "(%s - 1 mm) * cos(Params.tilt) + Params.insert_edge * sin(Params.tilt)" % XB),
+               (h - across * math.sin(tilt) + up * math.cos(tilt),
+                "%s - (%s - 1 mm) * sin(Params.tilt) + Params.insert_edge * cos(Params.tilt)" % (H, XB)),
+               (side * z, "%s(Params.panel_size / 2 - Params.panel_screw_along)" % ("" if side > 0 else "-"))],
+              ACROSS_WALL)
 
 doc.recompute()
 check_built(doc)

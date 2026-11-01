@@ -3,7 +3,8 @@
 A second stand, for a 128 x 128 LED panel of 24 x 24 cm, built on the cradle of
 the stand for the 64 x 64 panel ([stand64/DESIGN.md](../stand64/DESIGN.md)). The panel leans back
 at a fixed angle: 15 degrees from upright, 75 degrees to the table, the
-default of the 64 x 64 stand. No hinge and no screws.
+default of the 64 x 64 stand. There is no hinge; two screws through the back wall
+hold the panel in the channel.
 
 ## Design
 
@@ -14,6 +15,13 @@ One part, `Stand`:
   wall up the back of the panel, and an ear at both ends, its top sloping up
   from the front to the top of the back wall. The ears keep the panel in the
   middle (0.5 mm play at each side and behind it, `panel_fit`).
+- Two holes through the back wall, for M3 x 10 screws into the two outer brass
+  inserts of the bottom edge of the panel: 10 mm above the floor and 39 mm from the
+  ends of that edge (`panel_screw_along`), 4 mm across (`panel_screw_d`) because
+  printed holes come out small. Standing in the channel by itself, with only the
+  0.5 mm lip in front, the panel fell out at one touch. The inserts lie the same on
+  all four sides, so this works whichever way up it stands, and the holder does
+  not use these two. The middle insert of that edge lies behind the converter.
 - The channel is built tilted back by `tilt` (15 degrees) onto the base plate.
   The back corner of its floor lies on the plate; the space under the floor,
   about 5 mm deep at the front, is filled. So it prints lying on its plate
@@ -181,7 +189,7 @@ See [PRINTING.md](../PRINTING.md): `stand128.stl` on the X2D, or
 `stand128_left.stl` and `stand128_right.stl` on the Ender and glued; and
 `holder128.stl` on the X2D.
 
-Hardware for the holder: 4 x M3 x 10 screw (3 for the holder, 1 for the
+Hardware for the panel: 2 x M3 x 10 screw. Hardware for the holder: 4 x M3 x 10 screw (3 for the holder, 1 for the
 micro:bit), 4 x M2.5 screw or the spacers of the Pi, 1 cable tie for the speaker
 (at most 4.8 mm wide, at least 200 mm long). For the converter: 4 x M2.5 x 10
 screw (see "The converter") and 4 washers of at most 8 mm across: the body of the

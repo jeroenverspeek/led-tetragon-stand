@@ -4,7 +4,8 @@
 
 A 3D-printed stand for a 128 x 128 LED panel of 24 x 24 cm: the same channel as
 the cradle of the [64 x 64 stand](../stand64/README.md), but built onto its base
-at a fixed 75 degrees (leaning back 15 degrees), in one part without screws.
+at a fixed 75 degrees (leaning back 15 degrees), in one part, with two screws
+through its back wall into the panel.
 
 Print `stand128.stl` in one piece on the Bambu Lab X2D, or `stand128_left.stl`
 and `stand128_right.stl` on the Ender 3 v2 and glue them; dovetails hold them in

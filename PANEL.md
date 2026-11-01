@@ -247,7 +247,8 @@ flattened photo, in mm from the left and the top.
   the bottom. They can be sawn off.
 - Brass inserts, 12, in the rim, 10 from the edge: on each of the four sides
   at 39, 120 and 201 along it. Not measured which screw they take; they look
-  the same as the M3 inserts of the 64 x 64.
+  the same as the M3 inserts of the 64 x 64. The stand screws into the two outer
+  ones of the bottom edge, through its back wall.
 - Round recesses, 8, about 12 across with a hole 3 across in the middle: in
   the four corners, 9.5 from both edges, and one on each side in a pattern
   that repeats when the panel is turned a quarter: (108, 10), (230, 108),

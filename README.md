@@ -12,7 +12,7 @@ design file:
 | Directory | Panel | Stand |
 |---|---|---|
 | [`stand64/`](stand64/README.md) | 64 x 64, 192 x 192 mm | Angle set by hand, friction hinge. Printed on the Ender 3 v2 |
-| [`stand128/`](stand128/README.md) | 128 x 128, 240 x 240 mm | Fixed at 75 degrees, one part without screws. For the Bambu Lab X2D, or in two glued halves on the Ender |
+| [`stand128/`](stand128/README.md) | 128 x 128, 240 x 240 mm | Fixed at 75 degrees, one part, no hinge. For the Bambu Lab X2D, or in two glued halves on the Ender |
 
 ## Building
 
