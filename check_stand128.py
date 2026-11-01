@@ -37,7 +37,7 @@ TIP_MARGIN = 15  # mm, the centre of mass stays at least this far inside the bas
 PREVIEW_TEXT = ("Hello", "world")  # each dot of the font 4 x 4 LEDs
 LEDS = 128  # LEDs along an edge of the panel
 CONNECTORS = 47  # mm, the openings for the connectors lie at least this far from every edge (see PANEL.md)
-# What stands on the holder, and its plugs, as on the 64 x 64: see the notes in check_stand.py and
+# What stands on the holder, and its plugs, as on the 64 x 64: see the notes in check_stand64.py and
 # PANEL.md. Seen from the back with the arrows up: u from the left, v from the top; x behind the
 # back of the panel.
 PI_WIDTH = 62  # the Pi with its hat, across

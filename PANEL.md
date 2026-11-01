@@ -1,8 +1,8 @@
 # The LED tetragon: measurements
 
 Everything measured on the panel and what is fixed to it, in mm. The stand is
-built from these; in `build_stand.py` they are in the `Params` spreadsheet,
-in `check_stand.py` the ones only used for checking.
+built from these; in `build_stand64.py` they are in the `Params` spreadsheet,
+in `check_stand64.py` the ones only used for checking.
 
 Seen from the back means: looking at the back of the panel, standing upright
 with the USB ports of the Pi at the top. "From the left" and "from the top"

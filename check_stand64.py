@@ -1,13 +1,13 @@
 # Check of the stand for the LED tetragon
 # by Jeroen Verspeek
 #
-# Opens stand.FCStd, puts the panel in the cradle and the cradle on the base at
+# Opens stand64.FCStd, puts the panel in the cradle and the cradle on the base at
 # a few angles, and checks that nothing overlaps, that the parts touch where
 # they should, that the stand does not tip over and that every part fits the
 # print bed.
 #
-# Run:  freecadcmd check_stand.py   (or ./build.sh)
-# Writes stand_preview.FCStd (for looking at, not for printing).
+# Run:  freecadcmd check_stand64.py   (or ./build.sh)
+# Writes stand64_preview.FCStd (for looking at, not for printing).
 ###########################
 
 import math
@@ -93,7 +93,7 @@ TIP_MARGIN = 15  # mm, the centre of mass stays at least this far inside the bas
 PREVIEW_TEXT = ("Hello", "world")
 LEDS = 64  # LEDs along an edge of the panel
 
-doc = App.openDocument(os.path.join(HERE, "stand.FCStd"))
+doc = App.openDocument(os.path.join(HERE, "stand64.FCStd"))
 doc.recompute()
 p = read_params(doc)  # every parameter by its alias, in mm
 SIZE, DEPTH, FIT = p["panel_size"], p["panel_depth"], p["panel_fit"]
@@ -352,7 +352,7 @@ leds, (width, height) = preview_leds(PREVIEW_TEXT, SIZE, LEDS, 2)
 check("preview: the text fits the panel", height <= LEDS and width <= LEDS, "%d x %d LEDs" % (width, height))
 
 # preview document
-preview = App.newDocument("stand_preview")
+preview = App.newDocument("stand64_preview")
 spot = on_base(PREVIEW_ANGLE)
 preview.addObject("Part::Feature", "Base").Shape = base
 preview.addObject("Part::Feature", "Cradle").Shape = placed(cradle, spot)
@@ -372,6 +372,6 @@ preview.addObject("Part::Feature", "Microbit").Shape = placed(microbit, spot)
 for i, s in enumerate(screws):
     preview.addObject("Part::Feature", "Screw%d" % (i + 1)).Shape = s
 preview.recompute()
-preview.saveAs(os.path.join(HERE, "stand_preview.FCStd"))
+preview.saveAs(os.path.join(HERE, "stand64_preview.FCStd"))
 
 summary()

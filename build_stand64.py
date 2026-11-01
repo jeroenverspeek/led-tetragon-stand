@@ -43,8 +43,8 @@
 # Needed: 1 x Base, 1 x Cradle, 1 x Holder; 2 x M5 x 12 countersunk screw,
 # 2 x M5 nut, 4 x M3 x 10 screw, a cable tie or rubber band for the speaker.
 #
-# Run:  freecadcmd build_stand.py   (or ./build.sh)
-# Writes stand.FCStd (parametric: change values in the Params spreadsheet)
+# Run:  freecadcmd build_stand64.py   (or ./build.sh)
+# Writes stand64.FCStd (parametric: change values in the Params spreadsheet)
 # and an .stl per part for the slicer.
 ###########################
 
@@ -194,7 +194,7 @@ def hexagon(body, kind, name, across_flats, af_expression, height, height_expres
                                         "Height": (height, height_expression)}, at, turn)
 
 
-doc = App.newDocument("stand")
+doc = App.newDocument("stand64")
 
 make_params(doc, PARAMS)
 
@@ -472,7 +472,7 @@ for i, v in enumerate(slot_v):
 doc.recompute()
 
 check_built(doc)
-doc.saveAs(os.path.join(HERE, "stand.FCStd"))
-write_stl("Base", base.Shape, os.path.join(HERE, "base.stl"))
-write_stl("Cradle", cradle.Shape, os.path.join(HERE, "cradle.stl"), V(1, 0, 0), 90)  # lying on its floor
-write_stl("Holder", holder.Shape, os.path.join(HERE, "holder.stl"), V(0, 1, 0), -90)  # lying on its plate
+doc.saveAs(os.path.join(HERE, "stand64.FCStd"))
+write_stl("Base", base.Shape, os.path.join(HERE, "stand64_base.stl"))
+write_stl("Cradle", cradle.Shape, os.path.join(HERE, "stand64_cradle.stl"), V(1, 0, 0), 90)  # lying on its floor
+write_stl("Holder", holder.Shape, os.path.join(HERE, "holder64.stl"), V(0, 1, 0), -90)  # lying on its plate

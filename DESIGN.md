@@ -92,12 +92,12 @@ On AliExpress the length is chosen per listing; check that it is the 12 or
 
 | File | What |
 |---|---|
-| `build_stand.py` | Builds all parts. Run `./build.sh 64` (`./build.sh` builds both stands) |
-| `stand.FCStd` | All parts, parametric: change values in the `Params` spreadsheet |
-| `base.stl`, `cradle.stl`, `holder.stl` | For the slicer (1 of each); the cradle prints lying on its floor, the holder on its plate |
-| `check_stand.py` | Assembles the stand at 60, 75 and 90 degrees and checks it |
-| `stand_preview.FCStd` | The stand with the panel at 75 degrees showing "Hello world", and the holder with the speaker and micro:bit on the back, for looking at only |
-| `stand_preview.png`, `stand_back.png` | Pictures of that from the front and from the back, for the README |
+| `build_stand64.py` | Builds all parts. Run `./build.sh 64` (`./build.sh` builds both stands) |
+| `stand64.FCStd` | All parts, parametric: change values in the `Params` spreadsheet |
+| `stand64_base.stl`, `stand64_cradle.stl`, `holder64.stl` | For the slicer (1 of each); the cradle prints lying on its floor, the holder on its plate |
+| `check_stand64.py` | Assembles the stand at 60, 75 and 90 degrees and checks it |
+| `stand64_preview.FCStd` | The stand with the panel at 75 degrees showing "Hello world", and the holder with the speaker and micro:bit on the back, for looking at only |
+| `stand64_preview.png`, `stand64_back.png` | Pictures of that from the front and from the back, for the README |
 | `set_view.py` | Makes the FreeCAD files of both stands open with the model in view, and renders the pictures |
 | `build.sh` | Build, check and view settings in one go, of both stands or one (`64`, `128`) |
 | `stand_lib.py` | What the build and check scripts of both stands share |

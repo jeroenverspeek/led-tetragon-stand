@@ -9,7 +9,7 @@ on the Bambu Lab X2D, or in two halves on the Ender, glued.
 ## Printer and slicer: Ender 3 v2
 
 - Creality Ender 3 v2. The bed is 220 x 220 mm; the model takes 220 x 200 mm
-  as usable (`BED` in `check_stand.py`), 220 from left to right.
+  as usable (`BED` in `check_stand64.py`), 220 from left to right.
 - Sliced with Ultimaker Cura. Use the printer "Creality Ender-3 V2", or set
   Printer width (X) to 220 mm under Preferences > Printers > Machine
   Settings. The combined profile "Creality Ender-3 / Ender-3 v2" takes the
@@ -32,6 +32,8 @@ on the Bambu Lab X2D, or in two halves on the Ender, glued.
   either way: straight with one nozzle, its long side from front to back
   with both.
 - Sliced with Bambu Studio, PLA with its own profile. Not printed yet.
+- The filament is black. Bambu Studio does not know this and shows the parts
+  in green, which only changes the picture, not the print.
 - A brim of more than 3 mm does not fit beside the stand along its 249 mm.
 
 ## Layer height
@@ -61,9 +63,9 @@ them in Cura as they are and only turn them on the bed.
 
 | File | Lies on | On the bed | Size on the bed |
 |---|---|---|---|
-| `base.stl` | its plate, the letters up | its long side from left to right | 218 x 130 mm |
-| `cradle.stl` | its floor | turned 24 degrees: it only fits across the diagonal | 209 x 20.5 mm |
-| `holder.stl` | its plate | as it is | 101 x 140 mm |
+| `stand64_base.stl` | its plate, the letters up | its long side from left to right | 218 x 130 mm |
+| `stand64_cradle.stl` | its floor | turned 24 degrees: it only fits across the diagonal | 209 x 20.5 mm |
+| `holder64.stl` | its plate | as it is | 101 x 140 mm |
 
 The base (218 mm) only just fits: with a skirt it is 220 mm wide, the whole
 bed, and the skirt crosses the purge lines. Without one the base lies from

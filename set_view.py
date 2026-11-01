@@ -96,8 +96,8 @@ def crop_alike(paths, margin=20):
 
 
 if "64" in STANDS:
-    # stand.FCStd: show the base; the cradle is modelled in its own place and stays hidden
-    doc = App.openDocument(os.path.join(HERE, "stand.FCStd"))
+    # stand64.FCStd: show the base; the cradle is modelled in its own place and stays hidden
+    doc = App.openDocument(os.path.join(HERE, "stand64.FCStd"))
     for obj in doc.Objects:
         obj.ViewObject.Visibility = False
     for body in doc.Objects:
@@ -106,10 +106,10 @@ if "64" in STANDS:
             body.ViewObject.Visibility = body.Name == "Base"
     save(doc, [doc.getObject("Base")])
 
-    # stand_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi, blue holder
+    # stand64_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi, blue holder
     # with a black speaker and a dark green micro:bit, a white power plug, grey HUB75 and USB plugs and black
     # USB cables, the Pi's USB-C power cable among them
-    doc = App.openDocument(os.path.join(HERE, "stand_preview.FCStd"))
+    doc = App.openDocument(os.path.join(HERE, "stand64_preview.FCStd"))
     colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15),
                "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1), "Holder": (0.30, 0.47, 0.66),
                "PowerPlug": (0.92, 0.92, 0.88), "Hub75Plug": (0.55, 0.55, 0.55),
@@ -119,7 +119,7 @@ if "64" in STANDS:
     for obj in doc.Objects:
         obj.ViewObject.Visibility = True
         obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws and speaker black
-    front, back = os.path.join(HERE, "stand_preview.png"), os.path.join(HERE, "stand_back.png")
+    front, back = os.path.join(HERE, "stand64_preview.png"), os.path.join(HERE, "stand64_back.png")
     save(doc, doc.Objects, BACK)
     screenshot(doc, back)
     save(doc, doc.Objects)

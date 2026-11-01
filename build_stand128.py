@@ -3,7 +3,7 @@
 #
 # The panel (128 x 128, P1.875, 240 x 240 mm) leans back at a fixed angle, 15
 # degrees from upright (75 degrees to the table), in a stand made in one
-# piece. Like the cradle of the 64 x 64 stand (build_stand.py) it has a
+# piece. Like the cradle of the 64 x 64 stand (build_stand64.py) it has a
 # channel over the full width that the bottom edge of the panel stands in: a
 # floor, a low lip in front and a back wall up the back of the panel, with an
 # ear at both ends. Here the channel does not turn on a hinge: it is built

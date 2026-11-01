@@ -1,6 +1,6 @@
 # led-tetragon-stand
 
-<img src="stand_preview.png" alt="The panel on its stand at 75 degrees" width="360"> <img src="stand_back.png" alt="The back: the Pi, and the holder with the speaker and the micro:bit" width="360">
+<img src="stand64_preview.png" alt="The panel on its stand at 75 degrees" width="360"> <img src="stand64_back.png" alt="The back: the Pi, and the holder with the speaker and the micro:bit" width="360">
 
 A 3D-printed stand for the LED tetragon: one 64 x 64 P3 LED panel on its
 factory frame, with the Raspberry Pi on the back. The panel leans back at an
@@ -9,12 +9,12 @@ friction hinge with two countersunk screws. A holder on the back of the panel
 carries the USB speaker and the micro:bit. The software that drives the
 panel is in [led-tetragon](https://github.com/jeroenverspeek/led-tetragon).
 
-Print 1 x `base.stl`, 1 x `cradle.stl` (lying on its floor) and 1 x
-`holder.stl` (lying on its plate). Also needed: 2 x M5 x 12 countersunk
+Print 1 x `stand64_base.stl`, 1 x `stand64_cradle.stl` (lying on its floor) and 1 x
+`holder64.stl` (lying on its plate). Also needed: 2 x M5 x 12 countersunk
 screw, 2 x M5 nut, 3 x M3 x 10 screw and a cable tie for the speaker.
 
-The model is made in FreeCAD 1.x from `build_stand.py`; all dimensions are in
-the `Params` spreadsheet in `stand.FCStd`. See [DESIGN.md](DESIGN.md) for the
+The model is made in FreeCAD 1.x from `build_stand64.py`; all dimensions are in
+the `Params` spreadsheet in `stand64.FCStd`. See [DESIGN.md](DESIGN.md) for the
 design, [PANEL.md](PANEL.md) for the measurements of the panel and
 [PRINTING.md](PRINTING.md) for how to print the parts.
 
