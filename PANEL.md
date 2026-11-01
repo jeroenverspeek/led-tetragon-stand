@@ -1,8 +1,8 @@
 # The LED tetragon: measurements
 
 Everything measured on the panel and what is fixed to it, in mm. The stand is
-built from these; in `build_stand64.py` they are in the `Params` spreadsheet,
-in `check_stand64.py` the ones only used for checking.
+built from these; in `stand64/build_stand64.py` they are in the `Params`
+spreadsheet, in `stand64/check_stand64.py` the ones only used for checking.
 
 Seen from the back means: looking at the back of the panel, standing upright
 with the USB ports of the Pi at the top. "From the left" and "from the top"
@@ -206,7 +206,7 @@ All on the left half, seen from the back.
 
 ## The 128 x 128 panel
 
-The panel of the second stand ([STAND128.md](STAND128.md)). All sections
+The panel of the second stand ([stand128/DESIGN.md](stand128/DESIGN.md)). All sections
 above are about the 64 x 64 panel.
 
 Photos, taken on 2026-11-01, without the plugs in:
@@ -276,7 +276,7 @@ flattened photo, in mm from the left and the top.
   from 23 to 47 from the top and one from 193 to 217, both from 86 to 154 from
   the left. How deep the opening behind one is, and what lies in it, is not
   measured. The holder uses the middle one for the back of the speaker.
-- Cables in the Pi and the converter: see [STAND128.md](STAND128.md).
+- Cables in the Pi and the converter: see [stand128/DESIGN.md](stand128/DESIGN.md).
 - Standing with the arrows up, as the holder is made for, seen from the back:
   from the left here is from the top there, and from the top here is 240 minus
   from the left there. The holder's Params use that view.

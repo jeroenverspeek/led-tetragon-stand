@@ -9,11 +9,11 @@ for stand in $stands; do
         64|128) ;;
         *) echo "usage: $0 [64] [128]" >&2; exit 2 ;;
     esac
-    freecadcmd "build_stand$stand.py" && freecadcmd "check_stand$stand.py" || { status=1; break; }
+    freecadcmd "stand$stand/build_stand$stand.py" && freecadcmd "stand$stand/check_stand$stand.py" || { status=1; break; }
 done
 if [ $status = 0 ]; then
     STANDS="$stands" QT_QPA_PLATFORM=offscreen freecad set_view.py
     status=$?
 fi
-rm -rf __pycache__ ./*.FCBak
+rm -rf __pycache__ stand*/__pycache__ stand*/*.FCBak
 exit $status

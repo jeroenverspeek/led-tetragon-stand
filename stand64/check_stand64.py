@@ -18,7 +18,7 @@ import FreeCAD as App
 import Part
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))  # stand_lib.py
 from stand_lib import (PLA, TOUCH, bed_fit, centre, check, overlap, placed, preview_leds, read_params,  # noqa: E402
                        summary)
 
@@ -31,7 +31,7 @@ PREVIEW_ANGLE = 75
 PANEL_MASS = 400  # g, panel with its factory frame
 PI_MASS = 120  # g, Pi with hat, distance holders and cables
 # The Pi with its hat on the back of the frame, in portrait, on the vertical middle bar, its USB
-# ports at the top: where it is, is in the Params (see PANEL.md). The Pi is 85 mm long; behind
+# ports at the top: where it is, is in the Params (see ../PANEL.md). The Pi is 85 mm long; behind
 # the LED board its board lies 22 mm and the hat's 33 mm (measured); about 3 mm of solder
 # stands under the Pi and about 9 mm of parts on the hat (guess).
 PI_LENGTH = 85
@@ -40,7 +40,7 @@ HAT_FRONT = 33 - 1.6 - 12  # behind the frame, which is 12 mm behind the LED boa
 # round the edge and one up the middle. Their widths and the holes in them are in the Params.
 LED_BOARD = 2
 # What stands out from the back of the panel near the holder, seen from the back: u from the
-# left, v from the top, both from the edges; x behind the back of the frame. See PANEL.md.
+# left, v from the top, both from the edges; x behind the back of the frame. See ../PANEL.md.
 # The power connector, 16.5 wide, its left side 40 mm from the left; from the top 75 mm free, its
 # snap-clip 4 mm, the connector 7 mm, and 106 mm free to the bottom. With its plug in it reaches
 # 20 mm behind the LED board; its cable leaves it on the top side, so it bends up under the plate

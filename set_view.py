@@ -97,7 +97,7 @@ def crop_alike(paths, margin=20):
 
 if "64" in STANDS:
     # stand64.FCStd: show the base; the cradle is modelled in its own place and stays hidden
-    doc = App.openDocument(os.path.join(HERE, "stand64.FCStd"))
+    doc = App.openDocument(os.path.join(HERE, "stand64", "stand64.FCStd"))
     for obj in doc.Objects:
         obj.ViewObject.Visibility = False
     for body in doc.Objects:
@@ -109,7 +109,7 @@ if "64" in STANDS:
     # stand64_preview.FCStd: light stand, dark panel with red LEDs, green outline of the Pi, blue holder
     # with a black speaker and a dark green micro:bit, a white power plug, grey HUB75 and USB plugs and black
     # USB cables, the Pi's USB-C power cable among them
-    doc = App.openDocument(os.path.join(HERE, "stand64_preview.FCStd"))
+    doc = App.openDocument(os.path.join(HERE, "stand64", "stand64_preview.FCStd"))
     colours = {"Base": (0.85, 0.85, 0.8), "Cradle": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15),
                "Pi_outline": (0.1, 0.5, 0.2), "LEDs": (1.0, 0.15, 0.1), "Holder": (0.30, 0.47, 0.66),
                "PowerPlug": (0.92, 0.92, 0.88), "Hub75Plug": (0.55, 0.55, 0.55),
@@ -119,7 +119,7 @@ if "64" in STANDS:
     for obj in doc.Objects:
         obj.ViewObject.Visibility = True
         obj.ViewObject.ShapeColor = colours.get(obj.Name, (0.1, 0.1, 0.1))  # screws and speaker black
-    front, back = os.path.join(HERE, "stand64_preview.png"), os.path.join(HERE, "stand64_back.png")
+    front, back = os.path.join(HERE, "stand64", "stand64_preview.png"), os.path.join(HERE, "stand64", "stand64_back.png")
     save(doc, doc.Objects, BACK)
     screenshot(doc, back)
     save(doc, doc.Objects)
@@ -128,7 +128,7 @@ if "64" in STANDS:
 
 if "128" in STANDS:
     # stand128.FCStd: the halves pulled apart for a picture, then the stand alone
-    doc = App.openDocument(os.path.join(HERE, "stand128.FCStd"))
+    doc = App.openDocument(os.path.join(HERE, "stand128", "stand128.FCStd"))
     for obj in doc.Objects:
         obj.ViewObject.Visibility = False
     halves = [doc.getObject("LeftHalf"), doc.getObject("RightHalf")]
@@ -138,7 +138,7 @@ if "128" in STANDS:
     halves[1].Placement = App.Placement(V(0, 0, 40), App.Rotation())
     doc.recompute()
     aim(doc, halves, ABOVE128)
-    path = os.path.join(HERE, "stand128_halves.png")
+    path = os.path.join(HERE, "stand128", "stand128_halves.png")
     screenshot(doc, path)
     crop_alike([path])
     for obj in halves:
@@ -151,7 +151,7 @@ if "128" in STANDS:
     save(doc, [stand], FRONT128)
 
     # stand128_preview.FCStd: blue stand, dark panel with red LEDs
-    doc = App.openDocument(os.path.join(HERE, "stand128_preview.FCStd"))
+    doc = App.openDocument(os.path.join(HERE, "stand128", "stand128_preview.FCStd"))
     colours = {"Stand": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15), "LEDs": (1.0, 0.15, 0.1),
                "Holder": (0.30, 0.47, 0.66), "Speaker": (0.1, 0.1, 0.1), "Pi": (0.1, 0.45, 0.2),
                "Microbit": (0.05, 0.35, 0.25), "Converter": (0.7, 0.7, 0.72), "UsbPlugs": (0.55, 0.55, 0.55),
@@ -159,7 +159,7 @@ if "128" in STANDS:
     for obj in doc.Objects:
         obj.ViewObject.Visibility = True
         obj.ViewObject.ShapeColor = colours[obj.Name]
-    front, back = os.path.join(HERE, "stand128_preview.png"), os.path.join(HERE, "stand128_back.png")
+    front, back = os.path.join(HERE, "stand128", "stand128_preview.png"), os.path.join(HERE, "stand128", "stand128_back.png")
     save(doc, doc.Objects, BACK128)
     screenshot(doc, back)
     save(doc, doc.Objects, FRONT128)

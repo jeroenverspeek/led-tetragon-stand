@@ -3,13 +3,13 @@
 How the parts of the stands are printed. The 64 x 64 stand is printed on the
 Ender 3 v2; the same printer and settings are used for the
 [led-hexahedron-stand](https://github.com/jeroenverspeek/led-hexahedron-stand).
-The 128 x 128 stand ([STAND128.md](STAND128.md)) is 249 mm wide: in one piece
+The 128 x 128 stand ([stand128/DESIGN.md](stand128/DESIGN.md)) is 249 mm wide: in one piece
 on the Bambu Lab X2D, or in two halves on the Ender, glued.
 
 ## Printer and slicer: Ender 3 v2
 
 - Creality Ender 3 v2. The bed is 220 x 220 mm; the model takes 220 x 200 mm
-  as usable (`BED` in `check_stand64.py`), 220 from left to right.
+  as usable (`BED` in `stand64/check_stand64.py`), 220 from left to right.
 - Sliced with Ultimaker Cura. Use the printer "Creality Ender-3 V2", or set
   Printer width (X) to 220 mm under Preferences > Printers > Machine
   Settings. The combined profile "Creality Ender-3 / Ender-3 v2" takes the
@@ -58,8 +58,8 @@ Printer! Unbox! Build! First Print!"
 
 ## The parts of the 64 x 64 stand
 
-One of each. The STL files already lie the right way up for printing; load
-them in Cura as they are and only turn them on the bed.
+One of each, from `stand64/`. The STL files already lie the right way up for
+printing; load them in Cura as they are and only turn them on the bed.
 
 | File | Lies on | On the bed | Size on the bed |
 |---|---|---|---|
@@ -74,6 +74,8 @@ its first layer, they snap off afterwards.
 
 ## The 128 x 128 stand
 
+From `stand128/`:
+
 | File | Printer | Lies on | Size on the bed |
 |---|---|---|---|
 | `stand128.stl` | X2D | its plate, the letters up | 249 x 140 mm |
@@ -83,7 +85,7 @@ its first layer, they snap off afterwards.
 
 Print either the one piece or the two halves, not both. No support is
 needed: the back wall leans back 15 degrees. The holder does not fit the Ender.
-Before printing it, see the points to check in [STAND128.md](STAND128.md).
+Before printing it, see the points to check in [stand128/DESIGN.md](stand128/DESIGN.md).
 
 Glue the halves:
 
@@ -104,10 +106,10 @@ Glue the halves:
 
 - Stand the panel in the channel with the arrows on its back pointing up, so
   the two pins on its back stay clear of the back wall. The software turns the
-  picture ([STAND128.md](STAND128.md)).
+  picture ([stand128/DESIGN.md](stand128/DESIGN.md)).
 - The converter: on its four posts on the base, with four M3 x 10 screws and
   small washers (DIN 433) through the half round openings in its flanges. They cut their own thread, so turn
-  them in gently. Its wires leave at both ends. See [STAND128.md](STAND128.md)
+  them in gently. Its wires leave at both ends. See [stand128/DESIGN.md](stand128/DESIGN.md)
   for what to check on its third input terminal first.
 - Push out the middle rectangle on the back of the panel.
 - Fix the holder with three M3 x 10 screws: first the round hole on the right,

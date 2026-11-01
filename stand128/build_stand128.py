@@ -3,7 +3,7 @@
 #
 # The panel (128 x 128, P1.875, 240 x 240 mm) leans back at a fixed angle, 15
 # degrees from upright (75 degrees to the table), in a stand made in one
-# piece. Like the cradle of the 64 x 64 stand (build_stand64.py) it has a
+# piece. Like the cradle of the 64 x 64 stand (../stand64/build_stand64.py) it has a
 # channel over the full width that the bottom edge of the panel stands in: a
 # floor, a low lip in front and a back wall up the back of the panel, with an
 # ear at both ends. Here the channel does not turn on a hinge: it is built
@@ -43,7 +43,7 @@ import FreeCAD as App
 import Part
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))  # stand_lib.py
 from stand_lib import check_built, font, make_params, new_sketch, pad, pinned_polygon, primitive, write_stl  # noqa: E402
 
 V = App.Vector
@@ -93,7 +93,7 @@ PARAMS = [
                           "posts touch it, as PLA softens near the 80 C its case may reach"),
     ("converter_post_d", 9, "Diameter of those posts"),
     # The holder. Places on the back of the panel as seen from the back, standing with the arrows up: u from the
-    # left edge, v from the top edge. See PANEL.md (there seen as in the photos: v = from the left, u = 240 - from
+    # left edge, v from the top edge. See ../PANEL.md (there seen as in the photos: v = from the left, u = 240 - from
     # the top).
     ("holder_plate", 3, "Thickness of the plate of the holder, flat against the back of the panel"),
     ("insert_edge", 10, "The brass inserts: from the edge of the panel"),

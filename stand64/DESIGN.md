@@ -1,14 +1,14 @@
-# Stand for the LED tetragon
+# Stand for the 64 x 64 panel
 
 The tetragon is one 64 x 64 P3 LED panel (192 x 192 mm) on its factory frame.
 The Raspberry Pi with the electrodragon hat sits on the back of the frame, in
 portrait on the vertical middle bar, USB ports at the top, from the middle to
 the right seen from the back. The USB speaker and the micro:bit go in the left
 half. All measurements of the panel and what is on it, what was decided
-from them and what is still guessed are in [PANEL.md](PANEL.md).
+from them and what is still guessed are in [PANEL.md](../PANEL.md).
 
 The stand for the 128 x 128 panel, at a fixed angle, is in
-[STAND128.md](STAND128.md).
+[stand128/DESIGN.md](../stand128/DESIGN.md).
 
 ## Design
 
@@ -92,20 +92,11 @@ On AliExpress the length is chosen per listing; check that it is the 12 or
 
 | File | What |
 |---|---|
-| `build_stand64.py` | Builds all parts. Run `./build.sh 64` (`./build.sh` builds both stands) |
+| `build_stand64.py` | Builds all parts. Run `./build.sh 64` in the top directory |
 | `stand64.FCStd` | All parts, parametric: change values in the `Params` spreadsheet |
 | `stand64_base.stl`, `stand64_cradle.stl`, `holder64.stl` | For the slicer (1 of each); the cradle prints lying on its floor, the holder on its plate |
 | `check_stand64.py` | Assembles the stand at 60, 75 and 90 degrees and checks it |
 | `stand64_preview.FCStd` | The stand with the panel at 75 degrees showing "Hello world", and the holder with the speaker and micro:bit on the back, for looking at only |
-| `stand64_preview.png`, `stand64_back.png` | Pictures of that from the front and from the back, for the README |
-| `set_view.py` | Makes the FreeCAD files of both stands open with the model in view, and renders the pictures |
-| `build.sh` | Build, check and view settings in one go, of both stands or one (`64`, `128`) |
-| `stand_lib.py` | What the build and check scripts of both stands share |
-| `PANEL.md` | All measurements of the panel, the Pi, the speaker and the micro:bit; what was decided from them and what is still guessed |
-| `PRINTING.md` | Printer, slicer and settings, how each part lies on the bed, and what to do after printing |
-| `Ender3_LEVEL_psd.gcode` | The program for levelling the bed before printing (by psdesign, CC BY; see `PRINTING.md`) |
-| `photos/` | Photos of the backs of both panels and of the micro:bit, and `grid.py` to measure from them (see `PANEL.md`) |
-| `STAND128.md` and `*128*` | The stand for the 128 x 128 panel; its files are listed there |
+| `stand64_preview.png`, `stand64_back.png` | Pictures of that from the front and from the back, for [README.md](README.md) |
 
 The base (218 x 130 mm) only just fits the 220 x 200 mm bed.
-

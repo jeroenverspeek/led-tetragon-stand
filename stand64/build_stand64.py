@@ -56,7 +56,7 @@ import Draft
 import FreeCAD as App
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))  # stand_lib.py
 from stand_lib import check_built, font, make_params, new_sketch, pad, pinned_polygon, primitive, write_stl  # noqa: E402
 
 V = App.Vector
@@ -83,7 +83,7 @@ PARAMS = [
     ("ring_d", 18, "Raised ring round the hinge on the outside of each ear: diameter, at most 2 x hinge_radius"),
     ("ring_height", 1, "How far that ring stands out: the only place where an ear touches its cheek"),
     # The printed base came out with 1 mm in total between the rings and the cheeks, not 0.6; an M5 spring
-    # washer at one end takes it up (see PANEL.md). A reprint without the washer needs less play; not tried.
+    # washer at one end takes it up (see ../PANEL.md). A reprint without the washer needs less play; not tried.
     ("hinge_play", 0.3, "Space between each ring and its cheek, so the cradle goes in between the cheeks; "
                         "tightening the screw bends the cheek onto the ring"),
     ("bolt_d", 5.4, "Hole for a hinge screw (M5)"),
@@ -103,7 +103,7 @@ PARAMS = [
     ("text_depth", 0.8, "How deep the letters are sunk into the base"),
     ("text_margin", 7, "Front edge of the base to the letters"),
     # The back of the panel, seen from the back with the panel standing: "from the left" and "from the top" are
-    # from the edges of the panel. See PANEL.md.
+    # from the edges of the panel. See ../PANEL.md.
     ("frame_bar_width", 16, "Width of the four bars round the edge of the frame, flush with its back"),
     ("middle_bar_width", 20, "Width of the vertical middle bar, flush with the back of the frame"),
     ("bar_hole_top", 9, "Top of the 4 M3 holes (brass inserts, evenly spaced) in the middle bar: from the top"),

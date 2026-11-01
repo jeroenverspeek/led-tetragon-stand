@@ -1,8 +1,8 @@
 # Shared by the build and check scripts of both stands
 # by Jeroen Verspeek
 #
-# build_stand64.py, check_stand64.py (the 64 x 64 panel) and build_stand128.py,
-# check_stand128.py (the 128 x 128 panel) import this; it is not run itself.
+# The build and check scripts in stand64/ (the 64 x 64 panel) and stand128/ (the
+# 128 x 128 panel) import this; it is not run itself.
 ###########################
 
 import math

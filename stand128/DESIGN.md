@@ -1,9 +1,7 @@
 # Stand for the 128 x 128 panel
 
-<img src="stand128_preview.png" alt="The 128 x 128 panel on its stand at 75 degrees" width="360"> <img src="stand128_back.png" alt="The back: the micro:bit, the speaker in its opening and the Pi on the holder" width="360"> <img src="stand128_halves.png" alt="The two halves for the Ender, pulled apart" width="360">
-
 A second stand, for a 128 x 128 LED panel of 24 x 24 cm, built on the cradle of
-the stand for the 64 x 64 panel ([DESIGN.md](DESIGN.md)). The panel leans back
+the stand for the 64 x 64 panel ([stand64/DESIGN.md](../stand64/DESIGN.md)). The panel leans back
 at a fixed angle: 15 degrees from upright, 75 degrees to the table, the
 default of the 64 x 64 stand. No hinge and no screws.
 
@@ -41,7 +39,7 @@ piece, but not the Ender 3 v2 (220 x 200 mm), not even turned. For the Ender
 
 The halves are plain shapes in `stand128.FCStd`, made from the `Stand` body
 when the script runs; changing a value in the `Params` spreadsheet in FreeCAD
-does not change them. Run `./build.sh 128` after a change.
+does not change them. Run `./build.sh 128` in the top directory after a change.
 
 ## The holder
 
@@ -134,12 +132,12 @@ continuity beeps if it is the case's ground, and then it can stay unused.
 
 ## The panel: measured and guessed
 
-The measurements of the back are in [PANEL.md](PANEL.md), from photos.
+The measurements of the back are in [PANEL.md](../PANEL.md), from photos.
 
 - 128 x 128 LEDs, 240 x 240 mm (measured), so P1.875.
 - Depth, front of the LEDs to the back of the panel: 14.4 mm as it stands, 14
   with the opening between its board and its shell pressed shut (see
-  [PANEL.md](PANEL.md)). The opening stays, so `panel_depth` is 14.4 and the
+  [PANEL.md](../PANEL.md)). The opening stays, so `panel_depth` is 14.4 and the
   channel 14.9. With the panel pressed shut that is 0.9 mm of play, which does
   no harm: it leans back against the back wall by its own weight, clear of
   the lip. A tighter channel would press the lip on the bottom row of LEDs.
@@ -174,7 +172,7 @@ The measurements of the back are in [PANEL.md](PANEL.md), from photos.
 
 ## Printing
 
-See [PRINTING.md](PRINTING.md): `stand128.stl` on the X2D, or
+See [PRINTING.md](../PRINTING.md): `stand128.stl` on the X2D, or
 `stand128_left.stl` and `stand128_right.stl` on the Ender and glued; and
 `holder128.stl` on the X2D.
 
@@ -189,11 +187,11 @@ body of the converter leaves 3.3 mm round the middle of the opening.
 
 | File | What |
 |---|---|
-| `build_stand128.py` | Builds the stand, the halves and the holder. Run `./build.sh 128` |
+| `build_stand128.py` | Builds the stand, the halves and the holder. Run `./build.sh 128` in the top directory |
 | `stand128.FCStd` | The stand and the holder, parametric: change values in the `Params` spreadsheet; and the halves |
 | `stand128.stl` | The stand in one piece, for the X2D |
 | `stand128_left.stl`, `stand128_right.stl` | The halves, for the Ender; left and right seen from the front |
 | `holder128.stl` | The holder, for the X2D; lying on its plate |
 | `check_stand128.py` | Puts the panel in the stand, the Pi, speaker, micro:bit and cables on the holder and the converter on the base, and checks them, the halves and the beds |
 | `stand128_preview.FCStd` | The stand with the panel showing "Hello world", the holder and the cables on its back and the converter, for looking at only |
-| `stand128_preview.png`, `stand128_back.png`, `stand128_halves.png` | Pictures of that from the front and the back, and of the halves pulled apart |
+| `stand128_preview.png`, `stand128_back.png`, `stand128_halves.png` | Pictures of that from the front and the back, and of the halves pulled apart, for [README.md](README.md) |

@@ -18,16 +18,16 @@ import FreeCAD as App
 import Part
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))  # stand_lib.py
 from stand_lib import (PLA, TOUCH, bed_fit, centre, check, overlap, placed, preview_leds, read_params,  # noqa: E402
                        summary)
 
 V = App.Vector
-# usable print beds in mm: the Bambu Lab X2D with one nozzle, the Ender 3 v2 (see PRINTING.md)
+# usable print beds in mm: the Bambu Lab X2D with one nozzle, the Ender 3 v2 (see ../PRINTING.md)
 X2D_BED = (256, 256)
 ENDER_BED = (220, 200)
 # Only used for the balance: the panel (weighed), the Pi with its hat and cables (a guess, as on
-# the 64 x 64), the speaker and the micro:bit (from PANEL.md)
+# the 64 x 64), the speaker and the micro:bit (from ../PANEL.md)
 PANEL_MASS = 527  # g
 PI_MASS = 120  # g
 SPEAKER_MASS = 74  # g
@@ -36,9 +36,9 @@ CONVERTER_MASS = 228  # g, weighed
 TIP_MARGIN = 15  # mm, the centre of mass stays at least this far inside the base
 PREVIEW_TEXT = ("Hello", "world")  # each dot of the font 4 x 4 LEDs
 LEDS = 128  # LEDs along an edge of the panel
-CONNECTORS = 47  # mm, the openings for the connectors lie at least this far from every edge (see PANEL.md)
-# What stands on the holder, and its plugs, as on the 64 x 64: see the notes in check_stand64.py and
-# PANEL.md. Seen from the back with the arrows up: u from the left, v from the top; x behind the
+CONNECTORS = 47  # mm, the openings for the connectors lie at least this far from every edge (see ../PANEL.md)
+# What stands on the holder, and its plugs, as on the 64 x 64: see the notes in ../stand64/check_stand64.py and
+# ../PANEL.md. Seen from the back with the arrows up: u from the left, v from the top; x behind the
 # back of the panel.
 PI_WIDTH = 62  # the Pi with its hat, across
 PI_REACH = 113  # from its USB ports to the end of the hat
