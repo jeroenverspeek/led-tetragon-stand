@@ -111,8 +111,8 @@ Glue the halves:
   the two outer inserts of its bottom edge: the short arm of a 3 mm L-key in the
   screw, as the long arm hits the plate.
 - The stand printed before these holes were in the model: drill them with the
-  panel out. Mark the inside of the back wall 39.5 mm from the inside of each ear
-  and 10 mm above the floor of the channel, and drill 5 mm, slowly and square to
+  panel out. Mark the inside of the back wall 40.5 mm from the inside of each ear
+  and 11 mm above the floor of the channel, and drill 5 mm, slowly and square to
   the wall.
 - The converter: on its four posts on the base, with four M2.5 x 10 screws and
   washers through the U-shaped slots in its flanges. They cut their own thread, so turn

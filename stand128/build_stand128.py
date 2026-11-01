@@ -68,7 +68,7 @@ PARAMS = [
     ("back_thickness", 4, "Thickness of the back wall"),
     ("panel_screw_d", 5, "Holes in the back wall for the two M4 screws into the panel: wide, as printed holes come "
                          "out small and the inserts are only measured from a photo"),
-    ("panel_screw_along", 39, "Those holes, at the two outer inserts of the bottom edge: from the ends of that edge"),
+    ("panel_screw_along", 40, "Those holes, at the two outer inserts of the bottom edge: from the ends of that edge"),
     ("ear_thickness", 4, "Thickness of the ears at both ends of the channel, which keep the panel in the middle"),
     ("ear_front_height", 16, "Height of an ear at its front, beside the panel; its top slopes up from there to the "
                              "top of the back wall"),
@@ -101,9 +101,9 @@ PARAMS = [
     # left edge, v from the top edge. See ../PANEL.md (there seen as in the photos: v = from the left, u = 240 - from
     # the top).
     ("holder_plate", 3, "Thickness of the plate of the holder, flat against the back of the panel"),
-    ("insert_edge", 10, "The brass inserts: from the edge of the panel"),
+    ("insert_edge", 11, "The brass inserts: from the edge of the panel, at the front, where it is widest (measured)"),
     ("insert_middle", 120, "The inserts in the middle of the left and the right side: from the top"),
-    ("insert_top_u", 201, "The insert at the top that the holder uses: from the left"),
+    ("insert_top_u", 200, "The insert at the top that the holder uses: from the left"),
     ("pin_edge", 8.5, "The pins, at the left and the right side: from the edge"),
     ("pin_v", 89.5, "The pins: from the top"),
     ("pin_hole_d", 6, "Holes in the plate for the pins, which stay on the panel"),
@@ -444,7 +444,7 @@ for i, u in enumerate((add(ml, par("usb_rest_at")), add(add(ml, par("microbit_wi
 post(holder, "SubtractiveCylinder", "GndScrewHole", (add(BACK, mm(1), -1), add(REST, mm(1))), gnd_u, ring_v,
      mm(P["m3_tap_d"] / 2, "Params.m3_tap_d / 2"))
 
-# The screws: the one on the right goes in first and fixes the holder; the one on the left, 220 mm
+# The screws: the one on the right goes in first and fixes the holder; the one on the left, 218 mm
 # from it, is a slot from left to right, the one at the top a slot from top to bottom. Holes for the
 # pins, which stay on the panel
 M4 = mm(P["m4_d"] / 2, "Params.m4_d / 2")

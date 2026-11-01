@@ -238,15 +238,20 @@ flattened photo, in mm from the left and the top.
   At the corner in the side photo the body lies about 0.1 from the edge of
   the board, so the bottom row reaches from about 0.1 to 1.7 from the edge.
   The board reaches about 0.25 past the front of the shell there, and the
-  shell narrows a little towards its back.
+  shell narrows towards its back, which lies about 1.5 inside the edge of the
+  board.
 - The back is flat: a rim of 14 round the edge, a groove 2.5 wide inside
   that, and panels with grooves between them in a pattern of hexagons, all
   flush. Viewed along the back, only the pin sticks out.
 - Pins: 2, about 4 across and 3.5 high (the height from a blurred photo) with
   a round top: both 89.5 from the left, one 8.5 from the top and one 8.5 from
   the bottom. They can be sawn off.
-- Brass inserts, 12, in the rim, 10 from the edge: on each of the four sides
-  at 39, 120 and 201 along it. They look like the M3 inserts of the 64 x 64,
+- Brass inserts, 12, in the rim, 11 from the edge: on each of the four sides
+  at 40, 120 and 200 along it, 160 from the first to the last (measured on the
+  panel, from its widest edge). The
+  flattened photo gives 10 and 39: it stretches the back, which is about 237
+  wide, to 240. Its other positions here are off in the same way, by up to 1.5
+  near an edge. They look like the M3 inserts of the 64 x 64,
   but take M4 (tried with a screw, 2026-11-01). The stand screws into the two
   outer ones of the bottom edge, through its back wall.
 - Round recesses, 8, about 12 across with a hole 3 across in the middle: in

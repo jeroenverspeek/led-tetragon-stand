@@ -16,7 +16,7 @@ One part, `Stand`:
   from the front to the top of the back wall. The ears keep the panel in the
   middle (0.5 mm play at each side and behind it, `panel_fit`).
 - Two holes through the back wall, for M4 x 10 screws into the two outer brass
-  inserts of the bottom edge of the panel: 10 mm above the floor and 39 mm from the
+  inserts of the bottom edge of the panel: 11 mm above the floor and 40 mm from the
   ends of that edge (`panel_screw_along`), 5 mm across (`panel_screw_d`) because
   printed holes come out small. Standing in the channel by itself, with only the
   0.5 mm lip in front, the panel fell out at one touch. The inserts lie the same on
