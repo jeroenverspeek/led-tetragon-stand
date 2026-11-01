@@ -28,7 +28,7 @@ on the Bambu Lab X2D, or in two halves on the Ender, glued.
 
 - The build plate is 256 x 256 mm with one nozzle; with both nozzles in use
   235.5 mm from left to right and 256 from front to back (from the
-  retailers' specifications). The 128 x 128 stand (249 x 130 mm) fits
+  retailers' specifications). The 128 x 128 stand (249 x 140 mm) fits
   either way: straight with one nozzle, its long side from front to back
   with both.
 - Sliced with Bambu Studio, PLA with its own profile. Not printed yet.
@@ -74,12 +74,14 @@ its first layer, they snap off afterwards.
 
 | File | Printer | Lies on | Size on the bed |
 |---|---|---|---|
-| `stand128.stl` | X2D | its plate, the letters up | 249 x 130 mm |
-| `stand128_left.stl` | Ender | its plate, the letters up | 112 x 130 mm |
-| `stand128_right.stl` | Ender | its plate, the letters up | 145 x 130 mm |
+| `stand128.stl` | X2D | its plate, the letters up | 249 x 140 mm |
+| `stand128_left.stl` | Ender | its plate, the letters up | 112 x 140 mm |
+| `stand128_right.stl` | Ender | its plate, the letters up | 145 x 140 mm |
+| `holder128.stl` | X2D | its plate, the posts up | 238 x 164 mm |
 
 Print either the one piece or the two halves, not both. No support is
-needed: the back wall leans back 15 degrees.
+needed: the back wall leans back 15 degrees. The holder does not fit the Ender.
+Before printing it, see the points to check in [STAND128.md](STAND128.md).
 
 Glue the halves:
 
@@ -95,6 +97,27 @@ Glue the halves:
   onto the table so that the bottoms are flush, and check with a ruler in
   the channel that it runs straight across the joint. Wipe off what
   squeezes out and let it set before the panel goes in.
+
+## After printing (128 x 128 stand)
+
+- Stand the panel in the channel with the arrows on its back pointing up, so
+  the two pins on its back stay clear of the back wall. The software turns the
+  picture ([STAND128.md](STAND128.md)).
+- The converter: on its four posts on the base, with four M3 x 10 screws and
+  small washers (DIN 433) through the half round openings in its flanges. They cut their own thread, so turn
+  them in gently. Its wires leave at both ends. See [STAND128.md](STAND128.md)
+  for what to check on its third input terminal first.
+- Push out the middle rectangle on the back of the panel.
+- Fix the holder with three M3 x 10 screws: first the round hole on the right,
+  seen from the back, then the slots on the left and at the top. Leave them
+  loose until all three are in.
+- The Pi with its hat on the four posts, USB ports down; the plugs on the panel
+  and the ribbon go in with the holder on.
+- The micro:bit: LEDs towards the panel, USB edge down. Put ring 0 over the peg,
+  then a fourth M3 x 10 screw through the GND ring into its post; it cuts its
+  own thread, so turn it in gently and stop when the board is held.
+- The speaker: lay it in its hole, grille backwards, cable to the right through
+  the slot; a cable tie through both eyes and twice over the grille, pulled tight.
 
 ## After printing (64 x 64 stand)
 

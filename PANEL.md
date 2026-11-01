@@ -203,3 +203,80 @@ All on the left half, seen from the back.
 - How far the HUB75 IN plug sticks out and how much bigger it is than the
   header (12 mm and 2 mm all round). The cradle, the holder and the ribbon's
   bend depend on it.
+
+## The 128 x 128 panel
+
+The panel of the second stand ([STAND128.md](STAND128.md)). All sections
+above are about the 64 x 64 panel.
+
+Photos, taken on 2026-11-01, without the plugs in:
+
+- `photos/panel128_back_photo.jpg`: the back, straight from above, with a
+  ruler beside it.
+- `photos/panel128_back_flat.jpg`: taken at an angle and flattened with
+  Genius Scan to the square of the panel (2571 x 2572 pixels for 240 x 240
+  mm, so 10.7 pixels per mm). The app made it nearly black and white, which
+  shows the edges well; for what the parts look like use the photo. Taken
+  out of the PDF the app made, unchanged. Measure on it with
+
+      python3 photos/grid.py photos/panel128_back_flat.jpg power.png 48 72 88 152 240
+
+- `photos/panel128_side.jpg`: one corner of the panel seen from the side, with
+  a ruler against it (28.8 pixels per mm). The spacing of the LEDs in it gives
+  1.87 mm, so the scale can be trusted for the panel too.
+
+Seen from the back here means as in the photos: "HUB75E1" on the left,
+"HUB75E2" on the right. The positions are the middles of the holes from the
+flattened photo, in mm from the left and the top.
+
+- 128 x 128 LEDs, P1.875: 240 x 240. A black plastic shell over the whole
+  back, no separate bars. Weight 527 (weighed).
+- Depth 14.4 as it stands, from the side photo: LEDs 1, board 1.5, an opening
+  of 0.4, shell 11.5. The opening is there with the screws in, and closes
+  with light pressure; pressed shut the depth is 14, as the 64 x 64.
+- The LEDs have bodies 1.6 wide, with their legs on the board, about 0.3 apart.
+  At the corner in the side photo the body lies about 0.1 from the edge of
+  the board, so the bottom row reaches from about 0.1 to 1.7 from the edge.
+  The board reaches about 0.25 past the front of the shell there, and the
+  shell narrows a little towards its back.
+- The back is flat: a rim of 14 round the edge, a groove 2.5 wide inside
+  that, and panels with grooves between them in a pattern of hexagons, all
+  flush. Viewed along the back, only the pin sticks out.
+- Pins: 2, about 4 across and 3.5 high (the height from a blurred photo) with
+  a round top: both 89.5 from the left, one 8.5 from the top and one 8.5 from
+  the bottom. They can be sawn off.
+- Brass inserts, 12, in the rim, 10 from the edge: on each of the four sides
+  at 39, 120 and 201 along it. Not measured which screw they take; they look
+  the same as the M3 inserts of the 64 x 64.
+- Round recesses, 8, about 12 across with a hole 3 across in the middle: in
+  the four corners, 9.5 from both edges, and one on each side in a pattern
+  that repeats when the panel is turned a quarter: (108, 10), (230, 108),
+  (132, 230) and (10, 132). The inserts and these are the same turned a
+  quarter; the pins and the blind holes below are not.
+- Blind holes, 6.5 across, in the rim: top and bottom at 21, 59, 97, 143, 181
+  and 219 from the left, 9.5 from the edge; left and right at 22.7, 83.7, 156
+  and 217 from the top, 7.7 from the edge.
+- An arrow in the rim at the top and at the bottom, near the left, both
+  pointing left. The panel can stand any way up: the software turns the
+  picture. The stand takes any way but one with a pin at the bottom; the holder
+  is made for the arrows up.
+- Two openings in the shell for the boards with the connectors, 23.3 wide
+  and 64 high, from 88 to 152 from the top: the left one from 48 to 71.3 from
+  the left, the right one from 169.3 to 192.6, so 47.4 from the right edge.
+- In each opening, from top to bottom: a 4-pin power connector (VCC and GND)
+  about 11 wide and 16 long, from 98 to 113.5 from the top; and a 16-pin box
+  header 9 wide and 28 long, from 117 to 145, "HUB75E1" on the left and
+  "HUB75E2" on the right. Left opening: the power connector 54.5 to 66 from
+  the left, the header 55.5 to 64.5. Right opening: 172 to 183, the header
+  175.5 to 184.5. Whether the panel needs both pairs, or which is in and
+  which out, is not known. The last millimetre or so of these is parallax:
+  the boards lie deeper than the back of the shell.
+- Three rectangles are perforated in the back and can be pushed out by hand:
+  one in the middle from 79 to 162 from the left and 90 to 150 from the top; one
+  from 23 to 47 from the top and one from 193 to 217, both from 86 to 154 from
+  the left. How deep the opening behind one is, and what lies in it, is not
+  measured. The holder uses the middle one for the back of the speaker.
+- Cables in the Pi and the converter: see [STAND128.md](STAND128.md).
+- Standing with the arrows up, as the holder is made for, seen from the back:
+  from the left here is from the top there, and from the top here is 240 minus
+  from the left there. The holder's Params use that view.

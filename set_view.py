@@ -53,6 +53,7 @@ BACK = looking_from(V(2, -1, 1.2))
 # the same for the 128 x 128 stand, which is modelled with y up and z to the right
 FRONT128 = looking_from(V(-2, 1.2, -1), V(0, 1, 0))
 ABOVE128 = looking_from(V(-1, 2.5, -0.6), V(0, 1, 0))  # from higher up, so the dovetails show
+BACK128 = looking_from(V(2, 1.2, 0.8), V(0, 1, 0))  # from behind, for the holder
 STANDS = os.environ.get("STANDS", "64 128").split()
 
 
@@ -151,13 +152,18 @@ if "128" in STANDS:
 
     # stand128_preview.FCStd: blue stand, dark panel with red LEDs
     doc = App.openDocument(os.path.join(HERE, "stand128_preview.FCStd"))
-    colours = {"Stand": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15), "LEDs": (1.0, 0.15, 0.1)}
+    colours = {"Stand": (0.30, 0.47, 0.66), "Panel": (0.15, 0.15, 0.15), "LEDs": (1.0, 0.15, 0.1),
+               "Holder": (0.30, 0.47, 0.66), "Speaker": (0.1, 0.1, 0.1), "Pi": (0.1, 0.45, 0.2),
+               "Microbit": (0.05, 0.35, 0.25), "Converter": (0.7, 0.7, 0.72), "UsbPlugs": (0.55, 0.55, 0.55),
+               "UsbCables": (0.1, 0.1, 0.1)}
     for obj in doc.Objects:
         obj.ViewObject.Visibility = True
         obj.ViewObject.ShapeColor = colours[obj.Name]
-    front = os.path.join(HERE, "stand128_preview.png")
+    front, back = os.path.join(HERE, "stand128_preview.png"), os.path.join(HERE, "stand128_back.png")
+    save(doc, doc.Objects, BACK128)
+    screenshot(doc, back)
     save(doc, doc.Objects, FRONT128)
     screenshot(doc, front)
-    crop_alike([front])
+    crop_alike([front, back])
 
 os._exit(0)

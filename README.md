@@ -27,8 +27,11 @@ same channel as the cradle above, but built onto its base at a fixed 75
 degrees (leaning back 15 degrees), in one part without screws. Print
 `stand128.stl` in one piece on the Bambu Lab X2D, or `stand128_left.stl` and
 `stand128_right.stl` on the Ender 3 v2 and glue them; dovetails hold them in
-line. It is made from `build_stand128.py` into `stand128.FCStd`. See
-[STAND128.md](STAND128.md); measure the depth of the panel before printing.
+line. `holder128.stl` (X2D) carries the Pi, the speaker and the micro:bit on the
+back of that panel, the speaker sunk into the opening of a pushed-out rectangle;
+the 48 -> 5 V converter lies on the base of the stand.
+It is made from `build_stand128.py` into `stand128.FCStd`. See
+[STAND128.md](STAND128.md).
 
 ## Building
 
