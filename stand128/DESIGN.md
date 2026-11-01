@@ -15,9 +15,9 @@ One part, `Stand`:
   wall up the back of the panel, and an ear at both ends, its top sloping up
   from the front to the top of the back wall. The ears keep the panel in the
   middle (0.5 mm play at each side and behind it, `panel_fit`).
-- Two holes through the back wall, for M3 x 10 screws into the two outer brass
+- Two holes through the back wall, for M4 x 10 screws into the two outer brass
   inserts of the bottom edge of the panel: 10 mm above the floor and 39 mm from the
-  ends of that edge (`panel_screw_along`), 4 mm across (`panel_screw_d`) because
+  ends of that edge (`panel_screw_along`), 5 mm across (`panel_screw_d`) because
   printed holes come out small. Standing in the channel by itself, with only the
   0.5 mm lip in front, the panel fell out at one touch. The inserts lie the same on
   all four sides, so this works whichever way up it stands, and the holder does
@@ -55,7 +55,7 @@ does not change them. Run `./build.sh 128` in the top directory after a change.
 hat, the USB speaker and the micro:bit on the back of the panel, with the panel
 standing with the arrows on its back up. Seen from the back:
 
-- A plate, 3 mm thick, flat on the back of the shell, on three M3 x 10 screws in
+- A plate, 3 mm thick, flat on the back of the shell, on three M4 x 10 screws in
   the brass inserts: the middle one at the left and at the right side, and the
   right one at the top. The one on the right is round and goes in first; the
   other two are slots, 2.5 mm longer each way (`screw_slot`), as on the 64 x 64
@@ -90,7 +90,6 @@ Before printing, check these, which could not be measured:
 - **How deep the middle opening is, and what lies in it.** The back of the
   speaker needs 7 mm; the model takes 9 (`window_depth`, a guess). If it is less,
   make `speaker_sink` smaller: 3 mm less sink is 3 mm less in the opening.
-- **That the brass inserts take M3.** They look the same as on the 64 x 64.
 - How the Pi is fixed. The holes in the posts are 2.2 mm: an M2.5 screw cuts its
   own thread, and the thread of a brass spacer goes in as well.
 
@@ -189,8 +188,8 @@ See [PRINTING.md](../PRINTING.md): `stand128.stl` on the X2D, or
 `stand128_left.stl` and `stand128_right.stl` on the Ender and glued; and
 `holder128.stl` on the X2D.
 
-Hardware for the panel: 2 x M3 x 10 screw. Hardware for the holder: 4 x M3 x 10 screw (3 for the holder, 1 for the
-micro:bit), 4 x M2.5 screw or the spacers of the Pi, 1 cable tie for the speaker
+Hardware for the panel: 2 x M4 x 10 socket head cap screw (DIN 912; 3 mm key). Hardware
+for the holder: 3 x M4 x 10 screw and 1 x M3 x 10 screw (for the micro:bit), 4 x M2.5 screw or the spacers of the Pi, 1 cable tie for the speaker
 (at most 4.8 mm wide, at least 200 mm long). For the converter: 4 x M2.5 x 10
 screw (see "The converter") and 4 washers of at most 8 mm across: the body of the
 converter leaves 4.05 mm round the middle of the opening.

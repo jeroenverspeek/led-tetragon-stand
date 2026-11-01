@@ -107,19 +107,19 @@ Glue the halves:
 - Stand the panel in the channel with the arrows on its back pointing up, so
   the two pins on its back stay clear of the back wall. The software turns the
   picture ([stand128/DESIGN.md](stand128/DESIGN.md)).
-- Hold the panel with two M3 x 10 screws, from behind, through the back wall into
-  the two outer inserts of its bottom edge. First try one M3 screw by hand in an
-  insert: which thread they take is not measured.
+- Hold the panel with two M4 x 10 screws, from behind, through the back wall into
+  the two outer inserts of its bottom edge: the short arm of a 3 mm L-key in the
+  screw, as the long arm hits the plate.
 - The stand printed before these holes were in the model: drill them with the
   panel out. Mark the inside of the back wall 39.5 mm from the inside of each ear
-  and 10 mm above the floor of the channel, and drill 4 mm, slowly and square to
+  and 10 mm above the floor of the channel, and drill 5 mm, slowly and square to
   the wall.
 - The converter: on its four posts on the base, with four M2.5 x 10 screws and
   washers through the U-shaped slots in its flanges. They cut their own thread, so turn
   them in gently. Its wires leave at both ends. See [stand128/DESIGN.md](stand128/DESIGN.md)
   for what to check on its third input terminal first.
 - Push out the middle rectangle on the back of the panel.
-- Fix the holder with three M3 x 10 screws: first the round hole on the right,
+- Fix the holder with three M4 x 10 screws: first the round hole on the right,
   seen from the back, then the slots on the left and at the top. Leave them
   loose until all three are in.
 - The Pi with its hat on the four posts, USB ports down; the plugs on the panel

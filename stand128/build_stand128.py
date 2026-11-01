@@ -12,7 +12,7 @@
 # front of the panel. Behind the channel the 48 -> 5 V converter is screwed
 # through the four U-shaped slots in its flanges onto four posts on the
 # plate, in the middle, with room at both ends for the wires of its terminals.
-# Two M3 screws through the back wall go into the two outer brass inserts of
+# Two M4 screws through the back wall go into the two outer brass inserts of
 # the bottom edge of the panel, so a touch does not push it out of the channel.
 #
 # The stand is 249 mm wide: in one piece on the Bambu Lab X2D (256 x 256 mm),
@@ -20,7 +20,7 @@
 # words of the name; dovetails in the plate, in front of and behind the
 # channel, hold the halves in line, and one half slides down onto the other.
 #
-# Holder: a plate flat on the back of the panel, on three M3 screws in the
+# Holder: a plate flat on the back of the panel, on three M4 screws in the
 # brass inserts, with the panel standing with the arrows on its back up. The
 # rounded back of the USB speaker sinks through a hole in the plate into the
 # opening left by the pushed-out middle rectangle, and a cable tie over its
@@ -66,7 +66,7 @@ PARAMS = [
     ("back_height", 28, "How far the back wall reaches up the back of the panel; the connectors start 47 from an "
                         "edge"),
     ("back_thickness", 4, "Thickness of the back wall"),
-    ("panel_screw_d", 4, "Holes in the back wall for the two M3 screws into the panel: wide, as printed holes come "
+    ("panel_screw_d", 5, "Holes in the back wall for the two M4 screws into the panel: wide, as printed holes come "
                          "out small and the inserts are only measured from a photo"),
     ("panel_screw_along", 39, "Those holes, at the two outer inserts of the bottom edge: from the ends of that edge"),
     ("ear_thickness", 4, "Thickness of the ears at both ends of the channel, which keep the panel in the middle"),
@@ -107,7 +107,7 @@ PARAMS = [
     ("pin_edge", 8.5, "The pins, at the left and the right side: from the edge"),
     ("pin_v", 89.5, "The pins: from the top"),
     ("pin_hole_d", 6, "Holes in the plate for the pins, which stay on the panel"),
-    ("m3_d", 3.4, "Holes in the holder for its M3 screws"),
+    ("m4_d", 4.6, "Holes in the holder for its M4 screws"),
     ("m3_tap_d", 2.6, "Hole in a post that an M3 screw cuts its own thread in"),
     ("screw_slot", 2.5, "Two of the three holes for the screws are slots, this much longer each way than a hole: "
                         "they take up the difference between the panel and the print"),
@@ -447,18 +447,18 @@ post(holder, "SubtractiveCylinder", "GndScrewHole", (add(BACK, mm(1), -1), add(R
 # The screws: the one on the right goes in first and fixes the holder; the one on the left, 220 mm
 # from it, is a slot from left to right, the one at the top a slot from top to bottom. Holes for the
 # pins, which stay on the panel
-M3 = mm(P["m3_d"] / 2, "Params.m3_d / 2")
+M4 = mm(P["m4_d"] / 2, "Params.m4_d / 2")
 SLOT = par("screw_slot")
 edge, middle = par("insert_edge"), par("insert_middle")
-post(holder, "SubtractiveCylinder", "RightScrewHole", THROUGH, add(par("panel_size"), edge, -1), middle, M3)
+post(holder, "SubtractiveCylinder", "RightScrewHole", THROUGH, add(par("panel_size"), edge, -1), middle, M4)
 region(holder, "SubtractiveBox", "LeftScrewSlot", THROUGH, (add(edge, SLOT, -1), add(edge, SLOT)),
-       (add(middle, M3, -1), add(middle, M3)))
-region(holder, "SubtractiveBox", "TopScrewSlot", THROUGH, (add(top_u, M3, -1), add(top_u, M3)),
+       (add(middle, M4, -1), add(middle, M4)))
+region(holder, "SubtractiveBox", "TopScrewSlot", THROUGH, (add(top_u, M4, -1), add(top_u, M4)),
        (add(edge, SLOT, -1), add(edge, SLOT)))
 for i, u in enumerate((add(edge, SLOT, -1), add(edge, SLOT))):
-    post(holder, "SubtractiveCylinder", "LeftScrewSlotEnd%d" % (i + 1), THROUGH, u, middle, M3)
+    post(holder, "SubtractiveCylinder", "LeftScrewSlotEnd%d" % (i + 1), THROUGH, u, middle, M4)
 for i, v in enumerate((add(edge, SLOT, -1), add(edge, SLOT))):
-    post(holder, "SubtractiveCylinder", "TopScrewSlotEnd%d" % (i + 1), THROUGH, top_u, v, M3)
+    post(holder, "SubtractiveCylinder", "TopScrewSlotEnd%d" % (i + 1), THROUGH, top_u, v, M4)
 pin_hole = mm(P["pin_hole_d"] / 2, "Params.pin_hole_d / 2")
 post(holder, "SubtractiveCylinder", "PinHoleLeft", THROUGH, par("pin_edge"), par("pin_v"), pin_hole)
 post(holder, "SubtractiveCylinder", "PinHoleRight", THROUGH, add(par("panel_size"), par("pin_edge"), -1), par("pin_v"),
