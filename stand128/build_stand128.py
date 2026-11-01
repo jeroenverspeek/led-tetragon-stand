@@ -10,7 +10,7 @@
 # tilted onto the base plate, the space under its floor filled down to the
 # plate, so it prints without support. The name is sunk into the plate in
 # front of the panel. Behind the channel the 48 -> 5 V converter is screwed
-# through the four half round openings in its flanges onto four posts on the
+# through the four U-shaped slots in its flanges onto four posts on the
 # plate, in the middle, with room at both ends for the wires of its terminals.
 #
 # The stand is 249 mm wide: in one piece on the Bambu Lab X2D (256 x 256 mm),
@@ -85,9 +85,9 @@ PARAMS = [
     ("flange_width", 55, "Width of the flange at both ends (from the drawing; only used for checking)"),
     ("flange_thickness", 2.4, "Thickness of the flange (from the drawing; only used for checking)"),
     ("converter_front", 27, "The front of its fins: how far behind the bottom edge of the panel"),
-    ("mount_across", 39.5, "The half round openings in its flanges: from front to back (from the drawing)"),
-    ("mount_along", 100.6, "Those openings: from end to end, their round ends 4.7 from the ends of the flanges (scaled "
-                           "from the drawing)"),
+    ("mount_across", 39.5, "The U-shaped slots in its flanges: from front to back (from the drawing)"),
+    ("mount_along", 102.1, "Those slots: from end to end, the screws 3.95 from the ends of the flanges "
+                           "(100.6 scaled from the drawing was 1 to 1.5 short on the printed stand)"),
     ("mount_d", 3.8, "Width of those openings (only used for checking)"),
     ("converter_rest", 4, "Height of the posts under the converter, above the plate: air under it, and only the "
                           "posts touch it, as PLA softens near the 80 C its case may reach"),
@@ -239,7 +239,7 @@ sunk = stand.newObject("PartDesign::Pocket", "TextCut")
 sunk.Profile = letters
 sunk.setExpression("Length", "Params.text_depth")
 
-# The converter behind the channel: four posts on the plate, one under each half round opening in
+# The converter behind the channel: four posts on the plate, one under each U-shaped slot in
 # its flanges, that an M3 screw cuts its own thread in. Only the posts touch it, so it may bridge the
 # joint between the halves, which stays clear of them.
 ALONG_Y = App.Rotation(V(1, 0, 0), -90)  # turns a cylinder from along z to along y

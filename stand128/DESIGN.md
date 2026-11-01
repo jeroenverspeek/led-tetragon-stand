@@ -102,22 +102,27 @@ datasheet beside it). The USB-C cable in the Pi is for testing only.
 
 From the datasheet's drawing: 110 x 70 x 23 mm with its flanges and fins, 228 g
 (weighed). Its body is 94 mm long, a flange of 55 x 8 mm and about 2.4 mm thick at
-both ends. Each flange has two half round openings for screws, 3.8 mm wide,
-open towards the end, 39.5 mm apart. How far they lie from the end is not
-dimensioned: 4.7 mm is scaled from the drawing. **Check it on the converter
-before printing**: they should be 100.6 mm apart from end to end (`mount_along`).
+both ends. Each flange has two U-shaped slots for screws, 3.8 mm wide, open
+towards the end, 39.5 mm apart, about 6 mm deep with a half round inner end. How
+far they lie from the end is not dimensioned. The 100.6 mm from end to end scaled
+from the drawing went to the wrong one of the slot's double lines; the other gives
+101.8 mm, and on the printed stand 100.6 was 1 to 1.5 mm too short. So `mount_along`
+is now 102.1 mm, with the screws 3.95 mm from the end. A little too long does no
+harm, the screw just sits further out in its slot; too short and it hits the end
+of the slot. The first print still has the 100.6 mm; the converter went on anyway.
 
 It stands on the base, not on the back of the panel: there its 228 g stays low,
 and it helps against tipping over instead of against it. At full white it gives
 off about 8 W, and about 4 W with the panel dark.
 
-- Four posts on the plate, one under each opening, 4 mm high. An M3 x 10 cap
-  screw with a small washer (DIN 433, 6 mm across) goes through the opening and
-  cuts its own thread in the post, 2.6 mm across, 7 mm deep. Only the
+- Four posts on the plate, one under each opening, 4 mm high. An M2.5 x 10 screw
+  with a washer goes through the opening and cuts its own thread in the post, in
+  a hole 2.6 mm across: on the printed stand M3 screws did not go in, and M2.5
+  screws fit tight and hold. Only the
   posts touch the converter: its case may reach 80 C, where PLA is soft. Air
   goes under it, and through its fins, which run from front to back.
 - It lies in the middle of the stand, across the joint between the halves. The
-  joint runs under it, 25 mm from the nearest post, and nothing touches there.
+  joint runs under it, 25.6 mm from the nearest post, and nothing touches there.
 - Its terminals lie at both short ends, on top, the wires leaving outwards. There
   is 69.5 mm to the edge of the base at both ends. The 3 input terminals at one
   end, the 2 output terminals at the other, so it can go either way round.
@@ -178,10 +183,9 @@ See [PRINTING.md](../PRINTING.md): `stand128.stl` on the X2D, or
 
 Hardware for the holder: 4 x M3 x 10 screw (3 for the holder, 1 for the
 micro:bit), 4 x M2.5 screw or the spacers of the Pi, 1 cable tie for the speaker
-(at most 4.8 mm wide, at least 200 mm long). For the converter: 4 x M3 x 10
-socket head cap screw (DIN 912, as the others) and 4 x M3 small washer (DIN 433,
-6 mm across, 0.5 mm thick). A normal M3 washer (DIN 125, 7 mm) does not fit: the
-body of the converter leaves 3.3 mm round the middle of the opening.
+(at most 4.8 mm wide, at least 200 mm long). For the converter: 4 x M2.5 x 10
+screw (see "The converter") and 4 washers of at most 8 mm across: the body of the
+converter leaves 4.05 mm round the middle of the opening.
 
 ## Files
 

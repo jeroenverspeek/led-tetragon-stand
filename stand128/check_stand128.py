@@ -192,7 +192,7 @@ check("stand: the back wall stays below the connectors, whichever way up the pan
 
 on_holder = [(PI_MASS, pi), (SPEAKER_MASS, speaker), (MICROBIT_MASS, microbit), (holder.Volume * PLA, holder)]
 # The converter on its posts on the base, in the stand's frame, in the middle of the stand: its base
-# with the flanges, its body with the fins, and the half round openings in the flanges
+# with the flanges, its body with the fins, and the U-shaped slots in the flanges
 c_y = BT + p["converter_rest"]
 c_mid = p["converter_front"] + p["converter_width"] / 2
 cl, cw, cb, fw, ft = (p["converter_length"], p["converter_width"], p["converter_body"], p["flange_width"],

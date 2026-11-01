@@ -107,8 +107,8 @@ Glue the halves:
 - Stand the panel in the channel with the arrows on its back pointing up, so
   the two pins on its back stay clear of the back wall. The software turns the
   picture ([stand128/DESIGN.md](stand128/DESIGN.md)).
-- The converter: on its four posts on the base, with four M3 x 10 screws and
-  small washers (DIN 433) through the half round openings in its flanges. They cut their own thread, so turn
+- The converter: on its four posts on the base, with four M2.5 x 10 screws and
+  washers through the U-shaped slots in its flanges. They cut their own thread, so turn
   them in gently. Its wires leave at both ends. See [stand128/DESIGN.md](stand128/DESIGN.md)
   for what to check on its third input terminal first.
 - Push out the middle rectangle on the back of the panel.
